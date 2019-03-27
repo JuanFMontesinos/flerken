@@ -17,10 +17,11 @@ def init_table(cursor,table,verbose = False):
          LR REAL,
          LOSS REAL,
          ACC REAL,
-         LOSS
          VLOSS REAL,
          VACC REAL,
          EPOCH INTEGER,
+         OPTIMIZER TEXT,
+         CHECKPOINT INTEGER,
          ITERATIONS INTEGER);'''.format(table))
 	if verbose:
 		print('Table sucessfully created')
@@ -69,10 +70,7 @@ def update(cursor,conn,values,table):
 	idx = "'"+value_field[0]+"'"
 	del value_names[0]
 	del value_field[0]
-	print(rowid)
-	print(idx)
 	vals=values2update(value_names,value_field)
-	print(vals)
 
 	cursor.execute("UPDATE {0} SET {1} WHERE {2} = {3}".format(table,vals,rowid,idx))
 	conn.commit()
@@ -80,8 +78,11 @@ class sq(object):
 	def __init__(self,path):
 		self.dst = path
 		self.conn,self.cursor = connect(path)
-		init_table(self.cursor,'EXPERIMENTS')
 		self.table = 'EXPERIMENTS'
+		try:
+			init_table(self.cursor,self.table)
+		except:
+			pass
 
 	def insert_value(self,values):
 		insert_value(self.cursor,self.conn,values,self.table)

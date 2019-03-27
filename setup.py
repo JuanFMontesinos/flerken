@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='flerken',
-      version='0.1',
+      version='0.2-nightly',
       description='PyTorch extension with simplified trainer. ',
       url='https://github.com/JuanFMontesinos/flerken',
       author='Juan Montesinos',

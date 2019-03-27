@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 __author__ = "Juan Montesinos"
-__version__ = "0.1"
+__version__ = "0.2"
 __maintainer__ = "Juan Montesinos"
 __email__ = "juanfelipe.montesinos@upf.edu"
 __status__ = "Prototype"
@@ -16,13 +16,11 @@ import shutil
 import datetime
 from collections import OrderedDict
 import subprocess
-import utils as ptutils
-from traceback_gradients import tracegrad
+from . import utils as ptutils,network_initialization,sqlite_tools
+from .traceback_gradients import tracegrad
 from tqdm import tqdm
 from tensorboardX import SummaryWriter
 from functools import partial
-import sqlite_tools
-
 LOGGING_FORMAT_B = "[%(filename)s: %(funcName)s] %(message)s]"
 LOGGIN_FORMAT_A = "[%(asctime)-15s %(filename)s:%(lineno)d %(funcName)s] %(message)s]"
 
@@ -32,9 +30,21 @@ def set_training(func):
         self.hyperparameters()
         self.__atribute_assertion__()
         self._train()
+        self.key['LR'] = self.LR
+        self.key['OPTIMIZER'] = str(self.optimizer)
+        self.key['EPOCH'] = 0
+        self.key['MODEL'] = self.model_version
+        self.key['ITERATIONS'] = 0
+        self.__update_db__()
         return func(*args,**kwargs)
     return inner
-        
+def checkpoint_on_key(func):
+    def inner(*args,**kwargs):
+        self = args[0]
+        self.key['CHECKPOINT'] = 1
+        self.__update_db__()
+        return func(*args,**kwargs)
+    return inner     
 def dl():
     return torch.rand(2),[torch.rand(5),torch.rand(5)]
 def create_folder(path):
@@ -44,17 +54,18 @@ def create_folder(path):
 class framework(object):
     def __init__(self,model,rootdir,workname, *args,**kwargs):
         self.model = model
-        self.model_version = None
+        self.model_version = ''
         self.rootdir = rootdir
+        self.workname = workname
         self.RESERVED_KEYS = ['DATE_OF_CREATION','MODEL','LR','LOSS','ACC','ID']
         if not os.path.isdir(self.rootdir):
             raise Exception('Rootdir set is not a directory')
         self.db_name = 'experiment_db.sqlite'
         self.db_dir = os.path.join(self.rootdir,self.db_name)
         self.db = sqlite_tools.sq(self.db_dir)
-        self.key = None
+        self.key = {}
         if self.workname is not None:
-            self.resume = self.db.exist(self.workname)
+            self.resume = self.db.exists(self.workname)
             if self.resume:
                 self.workdir = os.path.join(self.rootdir,self.workname)
             else:
@@ -64,7 +75,8 @@ class framework(object):
             self.workdir = None
             self.resume = False
     def __update_db__(self):
-        if self.key is not None: 
+        
+        if type(self.key) == dict:
             self.db.update(self.key) 
         else: 
             raise Exception('Trying to update a Null key dictionary')
@@ -91,7 +103,7 @@ class framework(object):
         self.val_epoch_logger = logging.getLogger('val_epoch_log')
 
         self.key = {'ID':self.workname,'MODEL':self.model_version,'DATE_OF_CREATION':now.strftime("%Y-%m-%d %H:%M")}
-        self.__update_db__()
+        self.db.insert_value(self.key)
     def print_info(self,log):
 
         result = subprocess.Popen(["nvidia-smi", "--format=csv", "--query-gpu=index,name,driver_version,memory.total,memory.used,memory.free"],
@@ -147,11 +159,12 @@ class pytorchfw(framework):
             self.optimizer.load_state_dict(checkpoint['optimizer'])
             self.batch_data= checkpoint['loss']
             self.absolute_iter = checkpoint['iter']
+            self.key = checkpoint['key']
             print("=> Loaded checkpoint '{}' (epoch {})"
                   .format(directory, checkpoint['epoch']))
         else: 
             print("=> No checkpoint found at '{}'".format(directory))
-
+    @checkpoint_on_key
     def save_checkpoint(self, filename=None):
         state = {
             'epoch': self.epoch + 1,
@@ -159,7 +172,8 @@ class pytorchfw(framework):
             'arch': self.model_version,
             'state_dict': self.model.state_dict(),
             'optimizer' : self.optimizer.state_dict(),
-            'loss': self.batch_data
+            'loss': self.batch_data,
+            'key': self.key
             }
         if filename is None:
             filename = os.path.join(self.workdir,self.checkpoint_name)
@@ -281,14 +295,14 @@ class pytorchfw(framework):
         assert hasattr(self, 'assertion_variables')
         try:
             for variable in self.assertion_variables:
-               assert hasattr(self, variable) 
+                assert hasattr(self, variable) 
         except:
-            raise Exception ('Variable assertion failed. Framework requires {} to be defined'.format(variable))
+            raise Exception ('Variable assertion failed. Framework requires >{0}< to be defined'.format(variable))
     def __initilize_layers__(self):
         if self.inizilizable_layers is None:
-            ptutils.init_weights(self.model,init_type = self.initilizer)
+            network_initialization.init_weights(self.model,init_type = self.initilizer)
         else:
-            map(partial(ptutils.init_weights,init_type = self.initilizer),self.inizilizable_layers)
+            map(partial(network_initialization.init_weights,init_type = self.initilizer),self.inizilizable_layers)
 
     def _train(self):
         self.training = True
@@ -319,7 +333,7 @@ class pytorchfw(framework):
     @set_training
     def train(self,args):
         NotImplementedError
-    def tensorboard_writer(self,loss,output,absolute_iter):
+    def tensorboard_writer(self,loss,output,gt,absolute_iter,visualization):
         self.train_writer.add_scalar('loss',loss,absolute_iter)
     def infer(self,*inputs):
         NotImplementedError
@@ -330,7 +344,7 @@ class pytorchfw(framework):
     
 
 def test():
-    
+    import torch.utils.data
     class toy_example(torch.nn.Module):
         def __init__(self):
             super(toy_example,self).__init__()
@@ -343,24 +357,25 @@ def test():
         def __len__(self):
             return 30
         def __getitem__(self,idx):
-            return torch.rand(1,10,10),[torch.rand(1,10,10)],[]
+            return torch.rand(10,6,6),[torch.rand(1,10,10)],[]
     class toy_fw(pytorchfw):
         def hyperparameters(self):
+            self.hihihi = 5
             self.initilizer = 'xavier'
-            self.EPOCHS = 2
+            self.EPOCHS = 10
             self.batch_size = 2
+            self.LR = 1
             #Def optimizer self.optimizer
-            self.optimizer = torch.optim.SGD(self.model.parameters(),lr=1)
+            self.optimizer = torch.optim.SGD(self.model.parameters(),lr=self.LR)
             #Def criterion self.criterion
-            self.criterion = torch.nn.L1Loss.to(self.main_device)
+            self.criterion = torch.nn.L1Loss().to(self.main_device)
+            self.dataparallel = False
         @set_training
         def train(self):
             datab = db() 
             self.train_loader= torch.utils.data.DataLoader(datab,batch_size=self.batch_size)
             for self.epoch in range(self.start_epoch,self.EPOCHS):
-                self._train_epoch()
-    fw = toy_fw(toy_example(),'./',None,0,False)
+                self._train_epoch(self.train_iter_logger)
+    fw = toy_fw(toy_example(),'./','/home/jfm/GitHub/flerken/flerken/framework/19cfddf/checkpoint.pth',0,False)
     return fw
-
-        
         
