@@ -1,11 +1,13 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(name='flerken',
-      version='0.2-nightly',
+      version='0.2.1',
       description='PyTorch extension with simplified trainer. ',
       url='https://github.com/JuanFMontesinos/flerken',
       author='Juan Montesinos',
       author_email='juanfelipe.montesinos@upf.edu',
-      packages=['flerken'],
-      install_requires = ['tqdm','tensorboardX','numpy','logging'],
+      packages=find_packages(),
+      install_requires = ['tqdm','tensorboardX','numpy'],
+      classifiers=[
+        "Programming Language :: Python :: 3",],
       zip_safe=False)
