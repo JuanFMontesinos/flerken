@@ -1,7 +1,11 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+__author__ = "Juan Montesinos"
+__version__ = "0.2.1"
+__maintainer__ = "Juan Montesinos"
+__email__ = "juanfelipe.montesinos@upf.edu"
+__status__ = "Prototype"
 import torch
 from .framework.pytorchframework import pytorchfw
+from . import datasets
 
 def cuda_timing(func):
     def inner(*args,**kwargs):
