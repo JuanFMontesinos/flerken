@@ -1,3 +1,4 @@
+import os
 def video_dataset_analysis(path_to_dataset):
     """This function takes as input a directory root dataset folder with the following structure:"
     dataset---

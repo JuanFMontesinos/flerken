@@ -4,6 +4,7 @@ from .hmdb51 import HMDB51
 from .video_jpg_ucf101_hmdb51 import class_process as _class_process_video2jpg
 from .n_frames_ucf101_hmdb51 import class_process as _class_process_nframes
 from .hmdb51_json import convert_hmdb51_csv_to_activitynet_json as _convert_hmdb51_csv_to_activitynet_json
+from . import spatial_transforms,target_transforms,temporal_transforms
 import os as _os
 __all__ = ['video_jpg_ucf101_hmdb51','n_frames_ucf101_hmdb51','hmdb51_json','HMDB51']
 
