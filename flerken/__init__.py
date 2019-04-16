@@ -6,6 +6,7 @@ __status__ = "Prototype"
 import torch as _torch
 from .framework.pytorchframework import pytorchfw
 from . import datasets
+from . import dataloaders
 
 def cuda_timing(func):
     def inner(*args,**kwargs):
