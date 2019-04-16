@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 __author__ = "Juan Montesinos"
-__version__ = "0.2"
+__version__ = "0.2.3"
 __maintainer__ = "Juan Montesinos"
 __email__ = "juanfelipe.montesinos@upf.edu"
 __status__ = "Prototype"
@@ -29,6 +29,8 @@ def set_training(func):
         self = args[0]
         self.hyperparameters()
         self.__atribute_assertion__()
+        if not hasattr(self, 'init_function') :
+        	self.init_function = partial(network_initialization.init_weights,init_type = self.initilizer)
         self._train()
         self.key['LR'] = self.LR
         self.key['OPTIMIZER'] = str(self.optimizer)
@@ -136,7 +138,7 @@ class pytorchfw(framework):
         self.main_device = torch.device(self.main_device)
         if main_device != 'cpu':
             self.model.to(self.main_device)
-        self.inizilizable_layers = None
+        self.inizilizable_layers = [self.model.parameters()]
         self.trackgrad = trackgrad
         self.assertion_variables = ['initilizer','EPOCHS','optimizer','criterion','LR','dataparallel']
         if trackgrad:
@@ -202,7 +204,7 @@ class pytorchfw(framework):
                 name = k
             new_state_dict[name] = v
         self.model.load_state_dict(new_state_dict,strict=strict_loading)        
-    def _train_epoch(self,logger):
+    def train_epoch(self,logger):
         j = 0
         self.train_iterations =  len(iter(self.train_loader))
         with tqdm(self.train_loader,desc='Epoch: [{0}/{1}]'.format(self.epoch,self.EPOCHS)) as pbar:
@@ -246,12 +248,9 @@ class pytorchfw(framework):
         self.save_checkpoint()
         self.batch_data.batch_loss.reset()
 
-    def _validate_epoch(self,logger):
-        j = 0
-        loss=0
-        self.val_iterations = len(iter(self.val_loader))
+    def validate_epoch(self):
         self.model.eval()
-        with tqdm(self.val_loader, desc='Epoch: [{0}/{1}]'.format(self.epoch, self.EPOCHS)) as pbar:
+        with tqdm(self.val_loader, desc='Validation: [{0}/{1}]'.format(self.epoch, self.EPOCHS)) as pbar:
             for gt, inputs, visualization in pbar:
 
                 inputs = [i.to(self.main_device) for i in inputs] if isinstance(inputs, list) else inputs.to(
@@ -259,13 +258,10 @@ class pytorchfw(framework):
                 gt = [i.to(self.main_device) for i in gt] if isinstance(gt, list) else gt.to(self.main_device)
                 with torch.no_grad():
                     output = self.model(*inputs) if isinstance(inputs, list) else self.model(inputs)
-                loss += self.criterion(output, gt).item()
-
-                # compute gradient and do SGD step
-                j += 1
+                    loss = self.criterion(output, gt)
+                    self.tensorboard_writer(loss.data.item(),output,gt,self.absolute_iter,visualization)
         self.model.train()
-        self.val_writer.add_scalar('val_loss', loss/j, self.epoch)
-        self.batch_data.epoch_logger(self.epoch,self.EPOCHS,loss, logger)
+
 
     def _test(self):
         self.batch_data = ptutils.timers()
@@ -300,9 +296,10 @@ class pytorchfw(framework):
             raise Exception ('Variable assertion failed. Framework requires >{0}< to be defined'.format(variable))
     def __initilize_layers__(self):
         if self.inizilizable_layers is None:
-            network_initialization.init_weights(self.model,init_type = self.initilizer)
+            print('Network not automatically initilized')
         else:
-            map(partial(network_initialization.init_weights,init_type = self.initilizer),self.inizilizable_layers)
+            print('Network automatically initilized ')
+            map(self.init_function,self.inizilizable_layers)
 
     def _train(self):
         self.training = True
@@ -323,6 +320,7 @@ class pytorchfw(framework):
         if self.dataparallel:
             self.model = torch.nn.DataParallel(self.model)      
         self.train_writer = SummaryWriter(log_dir=os.path.join(self.workdir,'tensorboard'))
+        self.val_writer = SummaryWriter(log_dir=os.path.join(self.workdir,'tensorboard'))
     def save_gradients(self,absolute_iter):
         grads = self.tracker.grad(numpy=True)
         grad_path = os.path.join(self.workdir,'gradient_tracking')
@@ -334,7 +332,8 @@ class pytorchfw(framework):
     def train(self,args):
         NotImplementedError
     def tensorboard_writer(self,loss,output,gt,absolute_iter,visualization):
-        self.train_writer.add_scalar('loss',loss,absolute_iter)
+        if self.model.training:
+            self.train_writer.add_scalar('loss',loss,absolute_iter)
     def infer(self,*inputs):
         NotImplementedError
     def hyperparameters(self):

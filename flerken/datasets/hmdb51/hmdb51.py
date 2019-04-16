@@ -185,22 +185,24 @@ class HMDB51(data.Dataset):
         Returns:
             tuple: (image, target) where target is class_index of the target class.
         """
-        path = self.data[index]['video']
-
-        frame_indices = self.data[index]['frame_indices']
-        if self.temporal_transform is not None:
-            frame_indices = self.temporal_transform(frame_indices)
-        clip = self.loader(path, frame_indices)
-        if self.spatial_transform is not None:
-            self.spatial_transform.randomize_parameters()
-            clip = [self.spatial_transform(img) for img in clip]
-        clip = torch.stack(clip, 0).permute(1, 0, 2, 3)
-
-        target = self.data[index]
-        if self.target_transform is not None:
-            target = self.target_transform(target)
-
-        return clip, target
+        try:
+            path = self.data[index]['video']
+    
+            frame_indices = self.data[index]['frame_indices']
+            if self.temporal_transform is not None:
+                frame_indices = self.temporal_transform(frame_indices)
+            clip = self.loader(path, frame_indices)
+            if self.spatial_transform is not None:
+                self.spatial_transform.randomize_parameters()
+                clip = [self.spatial_transform(img) for img in clip]
+            clip = torch.stack(clip, 0).permute(1, 0, 2, 3)
+    
+            target = self.data[index]
+            if self.target_transform is not None:
+                target = self.target_transform(target)
+            return target-1,[clip],[]
+        except TypeError as e:
+            raise TypeError("Video {0} failed".format(path)) from e
 
     def __len__(self):
         return len(self.data)
