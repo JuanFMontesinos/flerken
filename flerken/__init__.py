@@ -1,5 +1,4 @@
 __author__ = "Juan Montesinos"
-__version__ = "0.2.2"
 __maintainer__ = "Juan Montesinos"
 __email__ = "juanfelipe.montesinos@upf.edu"
 __status__ = "Prototype"
