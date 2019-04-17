@@ -59,8 +59,8 @@ def dataset_analysis(path_to_dataset):
     files = {}
     files_path = {}
     for clase,typ in zip(clases,class_path):
-        files_ = [f for f in os.listdir(typ) if not os.path.isdir(os.path.join(typ,f)) and f !='.' and f !='..']
-        files_path_ = [os.path.join(typ,f) for f in os.listdir(typ) if not os.path.isdir(os.path.join(typ,f)) and f !='.' and f !='..']
+        files_ = [f for f in os.listdir(typ)]
+        files_path_ = [os.path.join(typ,f) for f in os.listdir(typ)]
         files[clase]=files_
         files_path[clase] = files_path_
     return clases,class_path,files,files_path

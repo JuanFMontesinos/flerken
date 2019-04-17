@@ -57,9 +57,9 @@ class Compose(object):
         >>> ])
     """
 
-    def __init__(self, transforms):
+    def __init__(self, transforms,dim=None):
         self.transforms = transforms
-
+        self.dim = dim
     def __call__(self, inpt):
         if isinstance(inpt,(list,tuple)):
             return self.apply_sequence(inpt)
@@ -71,6 +71,9 @@ class Compose(object):
         return img
     def apply_sequence(self,seq):
         output = list(map(self.apply_img,seq))
+        if self.dim is not  None:            
+            assert isinstance(self.dim,int)
+            output = torch.stack(output,dim=self.dim)
         for t in self.transforms:
             t.reset_params()
         return output
