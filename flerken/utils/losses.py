@@ -1,3 +1,4 @@
+import torch
 class _Loss(torch.nn.Module):
     def __init__(self, size_average=True, reduce=True):
         super(_Loss, self).__init__()
