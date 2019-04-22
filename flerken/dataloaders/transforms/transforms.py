@@ -501,7 +501,7 @@ class RandomCrop(BaseTransformation):
         return self.__class__.__name__ + '(size={0}, padding={1})'.format(self.size, self.padding)
 
 
-class RandomHorizontalFlip(object):
+class RandomHorizontalFlip(BaseTransformation):
     """Horizontally flip the given PIL Image randomly with a given probability.
 
     Args:
@@ -510,7 +510,7 @@ class RandomHorizontalFlip(object):
 
     def __init__(self, p=0.5):
         self.p = p
-
+        self.reset_params()
     def __call__(self, img):
         """
         Args:
@@ -541,7 +541,7 @@ class RandomVerticalFlip(BaseTransformation):
 
     def __init__(self, p=0.5):
         self.p = p
-
+        self.reset_params()
     def __call__(self, img):
         """
         Args:
