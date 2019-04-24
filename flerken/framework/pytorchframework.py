@@ -143,7 +143,21 @@ class pytorchfw(framework):
         self.assertion_variables = ['initilizer','EPOCHS','optimizer','criterion','LR','dataparallel']
         if trackgrad:
             self.tracker=tracegrad(self.model,verbose=False)
-        
+    def _allocate_tensor(self,x,device = None):
+        if device is None:
+            device = self.main_device
+        else:
+            device = torch.device(device)
+        if self.dataparallel:
+            return x
+        else:
+            if isinstance(x,list):
+                return [i.to(device) for i in x]
+            elif isinstance(x,tuple):
+                return tuple([i.to(device) for i in x])
+            else:
+                return x.to(device)
+            
     def _loadcheckpoint(self):
         directory = os.path.join(self.workdir,'best'+self.checkpoint_name)
         ### TRAIN ITER LOGGER ###
@@ -213,10 +227,11 @@ class pytorchfw(framework):
     #                gt,inputs = self.loader()
                 self.absolute_iter += 1
                 
-                inputs =[i.to(self.main_device) for i in inputs]  if isinstance(inputs,list) else inputs.to(self.main_device)
-                gt = [i.to(self.main_device) for i in gt]  if isinstance(gt,list) else gt.to(self.main_device)
+                inputs = self._allocate_tensor(inputs)
+                
                 self.batch_data.update_timed()
                 output = self.model(*inputs) if isinstance(inputs,list) else self.model(inputs)
+                gt = self._allocate_tensor(gt,device=output.device)
                 loss = self.criterion(output, gt) 
                 # compute gradient and do SGD step
                 self.optimizer.zero_grad()
