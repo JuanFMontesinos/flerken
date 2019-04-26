@@ -86,7 +86,16 @@ class framework(object):
         return 'PyTorch framework created {0} at {1}'.format(self.key['DATE_OF_CREATION'],self.rootdir)
     def __call__(self):
         self.print_key()
-    def __setup_experiment__(self):
+    def __setloggers__(self,**kwargs):
+        ptutils.setup_logger('train_iter_log',os.path.join(self.workdir,'train_iter_log.txt'),**kwargs)
+        self.train_iter_logger = logging.getLogger('train_iter_log')
+
+        ptutils.setup_logger('val_epoch_log',os.path.join(self.workdir,'val_epoch_log.txt'),**kwargs)
+        self.val_epoch_logger = logging.getLogger('val_epoch_log')        
+
+        ptutils.setup_logger('error_log',os.path.join(self.workdir,'err.txt'),**kwargs)
+        self.err_logger = logging.getLogger('error_log')
+    def __setup_experiment__(self,**kwargs):
         self.start_epoch = 0
         self.absolute_iter = 0
         now = datetime.datetime.now()
@@ -98,11 +107,7 @@ class framework(object):
         self.model_logger.info('Model Version: {0}'.format(self.model_version))
         self.model_logger.info(self.model)
         ### TRAIN ITERATION LOGGER ###
-        ptutils.setup_logger('train_iter_log',os.path.join(self.workdir,'train_iter_log.txt'),to_console=False)
-        self.train_iter_logger = logging.getLogger('train_iter_log')
-        ### VAL EPOCH LOGGER ###
-        ptutils.setup_logger('val_epoch_log',os.path.join(self.workdir,'val_epoch_log.txt'),to_console=False)
-        self.val_epoch_logger = logging.getLogger('val_epoch_log')
+        self.__setloggers__(writemode='w',to_console=False)
 
         self.key = {'ID':self.workname,'MODEL':self.model_version,'DATE_OF_CREATION':now.strftime("%Y-%m-%d %H:%M")}
         self.db.insert_value(self.key)
@@ -161,6 +166,7 @@ class pytorchfw(framework):
     def _loadcheckpoint(self):
         directory = os.path.join(self.workdir,'best'+self.checkpoint_name)
         ### TRAIN ITER LOGGER ###
+        self.__setloggers__(writemode='a',to_console=False)
         ptutils.setup_logger('train_iter_log', os.path.join(self.workdir, 'train_iter_log.txt'), writemode='a',to_console=False)
         self.train_iter_logger= logging.getLogger('train_iter_log')
         ### VAL EPOCH LOGGER ###
@@ -223,37 +229,50 @@ class pytorchfw(framework):
         self.train_iterations =  len(iter(self.train_loader))
         with tqdm(self.train_loader,desc='Epoch: [{0}/{1}]'.format(self.epoch,self.EPOCHS)) as pbar:
             for gt,inputs,visualization in pbar :
-#                try:
-    #                gt,inputs = self.loader()
-                self.absolute_iter += 1
-                
-                inputs = self._allocate_tensor(inputs)
-                
-                self.batch_data.update_timed()
-                output = self.model(*inputs) if isinstance(inputs,list) else self.model(inputs)
-                gt = self._allocate_tensor(gt,device=output.device)
-                loss = self.criterion(output, gt) 
-                # compute gradient and do SGD step
-                self.optimizer.zero_grad()
-                loss.backward()
+                try:
+                    self.absolute_iter += 1
+                    
+                    inputs = self._allocate_tensor(inputs)
+                    
+                    self.batch_data.update_timed()
+                    output = self.model(*inputs) if isinstance(inputs,list) else self.model(inputs)
+                    
+                    try:
+                        device = torch.device(self.outputdevice)
+                    except:
+                        if isinstance(output,(list,tuple)):
+                            device = output[0].device
+                        else:
+                            device = output.device
+                    
+                    gt = self._allocate_tensor(gt,device=device)    
+                    loss = self.criterion(output, gt) 
+                    # compute gradient and do SGD step
+                    self.optimizer.zero_grad()
+                    loss.backward()
+    
+                    self.gradients()
+                    if self.trackgrad:
+                        self.tracker(self.model.named_parameters())
+                    self.optimizer.step()
+                    self.batch_data.loss = loss.data.item()
+                    self.tensorboard_writer(loss.data.item(),output,gt,self.absolute_iter,visualization)
+                    self.batch_data.update_loss()
+                    self.batch_data.update_timeb()
+                    self.batch_data.end = time.time()
+                    pbar.set_postfix(loss=self.batch_data.loss)
+    
+                    self.batch_data.print_logger(self.epoch,j,self.train_iterations,logger)
+                    j+=1
 
-                self.gradients()
-                if self.trackgrad:
-                    self.tracker(self.model.named_parameters())
-                self.optimizer.step()
-                self.batch_data.loss = loss.data.item()
-                self.tensorboard_writer(loss.data.item(),output,gt,self.absolute_iter,visualization)
-                self.batch_data.update_loss()
-                self.batch_data.update_timeb()
-                self.batch_data.end = time.time()
-                pbar.set_postfix(loss=self.batch_data.loss)
-
-                self.batch_data.print_logger(self.epoch,j,self.train_iterations,logger)
-                j+=1
-
-#                except:
-#                    self.save_checkpoint(filename = 'checkpoint_backup.pth.tar')
-#                    raise Exception('Error while training.')
+                except Exception as e:
+                    try:
+                        self.save_checkpoint(filename = os.path.join(self.workdir,'checkpoint_backup.pth'))
+                    except:
+                        self.err_logger.error('Failed to deal with exception. Couldnt save backup at {0} \n'
+                                              .format(os.path.join(self.workdir,'checkpoint_backup.pth')))
+                    self.err_logger.error(str(e))
+                    raise
         self.batch_data.update_epoch()
         self.key['LOSS'] = self.batch_data.epoch_loss.val
         self.key['EPOCH'] = self.epoch
