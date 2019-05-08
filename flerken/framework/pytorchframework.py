@@ -32,11 +32,14 @@ def set_training(func):
         if not hasattr(self, 'init_function') :
         	self.init_function = partial(network_initialization.init_weights,init_type = self.initilizer)
         self._train()
+        self.scheduler = ptutils.Scheduler(self.scheduler)
+            
         self.key['LR'] = self.LR
         self.key['OPTIMIZER'] = str(self.optimizer)
         self.key['EPOCH'] = 0
         self.key['MODEL'] = self.model_version
         self.key['ITERATIONS'] = 0
+        self.key['SCHEDULER'] = str(self.scheduler)
         self.__update_db__()
         return func(*args,**kwargs)
     return inner
@@ -46,7 +49,7 @@ def checkpoint_on_key(func):
         self.key['CHECKPOINT'] = 1
         self.__update_db__()
         return func(*args,**kwargs)
-    return inner     
+    return inner 
 def dl():
     return torch.rand(2),[torch.rand(5),torch.rand(5)]
 def create_folder(path):
@@ -143,7 +146,8 @@ class pytorchfw(framework):
         self.main_device = torch.device(self.main_device)
         if main_device != 'cpu':
             self.model.to(self.main_device)
-        self.inizilizable_layers = [self.model.parameters()]
+        self.inizilizable_layers = [self.model]
+        self.scheduler = None
         self.trackgrad = trackgrad
         self.assertion_variables = ['initilizer','EPOCHS','optimizer','criterion','LR','dataparallel']
         if trackgrad:
@@ -165,13 +169,7 @@ class pytorchfw(framework):
             
     def _loadcheckpoint(self):
         directory = os.path.join(self.workdir,'best'+self.checkpoint_name)
-        ### TRAIN ITER LOGGER ###
         self.__setloggers__(writemode='a',to_console=False)
-        ptutils.setup_logger('train_iter_log', os.path.join(self.workdir, 'train_iter_log.txt'), writemode='a',to_console=False)
-        self.train_iter_logger= logging.getLogger('train_iter_log')
-        ### VAL EPOCH LOGGER ###
-        ptutils.setup_logger('val_epoch_log', os.path.join(self.workdir, 'val_epoch_log.txt'),  writemode='a',to_console=False)
-        self.val_epoch_logger = logging.getLogger('val_epoch_log')
 
         if os.path.isfile(directory):
             print("=> Loading checkpoint '{}'".format(directory))
@@ -182,6 +180,7 @@ class pytorchfw(framework):
             self.batch_data= checkpoint['loss']
             self.absolute_iter = checkpoint['iter']
             self.key = checkpoint['key']
+            self.scheduler.load_state_dict(checkpoint['scheduler'])
             print("=> Loaded checkpoint '{}' (epoch {})"
                   .format(directory, checkpoint['epoch']))
         else: 
@@ -195,7 +194,8 @@ class pytorchfw(framework):
             'state_dict': self.model.state_dict(),
             'optimizer' : self.optimizer.state_dict(),
             'loss': self.batch_data,
-            'key': self.key
+            'key': self.key,
+            'scheduler': self.scheduler.state_dict()
             }
         if filename is None:
             filename = os.path.join(self.workdir,self.checkpoint_name)
@@ -287,11 +287,18 @@ class pytorchfw(framework):
         with tqdm(self.val_loader, desc='Validation: [{0}/{1}]'.format(self.epoch, self.EPOCHS)) as pbar:
             for gt, inputs, visualization in pbar:
 
-                inputs = [i.to(self.main_device) for i in inputs] if isinstance(inputs, list) else inputs.to(
-                    self.main_device)
-                gt = [i.to(self.main_device) for i in gt] if isinstance(gt, list) else gt.to(self.main_device)
+                inputs = self._allocate_tensor(inputs)
+
                 with torch.no_grad():
                     output = self.model(*inputs) if isinstance(inputs, list) else self.model(inputs)
+                    try:
+                        device = torch.device(self.outputdevice)
+                    except:
+                        if isinstance(output,(list,tuple)):
+                            device = output[0].device
+                        else:
+                            device = output.device
+                    gt = self._allocate_tensor(gt,device=device)
                     loss = self.criterion(output, gt)
                     self.tensorboard_writer(loss.data.item(),output,gt,self.absolute_iter,visualization)
         self.model.train()
@@ -332,7 +339,9 @@ class pytorchfw(framework):
         if self.inizilizable_layers is None:
             print('Network not automatically initilized')
         else:
-            print('Network automatically initilized ')
+            print('Network automatically initilized at : \n ')
+            for m in self.inizilizable_layers:
+                print('\t'+m.__class__.__name__)
             map(self.init_function,self.inizilizable_layers)
 
     def _train(self):
@@ -353,8 +362,8 @@ class pytorchfw(framework):
                 self.batch_data = ptutils.timers()                 
         if self.dataparallel:
             self.model = torch.nn.DataParallel(self.model)      
-        self.train_writer = SummaryWriter(log_dir=os.path.join(self.workdir,'tensorboard'))
-        self.val_writer = SummaryWriter(log_dir=os.path.join(self.workdir,'tensorboard'))
+        self.train_writer = SummaryWriter(log_dir=os.path.join(self.workdir,'tensorboard','train'))
+        self.val_writer = SummaryWriter(log_dir=os.path.join(self.workdir,'tensorboard','val'))
     def save_gradients(self,absolute_iter):
         grads = self.tracker.grad(numpy=True)
         grad_path = os.path.join(self.workdir,'gradient_tracking')

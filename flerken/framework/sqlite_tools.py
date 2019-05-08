@@ -21,6 +21,7 @@ def init_table(cursor,table,verbose = False):
          VACC REAL,
          EPOCH INTEGER,
          OPTIMIZER TEXT,
+         SCHEDULER TEXT,
          CHECKPOINT INTEGER,
          ITERATIONS INTEGER);'''.format(table))
 	if verbose:

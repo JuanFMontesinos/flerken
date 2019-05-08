@@ -6,7 +6,7 @@ __status__ = "Prototype"
 import logging
 import time
 import numpy as np
-
+from torch.optim.lr_scheduler import _LRScheduler,ReduceLROnPlateau
 def setup_logger(logger_name, log_file, level=logging.INFO,FORMAT='%(message)s',writemode='w',to_console=True):
     l = logging.getLogger(logger_name)
     formatter = logging.Formatter(FORMAT)
@@ -73,3 +73,44 @@ class timers(object):
 
     def is_best(self):
         return (np.mean(self.batch_loss.hist) <= np.min(self.epoch_loss.hist))
+
+class NullScheduler(_LRScheduler):
+    def __init__(self,*args,**kwargs):
+        pass
+    def step(self):
+        pass
+    def state_dict(self):
+        return {}
+    def load_state_dict(self,state_dict):
+        pass
+    def __repr__(self):
+        return 'Empty Scheduler'
+def isscheduler(x):
+    return isinstance(x,_LRScheduler) or isinstance(x,ReduceLROnPlateau)
+class Scheduler(object):
+    def __new__(cls,obj):
+        def __repr__(self):
+            array = self.__class__.__name__ + '(\n'
+            dic = self.state_dict()
+            for key in dic:
+                array += '\t {0}: {1} \n'.format(key,dic[key])
+            array += ')\n'
+            return array
+        def show_lr(self):
+            lr = []
+            for i, param_group in enumerate(self.optimizer.param_groups):
+                lr.append('{:.4e}'.format(float(param_group['lr'])))
+            return lr
+        def state_dict(self):
+            dic = self.__class__.state_dict(self)
+            dic.pop('show_lr')
+            dic.pop('state_dict')
+            return dic
+        if not isscheduler(obj):
+            obj = NullScheduler()
+        else:
+            import types
+            obj.__class__.__repr__ = __repr__
+            obj.state_dict = types.MethodType(state_dict,obj)
+            obj.show_lr = types.MethodType(show_lr,obj)
+        return obj
