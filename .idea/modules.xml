@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/flerken.iml" filepath="$PROJECT_DIR$/.idea/flerken.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../pytorch_audio/.idea/pytorch_audio.iml" filepath="$PROJECT_DIR$/../pytorch_audio/.idea/pytorch_audio.iml" />
     </modules>
   </component>
 </project>

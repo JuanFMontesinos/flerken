@@ -4,6 +4,7 @@ import math
 import sys
 import random
 from PIL import Image
+
 try:
     import accimage
 except ImportError:
@@ -23,7 +24,6 @@ else:
     Sequence = collections.abc.Sequence
     Iterable = collections.abc.Iterable
 
-
 __all__ = ["Compose", "ToTensor", "ToPILImage", "Normalize", "Resize", "Scale", "CenterCrop", "Pad",
            "Lambda", "RandomApply", "RandomChoice", "RandomOrder", "RandomCrop", "RandomHorizontalFlip",
            "RandomVerticalFlip", "RandomResizedCrop", "RandomSizedCrop", "FiveCrop", "TenCrop", "LinearTransformation",
@@ -38,11 +38,14 @@ _pil_interpolation_to_str = {
     Image.BOX: 'PIL.Image.BOX',
 }
 
+
 class BaseTransformation(object):
     def get_params(self):
         pass
+
     def reset_params(self):
         pass
+
 
 class Compose(object):
     """Composes several transforms together.
@@ -57,26 +60,30 @@ class Compose(object):
         >>> ])
     """
 
-    def __init__(self, transforms,dim=None):
+    def __init__(self, transforms, dim=None):
         self.transforms = transforms
         self.dim = dim
+
     def __call__(self, inpt):
-        if isinstance(inpt,(list,tuple)):
+        if isinstance(inpt, (list, tuple)):
             return self.apply_sequence(inpt)
         else:
             return self.apply_img(inpt)
-    def apply_img(self,img):
+
+    def apply_img(self, img):
         for t in self.transforms:
             img = t(img)
         return img
-    def apply_sequence(self,seq):
-        output = list(map(self.apply_img,seq))
-        if self.dim is not  None:            
-            assert isinstance(self.dim,int)
-            output = torch.stack(output,dim=self.dim)
+
+    def apply_sequence(self, seq):
+        output = list(map(self.apply_img, seq))
+        if self.dim is not None:
+            assert isinstance(self.dim, int)
+            output = torch.stack(output, dim=self.dim)
         for t in self.transforms:
             t.reset_params()
         return output
+
     def __repr__(self):
         format_string = self.__class__.__name__ + '('
         for t in self.transforms:
@@ -84,7 +91,7 @@ class Compose(object):
             format_string += '    {0}'.format(t)
         format_string += '\n)'
         return format_string
-    
+
 
 class ToTensor(BaseTransformation):
     """Convert a ``PIL Image`` or ``numpy.ndarray`` to tensor.
@@ -128,6 +135,7 @@ class ToPILImage(BaseTransformation):
 
     .. _PIL.Image mode: https://pillow.readthedocs.io/en/latest/handbook/concepts.html#concept-modes
     """
+
     def __init__(self, mode=None):
         self.mode = mode
 
@@ -220,6 +228,7 @@ class Scale(Resize):
     """
     Note: This transform is deprecated in favor of Resize.
     """
+
     def __init__(self, *args, **kwargs):
         warnings.warn("The use of the transforms.Scale transform is deprecated, " +
                       "please use transforms.Resize instead.")
@@ -308,7 +317,7 @@ class Pad(BaseTransformation):
         return F.pad(img, self.padding, self.fill, self.padding_mode)
 
     def __repr__(self):
-        return self.__class__.__name__ + '(padding={0}, fill={1}, padding_mode={2})'.\
+        return self.__class__.__name__ + '(padding={0}, fill={1}, padding_mode={2})'. \
             format(self.padding, self.fill, self.padding_mode)
 
 
@@ -385,6 +394,7 @@ class RandomApply(RandomTransforms):
 class RandomOrder(RandomTransforms):
     """Apply a list of transformations in a random order
     """
+
     def __call__(self, img):
         order = list(range(len(self.transforms)))
         random.shuffle(order)
@@ -396,6 +406,7 @@ class RandomOrder(RandomTransforms):
 class RandomChoice(RandomTransforms):
     """Apply single transformation randomly picked from a list
     """
+
     def __call__(self, img):
         t = random.choice(self.transforms)
         return t(img)
@@ -448,7 +459,7 @@ class RandomCrop(BaseTransformation):
         self.padding_mode = padding_mode
         self.reset_params()
 
-    def get_params(self,img, output_size):
+    def get_params(self, img, output_size):
         """Get parameters for ``crop`` for a random crop.
 
         Args:
@@ -467,11 +478,13 @@ class RandomCrop(BaseTransformation):
         self.j = random.randint(0, w - tw)
         self.h = th
         self.w = tw
+
     def reset_params(self):
         self.i = None
         self.j = None
         self.h = None
-        self.w = None        
+        self.w = None
+
     def __call__(self, img):
         """
         Args:
@@ -489,12 +502,12 @@ class RandomCrop(BaseTransformation):
         # pad the height if needed
         if self.pad_if_needed and img.size[1] < self.size[0]:
             img = F.pad(img, (0, self.size[0] - img.size[1]), self.fill, self.padding_mode)
-            
+
         # Compute parameters for 1st frame in video seq
         if self.i is None:
-            assert self.i == self.h == self.j == self.w 
+            assert self.i == self.h == self.j == self.w
             self.get_params(img, self.size)
-            
+
         return F.crop(img, self.i, self.j, self.h, self.w)
 
     def __repr__(self):
@@ -511,6 +524,7 @@ class RandomHorizontalFlip(BaseTransformation):
     def __init__(self, p=0.5):
         self.p = p
         self.reset_params()
+
     def __call__(self, img):
         """
         Args:
@@ -527,10 +541,13 @@ class RandomHorizontalFlip(BaseTransformation):
 
     def __repr__(self):
         return self.__class__.__name__ + '(p={})'.format(self.p)
+
     def get_paramters(self):
         self.flag = random.random() < self.p
+
     def reset_params(self):
         self.flag = None
+
 
 class RandomVerticalFlip(BaseTransformation):
     """Vertically flip the given PIL Image randomly with a given probability.
@@ -542,6 +559,7 @@ class RandomVerticalFlip(BaseTransformation):
     def __init__(self, p=0.5):
         self.p = p
         self.reset_params()
+
     def __call__(self, img):
         """
         Args:
@@ -558,11 +576,14 @@ class RandomVerticalFlip(BaseTransformation):
 
     def __repr__(self):
         return self.__class__.__name__ + '(p={})'.format(self.p)
+
     def get_paramters(self):
         self.flag = random.random() < self.p
+
     def reset_params(self):
         self.flag = None
-        
+
+
 class RandomResizedCrop(BaseTransformation):
     """Crop the given PIL Image to random size and aspect ratio.
 
@@ -591,7 +612,7 @@ class RandomResizedCrop(BaseTransformation):
         self.ratio = ratio
         self.reset_params()
 
-    def get_params(self,img, scale, ratio):
+    def get_params(self, img, scale, ratio):
         """Get parameters for ``crop`` for a random sized crop.
 
         Args:
@@ -633,13 +654,13 @@ class RandomResizedCrop(BaseTransformation):
         self.j = (img.size[0] - w) // 2
         self.h = h
         self.w = w
-        
+
     def reset_params(self):
         self.i = None
         self.j = None
         self.h = None
-        self.w = None    
-        
+        self.w = None
+
     def __call__(self, img):
         """
         Args:
@@ -649,7 +670,7 @@ class RandomResizedCrop(BaseTransformation):
             PIL Image: Randomly cropped and resized image.
         """
         if self.i is None:
-            assert self.i == self.h == self.j == self.w 
+            assert self.i == self.h == self.j == self.w
             self.get_params(img, self.size)
 
         return F.resized_crop(img, self.i, self.j, self.h,
@@ -668,6 +689,7 @@ class RandomSizedCrop(RandomResizedCrop):
     """
     Note: This transform is deprecated in favor of RandomResizedCrop.
     """
+
     def __init__(self, *args, **kwargs):
         warnings.warn("The use of the transforms.RandomSizedCrop transform is deprecated, " +
                       "please use transforms.RandomResizedCrop instead.")
@@ -826,6 +848,7 @@ class ColorJitter(BaseTransformation):
             hue_factor is chosen uniformly from [-hue, hue] or the given [min, max].
             Should have 0<= hue <= 0.5 or -0.5 <= min <= max <= 0.5.
     """
+
     def __init__(self, brightness=0, contrast=0, saturation=0, hue=0):
         self.brightness = self._check_input(brightness, 'brightness')
         self.contrast = self._check_input(contrast, 'contrast')
@@ -833,6 +856,7 @@ class ColorJitter(BaseTransformation):
         self.hue = self._check_input(hue, 'hue', center=0, bound=(-0.5, 0.5),
                                      clip_first_on_zero=False)
         self.reset_params()
+
     def _check_input(self, value, name, center=1, bound=(0, float('inf')), clip_first_on_zero=True):
         if isinstance(value, numbers.Number):
             if value < 0:
@@ -851,9 +875,8 @@ class ColorJitter(BaseTransformation):
         if value[0] == value[1] == center:
             value = None
         return value
-        
 
-    def get_params(self,brightness, contrast, saturation, hue):
+    def get_params(self, brightness, contrast, saturation, hue):
         """Get a randomized transform to be applied on image.
 
         Arguments are same as that of __init__.
@@ -882,6 +905,7 @@ class ColorJitter(BaseTransformation):
 
         random.shuffle(transforms)
         self.transform = Compose(transforms)
+
     def reset_params(self):
         self.transform = None
 
@@ -895,7 +919,7 @@ class ColorJitter(BaseTransformation):
         """
         if self.transform is None:
             self.get_params(self.brightness, self.contrast,
-                                    self.saturation, self.hue)
+                            self.saturation, self.hue)
         return self.transform(img)
 
     def __repr__(self):
@@ -943,14 +967,15 @@ class RandomRotation(BaseTransformation):
         self.expand = expand
         self.center = center
         self.reset_params()
-        
-    def get_params(self,degrees):
+
+    def get_params(self, degrees):
         """Get parameters for ``rotate`` for a random rotation.
 
         Returns:
             sequence: params to be passed to ``rotate`` for random rotation.
         """
         self.angle = random.uniform(degrees[0], degrees[1])
+
     def reset_params(self):
         self.angle = None
 
@@ -1042,7 +1067,8 @@ class RandomAffine(BaseTransformation):
         self.resample = resample
         self.fillcolor = fillcolor
         self.reset_params()
-    def get_params(self,degrees, translate, scale_ranges, shears, img_size):
+
+    def get_params(self, degrees, translate, scale_ranges, shears, img_size):
         """Get parameters for affine transformation
 
         Returns:
@@ -1067,9 +1093,11 @@ class RandomAffine(BaseTransformation):
         else:
             shear = 0.0
 
-        self.ret =  [angle, translations, scale, shear]
+        self.ret = [angle, translations, scale, shear]
+
     def reset_params(self):
         self.ret = None
+
     def __call__(self, img):
         """
             img (PIL Image): Image to be transformed.
@@ -1146,6 +1174,7 @@ class RandomGrayscale(BaseTransformation):
     def __init__(self, p=0.1):
         self.p = p
         self.reset_params()
+
     def __call__(self, img):
         """
         Args:
@@ -1160,9 +1189,12 @@ class RandomGrayscale(BaseTransformation):
         if self.flag:
             return F.to_grayscale(img, num_output_channels=num_output_channels)
         return img
+
     def get_params(self):
         self.flag = random.random() < self.p
+
     def reset_params(self):
         self.flag = None
+
     def __repr__(self):
         return self.__class__.__name__ + '(p={0})'.format(self.p)
