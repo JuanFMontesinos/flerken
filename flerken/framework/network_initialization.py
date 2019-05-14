@@ -8,6 +8,7 @@ __status__ = "Prototype"
 
 from torch.nn import init
 
+
 def weights_init_normal(m):
     classname = m.__class__.__name__
     # print(classname)
@@ -18,6 +19,7 @@ def weights_init_normal(m):
     elif classname.find('BatchNorm2d') != -1:
         init.normal(m.weight.data, 1.0, 0.02)
         init.constant(m.bias.data, 0.0)
+
 
 def weights_init_xavier(m):
     classname = m.__class__.__name__
@@ -30,6 +32,7 @@ def weights_init_xavier(m):
         init.normal(m.weight.data, 1.0, 0.02)
         init.constant(m.bias.data, 0.0)
 
+
 def weights_init_kaiming(m):
     classname = m.__class__.__name__
     # print(classname)
@@ -41,9 +44,10 @@ def weights_init_kaiming(m):
         init.normal(m.weight.data, 1.0, 0.02)
         init.constant(m.bias.data, 0.0)
 
+
 def weights_init_orthogonal(m):
     classname = m.__class__.__name__
-    #print(classname)
+    # print(classname)
     if classname.find('Conv') != -1:
         init.orthogonal(m.weight.data, gain=1)
     elif classname.find('Linear') != -1:
@@ -51,6 +55,7 @@ def weights_init_orthogonal(m):
     elif classname.find('BatchNorm2d') != -1:
         init.normal(m.weight.data, 1.0, 0.02)
         init.constant(m.bias.data, 0.0)
+
 
 def init_weights(net, init_type='normal'):
     print('initialization method [%s]' % init_type)
@@ -64,4 +69,3 @@ def init_weights(net, init_type='normal'):
         net.apply(weights_init_orthogonal)
     else:
         raise NotImplementedError('initialization method [%s] is not implemented' % init_type)
-
