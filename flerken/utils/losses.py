@@ -74,7 +74,7 @@ class SI_SDR(_Loss):
         coef = coef.unsqueeze(1)
         s = coef * s
         loss = torch.norm(s, 2, 1, True)[:, 0] / torch.norm(s - s_hat, 2, 1, True)[:, 0]
-        loss = 10 * loss.log10().pow(2)
+        loss = 10 * loss.pow(2).log10()
         if self.weight is not None:
             loss = loss * self.weight
         if self.reduce:
