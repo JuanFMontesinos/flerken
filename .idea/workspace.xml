@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c008b4ec-f275-498a-9c6f-d42e222cc6b8" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/flerken/models/ResNet3D.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/flerken/models/UNet.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/flerken/models/VGG.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/flerken/models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flerken/utils/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/flerken/utils/__init__.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -53,6 +57,9 @@
       <find>train_iter_log</find>
       <find>ro</find>
       <find>__setloggers__</find>
+      <find>print_bool</find>
+      <find>vae</find>
+      <find>just_decoder</find>
     </findStrings>
     <replaceStrings>
       <replace>bool(int(</replace>
@@ -86,14 +93,19 @@
         <option value="$PROJECT_DIR$/flerken/dataloaders/__init__.py" />
         <option value="$PROJECT_DIR$/flerken/dataloaders/transforms/transforms.py" />
         <option value="$PROJECT_DIR$/flerken/utils/losses.py" />
+        <option value="$PROJECT_DIR$/flerken/models/ResNet3D.py" />
+        <option value="$PROJECT_DIR$/flerken/models/UNet.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/flerken/models/__init__.py" />
+        <option value="$PROJECT_DIR$/flerken/models/VGG.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="269" />
-    <option name="y" value="202" />
-    <option name="width" value="1370" />
-    <option name="height" value="1000" />
+    <option name="x" value="67" />
+    <option name="y" value="25" />
+    <option name="width" value="1853" />
+    <option name="height" value="1055" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -113,30 +125,6 @@
               <item name="flerken" type="b2602c69:ProjectViewProjectNode" />
               <item name="flerken" type="462c0819:PsiDirectoryNode" />
               <item name="flerken" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="flerken" type="b2602c69:ProjectViewProjectNode" />
-              <item name="flerken" type="462c0819:PsiDirectoryNode" />
-              <item name="flerken" type="462c0819:PsiDirectoryNode" />
-              <item name="datasets" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="flerken" type="b2602c69:ProjectViewProjectNode" />
-              <item name="flerken" type="462c0819:PsiDirectoryNode" />
-              <item name="flerken" type="462c0819:PsiDirectoryNode" />
-              <item name="framework" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="flerken" type="b2602c69:ProjectViewProjectNode" />
-              <item name="flerken" type="462c0819:PsiDirectoryNode" />
-              <item name="flerken" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="flerken" type="b2602c69:ProjectViewProjectNode" />
-              <item name="flerken" type="462c0819:PsiDirectoryNode" />
-              <item name="flerken" type="462c0819:PsiDirectoryNode" />
-              <item name="video" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -311,11 +299,12 @@
       <workItem from="1557835907510" duration="16426000" />
       <workItem from="1557914338540" duration="795000" />
       <workItem from="1557919376120" duration="622000" />
+      <workItem from="1557998804203" duration="2251000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="135800000" />
+    <option name="totallyTimeSpent" value="138051000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -329,7 +318,7 @@
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19811843" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20033205" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" weight="0.32982844" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -467,15 +456,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/setupf.cfg">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-751" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/flerken/audio/__init__.py" />
     <entry file="file://$PROJECT_DIR$/flerken/framework/traceback_gradients.py" />
     <entry file="file://$PROJECT_DIR$/flerken/framework/network_initialization.py" />
     <entry file="file:///usr/lib/python3.6/codecs.py">
@@ -668,6 +648,50 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="465">
           <caret line="31" column="32" selection-start-line="31" selection-start-column="32" selection-end-line="31" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flerken/models/UNet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="664">
+          <caret line="239" selection-start-line="239" selection-end-line="239" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="39" lean-forward="true" selection-start-column="39" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flerken/models/ResNet3D.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="784">
+          <caret line="317" column="16" selection-start-line="317" selection-start-column="16" selection-end-line="317" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flerken/models/VGG.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flerken/models/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="18" selection-start-line="2" selection-start-column="18" selection-end-line="2" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

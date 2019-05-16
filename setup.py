@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='flerken',
-      version='0.2.4.post1',
+      version='0.2.4.post2',
       description='PyTorch extension with simplified trainer. ',
       url='https://github.com/JuanFMontesinos/flerken',
       author='Juan Montesinos',
