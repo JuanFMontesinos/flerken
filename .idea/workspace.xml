@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c008b4ec-f275-498a-9c6f-d42e222cc6b8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.travis.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/requirements-dev.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flerken/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/flerken/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flerken/framework/classitems.py" beforeDir="false" afterPath="$PROJECT_DIR$/flerken/framework/classitems.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flerken/framework/pytorchframework.py" beforeDir="false" afterPath="$PROJECT_DIR$/flerken/framework/pytorchframework.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.travis.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.travis.yml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -20,13 +17,18 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.travis.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" column="18" lean-forward="true" selection-start-line="12" selection-start-column="18" selection-end-line="12" selection-end-column="18" />
+            <state relative-caret-position="75">
+              <caret line="5" column="22" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="42" />
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/requirements-dev.txt">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -330,12 +332,12 @@
       <workItem from="1558019578374" duration="238000" />
       <workItem from="1558022640339" duration="659000" />
       <workItem from="1558083807373" duration="39000" />
-      <workItem from="1558090729565" duration="759000" />
+      <workItem from="1558090729565" duration="1520000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="142006000" />
+    <option name="totallyTimeSpent" value="142767000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -488,20 +490,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file:///usr/lib/python3.6/codecs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="393">
-          <caret line="323" selection-start-line="323" selection-end-line="323" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/lib/python3.6/sre_compile.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="539" selection-start-line="539" selection-end-line="539" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/lib/python3.6/re.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="168">
@@ -535,7 +523,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/flerken/framework/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/flerken/framework/utils.py" />
     <entry file="file://$PROJECT_DIR$/flerken/datasets/hmdb51/spatial_transforms.py" />
     <entry file="file://$USER_HOME$/.local/lib/python3.6/site-packages/flerken_nightly/framework/classitems.py" />
     <entry file="file://$PROJECT_DIR$/flerken_nightly/framework/newtest.py" />
@@ -726,16 +713,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/setup.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="31" selection-start-line="15" selection-start-column="31" selection-end-line="15" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#43#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/flerken/framework/pytorchframework.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="191">
@@ -750,12 +727,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.travis.yml">
+    <entry file="file://$PROJECT_DIR$/flerken/framework/utils.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flerken/framework/traceback_gradients.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="18" lean-forward="true" selection-start-line="12" selection-start-column="18" selection-end-line="12" selection-end-column="18" />
+        <state relative-caret-position="120">
+          <caret line="8" selection-start-line="8" selection-end-line="8" />
+          <folding>
+            <element signature="e#216#228#0" expanded="true" />
+          </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="31" selection-start-line="15" selection-start-column="31" selection-end-line="15" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.travis.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="22" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements-dev.txt">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>
