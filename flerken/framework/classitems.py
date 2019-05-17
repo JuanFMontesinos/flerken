@@ -221,7 +221,7 @@ class TensorAccuracyItem(AccuracyItem):
         self.constructor(obj)
         self._valid_states = ('val', 'test', 'train')
         self.gt_transforms = gttransforms
-        self.pred_transforms=predtransforms
+        self.pred_transforms = predtransforms
 
     def constructor(self, obj):
         if obj is not None:
@@ -295,7 +295,9 @@ class Timers(object):
         self.batch_time.update(time.time() - self.end)
 
     def update_epoch(self, mode):
-        return self.tuple[mode].update_epoch()
+        value = self.tuple[mode].update_epoch()
+        self._is_best()
+        return value
 
     def print_logger(self, t, j, iterations, logger):
         logger.info('Epoch: [{0}][{1}/{2}]\t'
@@ -311,13 +313,13 @@ class Timers(object):
                     'Loss ({loss:.4f})'.format(
             current_epoch, total_epochs, data_time=self.data_time, loss=epoch_loss))
 
-    def is_best(self):
+    def _is_best(self):
         if self.tuple['val'].epoch_array.called:
             mode = 'val'
         else:
             mode = 'train'
 
-        return (np.mean(self.tuple[mode].array.hist) <= np.min(self.tuple[mode].epoch_array.hist))
+        self.is_best = (self.tuple[mode].epoch_array.val <= np.min(self.tuple[mode].epoch_array.hist))
 
 
 class Compose(object):

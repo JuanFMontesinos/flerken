@@ -235,7 +235,6 @@ class framework(object):
         self.absolute_iter = 0
         now = datetime.datetime.now()
         self.workname = str(uuid.uuid4())[:7]
-        self.workdir = os.path.join(self.rootdir, self.workname)
         create_folder(self.workdir)
         ptutils.setup_logger('model_logger', os.path.join(self.workdir, 'model_architecture.txt'), writemode='w')
         self.model_logger = logging.getLogger('model_logger')
@@ -470,7 +469,7 @@ class pytorchfw(framework):
             filename = os.path.join(self.workdir, filename)
         print('Saving checkpoint at : {}'.format(filename))
         torch.save(state, filename)
-        if self.loss_.data.is_best():
+        if self.loss_.data.is_best:
             shutil.copyfile(filename, os.path.join(self.workdir, 'best' + self.checkpoint_name))
         print('Checkpoint saved successfully')
 
@@ -563,13 +562,13 @@ class pytorchfw(framework):
         with tqdm(self.val_loader, desc='Validation: [{0}/{1}]'.format(self.epoch, self.EPOCHS)) as pbar, ctx_iter(
                 self):
             for gt, inputs, visualization in pbar:
-
+                self.loss_.data.update_timed()
                 inputs = self._allocate_tensor(inputs)
 
                 output = self.model(*inputs) if isinstance(inputs, list) else self.model(inputs)
                 self.acc_('val', gt, output)
                 if hasattr(self, 'outputdevice'):
-                    device = torch.device(self.outputdevice)  # TODO keep an eye here
+                    device = torch.device(self.outputdevice)
                 else:
                     if isinstance(output, (list, tuple)):
                         device = output[0].device
@@ -578,6 +577,7 @@ class pytorchfw(framework):
 
                 gt = self._allocate_tensor(gt, device=device)
                 self.loss = self.criterion(output, gt)
+                pbar.set_postfix(loss=self.loss.item())
         self.loss = self.loss_.data.update_epoch(self.state)
         self.acc = self.acc_.get_acc('val')
 
@@ -587,8 +587,8 @@ class pytorchfw(framework):
             for variable in self.assertion_variables:
                 assert hasattr(self, variable)
         except Exception as e:
-            self.err_logger.error(str(e))
-            self.err_logger.error('Variable assertion failed. Framework requires >{0}< to be defined'.format(variable))
+            # error_logger hasn't been defined at this point, that's why print
+            print('Variable assertion failed. Framework requires >{0}< to be defined'.format(variable))
             raise e
 
     def __initialize_layers__(self):
