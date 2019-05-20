@@ -627,6 +627,26 @@ class pytorchfw(framework):
         grad_path = os.path.join(grad_path, 'grad_{0}_{1:06d}.npy'.format(self.workname, absolute_iter))
         np.save(grad_path, grads)
 
+    def set_optim(self, *args, **kwargs):
+        if self.args.optimizer == 'Adam':
+            return torch.optim.Adam(*args, **kwargs)
+        elif self.args.optimizer == 'SGD':
+            return torch.optim.SGD(*args, **kwargs)
+        elif self.args.optimizer == 'Adadelta':
+            return torch.optim.Adadelta(*args, *kwargs)
+        elif self.args.optimizer == 'Adagrad':
+            return torch.optim.Adadelta(*args, *kwargs)
+        elif self.args.optimizer == 'Adamax':
+            return torch.optim.Adadelta(*args, *kwargs)
+        elif self.args.optimizer == 'ASGD':
+            return torch.optim.Adadelta(*args, *kwargs)
+        elif self.args.optimizer == 'RMSprop':
+            return torch.optim.Adadelta(*args, *kwargs)
+        elif self.args.optimizer == 'Rprop':
+            return torch.optim.Adadelta(*args, *kwargs)
+        else:
+            raise Exception('Non considered optimizer. Implement it')
+
     @set_training
     @config
     def train(self, args):
