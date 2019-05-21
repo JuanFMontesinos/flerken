@@ -9,9 +9,10 @@ install:
   - pip install coveralls
 script:
   - python test.py
-  - coverage run test.py
+  - coverage run --source=./flerken test.py
 after_success:
   - coverage report
+  - coveralls
 deploy:
   provider: pypi
   user: jfmontgar
