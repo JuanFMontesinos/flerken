@@ -3,7 +3,6 @@ python:
 - '3.6'
 os:
   - linux
-  - windows
 install:
   - pip install -q -r requirements-dev.txt
   - pip install coverage
