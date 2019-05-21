@@ -66,6 +66,8 @@ class SI_SDR(_Loss):
         self.register_buffer('weight', weight)
 
     def forward(self, s, s_hat):
+        assert s.dim() > 1
+        assert s_hat.shape == s.shape
         s = s.view(-1, s.shape[-1])
         s_hat = s_hat.view(-1, s_hat.shape[-1])
         dot = torch.bmm(s.unsqueeze(1), s_hat.unsqueeze(2))[:, 0, 0]

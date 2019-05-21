@@ -136,7 +136,7 @@ class ResNet(nn.Module):
         self.layer4 = self._make_layer(
             block, 512, layers[3], shortcut_type, stride=2)
         self.avgpool = nn.AdaptiveAvgPool3d((1, 1, 1))
-        self.fc = nn.Linear(512 * BasicBlock.expansion, num_classes)
+        self.fc = nn.Linear(512 * block.expansion, num_classes)
 
         for m in self.modules():
             if isinstance(m, nn.Conv3d):
@@ -255,7 +255,7 @@ def resnet34(pretrained=True, **kwargs):
         from google_drive_downloader import GoogleDriveDownloader as gdd
 
         gdd.download_file_from_google_drive(file_id='186dfRV0rIIrkb18V51QW2XKe01EfeAUD',
-                                            dest_path='./kinetics-RN34.path',
+                                            dest_path='./kinetics-RN34.pth',
                                             unzip=False)
         print('Loading pre-trained 3DResNet-34 (Kinetics Dataset)')
         sd = load_pretrained('./kinetics-RN34.pth')
@@ -271,7 +271,7 @@ def resnet50(pretrained=True, **kwargs):
         from google_drive_downloader import GoogleDriveDownloader as gdd
 
         gdd.download_file_from_google_drive(file_id='1gx5UfvvUMZ5AbgOHfti-bAGh7EF2Sc_i',
-                                            dest_path='./kinetics-RN50.path',
+                                            dest_path='./kinetics-RN50.pth',
                                             unzip=False)
         print('Loading pre-trained 3DResNet-50 (Kinetics Dataset)')
         sd = load_pretrained('./kinetics-RN50.pth')
@@ -290,7 +290,7 @@ def resnet101(pretrained=True, **kwargs):
                                             dest_path='./kinetics-RN101.pth',
                                             unzip=False)
         print('Loading pre-trained 3DResNet-101 (Kinetics Dataset)')
-        sd = load_pretrained('./kinetics-RN101.path')
+        sd = load_pretrained('./kinetics-RN101.pth')
         model.load_state_dict(sd, strict=False)
     return model
 
@@ -306,7 +306,7 @@ def resnet152(pretrained=True, **kwargs):
                                             dest_path='./kinetics-RN152.pth',
                                             unzip=False)
         print('Loading pre-trained 3DResNet-152 (Kinetics Dataset)')
-        sd = load_pretrained('./kinetics-RN152.path')
+        sd = load_pretrained('./kinetics-RN152.pth')
         model.load_state_dict(sd, strict=False)
     return model
 
