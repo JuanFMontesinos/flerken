@@ -1,12 +1,16 @@
 language: python
 python:
 - '3.6'
-
+os:
+  - linux
+  - windows
 install:
-  - pip install -q -r requirements-dev.txt .
-
+  - pip install -q -r requirements-dev.txt
+  - pip install coverage
+  - pip install coveralls
 script:
   - python setup.py bdist_wheel
+  - coverage run python -m unittest
 deploy:
   provider: pypi
   user: jfmontgar

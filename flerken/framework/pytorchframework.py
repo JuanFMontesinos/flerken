@@ -444,7 +444,7 @@ class pytorchfw(framework):
         self.loss_.constructor(checkpoint['loss'])  # TODO verify this is ok for savecheckpoint
         self.acc_.constructor()
         self.absolute_iter = checkpoint['iter']
-        self.key = checkpoint['key']
+        self.key.update(checkpoint['key'])
         self.scheduler.load_state_dict(checkpoint['scheduler'])
         print("=> Loaded checkpoint '{}' (epoch {})"
               .format(directory, checkpoint['epoch']))

@@ -4,8 +4,6 @@ __maintainer__ = "Juan Montesinos"
 __email__ = "juanfelipe.montesinos@upf.edu"
 __status__ = "Prototype"
 import logging
-import time
-import numpy as np
 
 
 
