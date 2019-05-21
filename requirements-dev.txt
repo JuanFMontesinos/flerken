@@ -4,3 +4,5 @@ torchvision
 tqdm
 scikit-learn
 scipy
+numpy
+tb-nightly

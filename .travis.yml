@@ -1,6 +1,6 @@
 language: python
 python:
-- '3.6'
+  - '3.6'
 os:
   - linux
 install:
@@ -8,8 +8,10 @@ install:
   - pip install coverage
   - pip install coveralls
 script:
-  - python setup.py bdist_wheel
+  - test.py
   - coverage run test.py
+after_success:
+  - coverage report
 deploy:
   provider: pypi
   user: jfmontgar
