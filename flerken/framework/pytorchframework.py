@@ -98,7 +98,8 @@ def create_folder(path):
 
 
 class framework(object):
-    def __init__(self, model, rootdir, workname, *args, **kwargs):
+    def __init__(self, model, rootdir, workname, *args, **kwargs) -> None:
+
         self.model = model
         self.model_version = ''
         self.rootdir = rootdir
@@ -274,7 +275,17 @@ class framework(object):
 
 
 class pytorchfw(framework):
-    def __init__(self, model, rootdir, workname, main_device, trackgrad):
+    def __init__(self, model: torch.nn.Module, rootdir: str, workname: (str, None), main_device: (int, str),
+                 trackgrad: bool) -> None:
+        """
+        PyTorch Framework init function.
+
+        :param model: torch model
+        :type model: torch.nn.Module
+        :param rootdir: Path to root directory for all experiments
+        :type model: str
+        :returns: None
+        """
         super(pytorchfw, self).__init__(model, rootdir, workname)
         self.checkpoint_name = 'checkpoint.pth'
         self.cuda = torch.cuda.is_available()
@@ -411,7 +422,14 @@ class pytorchfw(framework):
             else:
                 return x.to(device)
 
-    def set_model_training(self, flag):
+    def set_model_training(self, flag) -> bool:
+        """
+        Trigger function to enable or disable model.train() and model.eval()
+
+        :param flag: True --> activate model.train() mode. False --> activate model.eval() mode
+        :type flag: bool
+        :returns: bool
+        """
         if flag:
             self.model.train()
         else:
@@ -452,6 +470,14 @@ class pytorchfw(framework):
     @checkpoint_on_key
     @assert_workdir
     def save_checkpoint(self, filename=None):
+        """
+        Save checkpoint function. By default saves last epoch for training and best validation epoch. If there is
+        no validation then best train epoch.
+
+        :param filename: Custom filename to save weights. Defautl is framework.checkpoint_name
+        :type filename: str
+        :return: None
+        """
         state = {
             'epoch': self.epoch + 1,
             'iter': self.absolute_iter + 1,
@@ -474,6 +500,18 @@ class pytorchfw(framework):
         print('Checkpoint saved successfully')
 
     def load_model(self, directory, strict_loading=True, from_checkpoint=False, **kwargs):
+        """
+        Load model function which allows to load from a python dict, path to weights or checkpoint.
+        If called enables framework.loaded_model = True
+
+        :param directory: Loaded state dict or path to weights or checkpoint.
+        :type directory: dict,str
+        :param strict_loading: PyTorch strict_loading flag. Impose exact matching between loaded weights and model.
+        :type strict_loading: bool
+        :param from_checkpoint: Forces function to interpret given weights as checkpoint dictionary.
+        :type   from_checkpoint: bool
+        :return: None
+        """
         print('Loading pre-trained weights')
         if isinstance(directory, dict):
             state_dict = directory
@@ -494,6 +532,13 @@ class pytorchfw(framework):
         # TODO initilize this variable
 
     def run_epoch(self, *args, **kwargs):
+        """
+        Run the proper function depending on the context.
+
+        :param args: passed arguments
+        :param kwargs: passed keywords
+        :return: None
+        """
         if self.state == 'train':
             self.train_epoch(*args, **kwargs)
         elif self.state == 'val':
@@ -506,6 +551,20 @@ class pytorchfw(framework):
             raise ValueError('Not existing forwarding mode')
 
     def train_epoch(self, logger):
+        """
+        Trains model for an epoch following an standard training.
+        1. Data loading
+        2. Data allocation
+        3. Model forward
+        4. Optimizer.zero_grad
+        5. output, loss and acc computation
+        7 Loss backward
+        8. In-Place gradient modification
+        9. Gradient healty plot
+        10. Databse update and checkpoint save
+        :param logger: Logging instance to pass logs
+        :return: None
+        """
         j = 0
         self.train_iterations = len(iter(self.train_loader))
         with tqdm(self.train_loader, desc='Epoch: [{0}/{1}]'.format(self.epoch, self.EPOCHS)) as pbar, ctx_iter(self):
@@ -528,11 +587,12 @@ class pytorchfw(framework):
                     gt = self._allocate_tensor(gt, device=device)
                     self.acc_('train', gt, output)
                     self.loss = self.criterion(output, gt)
+
                     # compute gradient and do SGD step
                     self.optimizer.zero_grad()
                     self.loss.backward()
-
                     self.gradients()
+                    self.tensorboard_writer(self, self.loss, output, gt, self.absolute_iter, visualization)
                     if self.trackgrad:
                         self.writer.add_figure('Gradients',
                                                self.tracker(self.model.named_parameters()),
@@ -558,7 +618,10 @@ class pytorchfw(framework):
         # probably does not require dense tracking
 
     def validate_epoch(self):
-
+        """
+        Analogous for train_epoch.
+        :return: None
+        """
         with tqdm(self.val_loader, desc='Validation: [{0}/{1}]'.format(self.epoch, self.EPOCHS)) as pbar, ctx_iter(
                 self):
             for gt, inputs, visualization in pbar:
@@ -577,9 +640,38 @@ class pytorchfw(framework):
 
                 gt = self._allocate_tensor(gt, device=device)
                 self.loss = self.criterion(output, gt)
+                self.tensorboard_writer(self, self.loss, output, gt, self.absolute_iter, visualization)
                 pbar.set_postfix(loss=self.loss.item())
         self.loss = self.loss_.data.update_epoch(self.state)
         self.acc = self.acc_.get_acc('val')
+
+    def test(self):
+        """
+        Analogous for train_epoch.
+        :return: None
+        """
+        with tqdm(self.val_loader, desc='Test: [{0}/{1}]'.format(self.epoch, self.EPOCHS)) as pbar, ctx_iter(
+                self):
+            for gt, inputs, visualization in pbar:
+                self.loss_.data.update_timed()
+                inputs = self._allocate_tensor(inputs)
+
+                output = self.model(*inputs) if isinstance(inputs, list) else self.model(inputs)
+                self.acc_('test', gt, output)
+                if hasattr(self, 'outputdevice'):
+                    device = torch.device(self.outputdevice)
+                else:
+                    if isinstance(output, (list, tuple)):
+                        device = output[0].device
+                    else:
+                        device = output.device
+
+                gt = self._allocate_tensor(gt, device=device)
+                self.loss = self.criterion(output, gt)
+                self.tensorboard_writer(self, self.loss, output, gt, self.absolute_iter, visualization)
+                pbar.set_postfix(loss=self.loss.item())
+        self.loss = self.loss_.data.update_epoch(self.state)
+        self.acc = self.acc_.get_acc('test')
 
     def __atribute_assertion__(self):
         assert hasattr(self, 'assertion_variables')
