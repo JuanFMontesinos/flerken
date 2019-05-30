@@ -592,7 +592,7 @@ class pytorchfw(framework):
                     self.optimizer.zero_grad()
                     self.loss.backward()
                     self.gradients()
-                    self.tensorboard_writer(self, self.loss, output, gt, self.absolute_iter, visualization)
+                    self.tensorboard_writer(self.loss, output, gt, self.absolute_iter, visualization)
                     if self.trackgrad:
                         self.writer.add_figure('Gradients',
                                                self.tracker(self.model.named_parameters()),
@@ -640,7 +640,7 @@ class pytorchfw(framework):
 
                 gt = self._allocate_tensor(gt, device=device)
                 self.loss = self.criterion(output, gt)
-                self.tensorboard_writer(self, self.loss, output, gt, self.absolute_iter, visualization)
+                self.tensorboard_writer(self.loss, output, gt, self.absolute_iter, visualization)
                 pbar.set_postfix(loss=self.loss.item())
         self.loss = self.loss_.data.update_epoch(self.state)
         self.acc = self.acc_.get_acc('val')
@@ -668,7 +668,7 @@ class pytorchfw(framework):
 
                 gt = self._allocate_tensor(gt, device=device)
                 self.loss = self.criterion(output, gt)
-                self.tensorboard_writer(self, self.loss, output, gt, self.absolute_iter, visualization)
+                self.tensorboard_writer(self.loss, output, gt, self.absolute_iter, visualization)
                 pbar.set_postfix(loss=self.loss.item())
         self.loss = self.loss_.data.update_epoch(self.state)
         self.acc = self.acc_.get_acc('test')
