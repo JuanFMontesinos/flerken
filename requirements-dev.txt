@@ -9,3 +9,4 @@ numpy
 tb-nightly
 future
 pandas
+TorchTree-nightly

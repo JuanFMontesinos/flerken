@@ -1,4 +1,8 @@
 import os
+
+__all__ = ['video_dataset_analysis', 'dataset_analysis']
+
+
 def video_dataset_analysis(path_to_dataset):
     """This function takes as input a directory root dataset folder with the following structure:"
     dataset---
@@ -27,16 +31,20 @@ def video_dataset_analysis(path_to_dataset):
                 eg. files = {class1:[video1,video2,...,videoN]}
         files_path: Analogous to class_path
     """
-    clases = [f for f in os.listdir(path_to_dataset) if os.path.isdir(os.path.join(path_to_dataset,f)) and f !='.' and f !='..']
-    class_path = [os.path.join(path_to_dataset,f) for f in os.listdir(path_to_dataset) if os.path.isdir(os.path.join(path_to_dataset,f)) and f !='.' and f !='..']
+    clases = [f for f in os.listdir(path_to_dataset) if
+              os.path.isdir(os.path.join(path_to_dataset, f)) and f != '.' and f != '..']
+    class_path = [os.path.join(path_to_dataset, f) for f in os.listdir(path_to_dataset) if
+                  os.path.isdir(os.path.join(path_to_dataset, f)) and f != '.' and f != '..']
     files = {}
     files_path = {}
-    for clase,typ in zip(clases,class_path):
-        files_ = [f for f in os.listdir(typ) if os.path.isdir(os.path.join(typ,f)) and f !='.' and f !='..']
-        files_path_ = [os.path.join(typ,f) for f in os.listdir(typ) if os.path.isdir(os.path.join(typ,f)) and f !='.' and f !='..']
-        files[clase]=files_
+    for clase, typ in zip(clases, class_path):
+        files_ = [f for f in os.listdir(typ) if os.path.isdir(os.path.join(typ, f)) and f != '.' and f != '..']
+        files_path_ = [os.path.join(typ, f) for f in os.listdir(typ) if
+                       os.path.isdir(os.path.join(typ, f)) and f != '.' and f != '..']
+        files[clase] = files_
         files_path[clase] = files_path_
-    return clases,class_path,files,files_path
+    return clases, class_path, files, files_path
+
 
 def dataset_analysis(path_to_dataset):
     """This function takes as input a directory root dataset folder with the following structure:"
@@ -54,14 +62,15 @@ def dataset_analysis(path_to_dataset):
                 eg. files = {class1:[video1,video2,...,videoN]}
         files_path: Analogous to class_path
     """
-    clases = [f for f in os.listdir(path_to_dataset) if os.path.isdir(os.path.join(path_to_dataset,f)) and f !='.' and f !='..']
-    class_path = [os.path.join(path_to_dataset,f) for f in os.listdir(path_to_dataset) if os.path.isdir(os.path.join(path_to_dataset,f)) and f !='.' and f !='..']
+    clases = [f for f in os.listdir(path_to_dataset) if
+              os.path.isdir(os.path.join(path_to_dataset, f)) and f != '.' and f != '..']
+    class_path = [os.path.join(path_to_dataset, f) for f in os.listdir(path_to_dataset) if
+                  os.path.isdir(os.path.join(path_to_dataset, f)) and f != '.' and f != '..']
     files = {}
     files_path = {}
-    for clase,typ in zip(clases,class_path):
+    for clase, typ in zip(clases, class_path):
         files_ = [f for f in os.listdir(typ)]
-        files_path_ = [os.path.join(typ,f) for f in os.listdir(typ)]
-        files[clase]=files_
+        files_path_ = [os.path.join(typ, f) for f in os.listdir(typ)]
+        files[clase] = files_
         files_path[clase] = files_path_
-    return clases,class_path,files,files_path
-
+    return clases, class_path, files, files_path
