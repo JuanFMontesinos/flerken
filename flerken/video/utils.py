@@ -69,7 +69,7 @@ def reencode_30_interpolate(video_path: str, dst_path: str, *args, **kwargs):
     apply_single(video_path, dst_path, input_options, output_options)
 
 
-def apply_single(video_path: str, dst_path: str, input_options: list[str], output_options: list[str]):
+def apply_single(video_path: str, dst_path: str, input_options: list, output_options: list):
     """
     Runs ffmpeg for the following format for a single input/output:
         ffmpeg [input options] -i input [output options] output
@@ -106,11 +106,12 @@ def apply_tree(root, dst, input_options=list(), output_options=list(), multiproc
     """
     formats = allowed_formats()  # List of ffmpeg compatible formats
     tree = Directory_Tree(root)  # Directory tree
-    os.mkdir(dst)
+    if not os.path.exists(dst):
+        os.mkdir(dst)
     tree.clone_tree(dst)  # Generates new directory structure (folders)
 
     # Python Multiproceesing mode
-    if multiprocessing == 0:
+    if multiprocessing > 0:
         pool = mp.Pool(multiprocessing)
         results = [pool.apply(fn,
                               args=(i_path, o_path, input_options, output_options))
