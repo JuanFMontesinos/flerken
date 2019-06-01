@@ -1,4 +1,3 @@
-from . import utils
 
 import subprocess as _subprocess
 
@@ -13,3 +12,5 @@ def allowed_formats():
             for element in x[1].split(','):
                 remake.update({element: x[0]})
     return remake
+
+from . import utils
