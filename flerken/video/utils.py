@@ -60,13 +60,13 @@ def get_duration_fps(filename, display):
 def reencode_25_interpolate(video_path: str, dst_path: str, *args, **kwargs):
     input_options = ['-y']
     output_options = ['-r', '25']
-    apply_single(video_path, dst_path, input_options, output_options)
+    return apply_single(video_path, dst_path, input_options, output_options)
 
 
 def reencode_30_interpolate(video_path: str, dst_path: str, *args, **kwargs):
     input_options = ['-y']
     output_options = ['-r', '30']
-    apply_single(video_path, dst_path, input_options, output_options)
+    return apply_single(video_path, dst_path, input_options, output_options)
 
 
 def apply_single(video_path: str, dst_path: str, input_options: list, output_options: list):
@@ -85,8 +85,12 @@ def apply_single(video_path: str, dst_path: str, input_options: list, output_opt
     assert os.path.isdir(os.path.dirname(dst_path))
     result = subprocess.Popen(["ffmpeg", *input_options, '-i', video_path, *output_options, dst_path],
                               stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    print(result.stdout.read().decode("utf-8"))
-    print(result.stderr.read().decode("utf-8"))
+    stdout = result.stdout.read()
+    stderr = result.stdout.read()
+    if stdout is not None:
+        print(stdout.decode("utf-8"))
+    if stderr is not None:
+        print(stderr.decode("utf-8"))
 
 
 def apply_tree(root, dst, input_options=list(), output_options=list(), multiprocessing=0, fn=apply_single):
@@ -158,8 +162,12 @@ def quirurgical_extractor(video_path, dst_frames, dst_audio, t, n_frames, T, siz
 
     result = subprocess.Popen(stream,
                               stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    print(result.stdout.read().decode("utf-8"))
-    print(result.stderr.read().decode("utf-8"))
+    stdout = result.stdout.read()
+    stderr = result.stdout.read()
+    if stdout is not None:
+        print(stdout.decode("utf-8"))
+    if stderr is not None:
+        print(stderr.decode("utf-8"))
 
 
 def quirurgical_extractor_tree(root, dst, n_frames, T, size=None, sample_rate=None, multiprocessing=0,
