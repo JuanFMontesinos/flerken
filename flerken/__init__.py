@@ -6,7 +6,9 @@ import torch as _torch
 from .framework.pytorchframework import pytorchfw
 from . import datasets
 from . import dataloaders
+from . import video
 from ._version import __version__
+
 
 def cuda_timing(func):
     def inner(*args, **kwargs):

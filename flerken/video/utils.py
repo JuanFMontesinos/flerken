@@ -85,7 +85,8 @@ def apply_single(video_path: str, dst_path: str, input_options: list, output_opt
     assert os.path.isdir(os.path.dirname(dst_path))
     result = subprocess.Popen(["ffmpeg", *input_options, '-i', video_path, *output_options, dst_path],
                               stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    output = [str(x) for x in result.stdout.readlines()]
+    print(result.stdout.read().decode("utf-8"))
+    print(result.stderr.read().decode("utf-8"))
 
 
 def apply_tree(root, dst, input_options=list(), output_options=list(), multiprocessing=0, fn=apply_single):
@@ -116,11 +117,12 @@ def apply_tree(root, dst, input_options=list(), output_options=list(), multiproc
         results = [pool.apply(fn,
                               args=(i_path, o_path, input_options, output_options))
                    for i_path, o_path in zip(tree.paths(root), tree.paths(dst)) if
-                   os.path.splitext(i_path)[0][1:] in formats]
+                   os.path.splitext(i_path)[1][1:] in formats]
         pool.close()
     else:
         for i_path, o_path in zip(tree.paths(root), tree.paths(dst)):
-            fn(i_path, o_path, input_options, output_options)
+            if os.path.splitext(i_path)[1][1:] in formats:
+                fn(i_path, o_path, input_options, output_options)
 
 
 def quirurgical_extractor(video_path, dst_frames, dst_audio, t, n_frames, T, size=None, sample_rate=None):
@@ -156,7 +158,8 @@ def quirurgical_extractor(video_path, dst_frames, dst_audio, t, n_frames, T, siz
 
     result = subprocess.Popen(stream,
                               stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    return [str(x) for x in result.stdout.readlines()]
+    print(result.stdout.read().decode("utf-8"))
+    print(result.stderr.read().decode("utf-8"))
 
 
 def quirurgical_extractor_tree(root, dst, n_frames, T, size=None, sample_rate=None, multiprocessing=0,
