@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c008b4ec-f275-498a-9c6f-d42e222cc6b8" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flerken/_version.py" beforeDir="false" afterPath="$PROJECT_DIR$/flerken/_version.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flerken/video/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/flerken/video/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flerken/framework/pytorchframework.py" beforeDir="false" afterPath="$PROJECT_DIR$/flerken/framework/pytorchframework.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -29,7 +30,7 @@
     <favorites_list name="flerken" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+    <leaf>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/flerken/_version.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -40,33 +41,12 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/flerken/datasets/dataset_tools.py">
+        <entry file="file://$PROJECT_DIR$/flerken/framework/pytorchframework.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="9" selection-start-column="9" selection-end-column="9" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/flerken/video/utils.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="556">
-              <caret line="169" column="37" selection-start-line="169" selection-start-column="37" selection-end-line="169" selection-end-column="37" />
+            <state relative-caret-position="41">
+              <caret line="568" column="54" lean-forward="true" selection-start-line="568" selection-start-column="54" selection-end-line="568" selection-end-column="54" />
               <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/setup.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="31" selection-start-line="15" selection-start-column="31" selection-end-line="15" selection-end-column="31" />
-              <folding>
-                <element signature="e#0#43#0" expanded="true" />
+                <element signature="e#204#216#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -162,7 +142,6 @@
         <option value="$PROJECT_DIR$/test/test.py" />
         <option value="$PROJECT_DIR$/flerken/borrar.py" />
         <option value="$PROJECT_DIR$/test.py" />
-        <option value="$PROJECT_DIR$/flerken/framework/pytorchframework.py" />
         <option value="$PROJECT_DIR$/requirements-dev.txt" />
         <option value="$PROJECT_DIR$/test/video/__init__.py" />
         <option value="$PROJECT_DIR$/flerken/datasets/dataset_tools.py" />
@@ -171,6 +150,7 @@
         <option value="$PROJECT_DIR$/flerken/__init__.py" />
         <option value="$PROJECT_DIR$/flerken/video/__init__.py" />
         <option value="$PROJECT_DIR$/flerken/video/utils.py" />
+        <option value="$PROJECT_DIR$/flerken/framework/pytorchframework.py" />
         <option value="$PROJECT_DIR$/flerken/_version.py" />
       </list>
     </option>
@@ -199,6 +179,12 @@
               <item name="flerken" type="b2602c69:ProjectViewProjectNode" />
               <item name="flerken" type="462c0819:PsiDirectoryNode" />
               <item name="flerken" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="flerken" type="b2602c69:ProjectViewProjectNode" />
+              <item name="flerken" type="462c0819:PsiDirectoryNode" />
+              <item name="flerken" type="462c0819:PsiDirectoryNode" />
+              <item name="framework" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -248,7 +234,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.test">
+  <component name="RunManager" selected="Python.main">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="flerken" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -329,6 +315,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/delete.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python">
+      <module name="flerken" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/bin/python3.6" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../DuTran" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../DuTran/main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -421,6 +429,7 @@
     <list>
       <item itemvalue="Python.borrar" />
       <item itemvalue="Python.test" />
+      <item itemvalue="Python.main" />
       <item itemvalue="Python.delete (1)" />
       <item itemvalue="Python.delete" />
       <item itemvalue="Python.newtest" />
@@ -474,7 +483,9 @@
       <workItem from="1559224601319" duration="98000" />
       <workItem from="1559299714929" duration="633000" />
       <workItem from="1559321924876" duration="6088000" />
-      <workItem from="1559384069158" duration="24672000" />
+      <workItem from="1559384069158" duration="26501000" />
+      <workItem from="1559896014437" duration="937000" />
+      <workItem from="1559900153276" duration="314000" />
     </task>
     <servers />
   </component>
@@ -487,7 +498,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="211337000" />
+    <option name="totallyTimeSpent" value="214417000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -502,7 +513,7 @@
     <frame x="1920" y="-2" width="1920" height="1082" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2054429" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20971185" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" weight="0.32982844" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -657,7 +668,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/flerken_nightly/framework/__init__.py" />
     <entry file="file://$USER_HOME$/.local/lib/python3.6/site-packages/torch/nn/modules/loss.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
@@ -844,16 +854,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/flerken/borrar.py" />
-    <entry file="file://$PROJECT_DIR$/flerken/framework/pytorchframework.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8805">
-          <caret line="604" selection-start-line="604" selection-end-line="604" />
-          <folding>
-            <element signature="e#204#216#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -925,16 +925,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/setup.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="31" selection-start-line="15" selection-start-column="31" selection-end-line="15" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#43#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/flerken/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -959,6 +949,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="15" column="31" selection-start-line="15" selection-start-column="31" selection-end-line="15" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/flerken/datasets/dataset_tools.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -972,6 +972,26 @@
           <caret line="169" column="37" selection-start-line="169" selection-start-column="37" selection-end-line="169" selection-end-column="37" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../DuTran/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1684">
+          <caret line="248" column="42" lean-forward="true" selection-start-line="248" selection-start-column="42" selection-end-line="248" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#83#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flerken/framework/pytorchframework.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="41">
+          <caret line="568" column="54" lean-forward="true" selection-start-line="568" selection-start-column="54" selection-end-line="568" selection-end-column="54" />
+          <folding>
+            <element signature="e#204#216#0" expanded="true" />
           </folding>
         </state>
       </provider>

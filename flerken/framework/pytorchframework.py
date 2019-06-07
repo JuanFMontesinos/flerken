@@ -566,7 +566,7 @@ class pytorchfw(framework):
         :return: None
         """
         j = 0
-        self.train_iterations = len(iter(self.train_loader))
+        self.train_iterations = len(self.train_loader)
         with tqdm(self.train_loader, desc='Epoch: [{0}/{1}]'.format(self.epoch, self.EPOCHS)) as pbar, ctx_iter(self):
             for gt, inputs, visualization in pbar:
                 try:
