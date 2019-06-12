@@ -171,7 +171,7 @@ def quirurgical_extractor(video_path, dst_frames, dst_audio, t, n_frames, T, siz
 
 
 def quirurgical_extractor_tree(root, dst, n_frames, T, size=None, sample_rate=None, multiprocessing=0,
-                               stamp_generator_fn=None):
+                               stamp_generator_fn=None, formats=None):
     """
     Quirurgical extractor over a directory tree. Clones directory tree in dst folder twice, once for audio and another
     time for frames. For each recording there will be a folder with the same name in dst directory containing audio segm
@@ -189,6 +189,8 @@ def quirurgical_extractor_tree(root, dst, n_frames, T, size=None, sample_rate=No
     :param stamp_generator_fn: By default function generate time stamps in wich to cut. It is possible to pass
     custom function that takes as input recording path and returns time in seconds (integer). As suggestion you may
     use a dictionary by passing dict.get method as generator function.
+    :param formats: List of strings indicating allowed formats. Only files with chosen formats will be processed. By
+    default this list is taken from ffmpeg -formats.
     """
 
     def stamp_generator(video_path):
@@ -200,11 +202,12 @@ def quirurgical_extractor_tree(root, dst, n_frames, T, size=None, sample_rate=No
 
     def path_stamp_generator(path, gen, T):
         for x in gen:
-            yield (os.path.join(path, '{0}to{1}'.format(x, x + T)), x)
+            yield (os.path.join(path, '{0:05d}to{1:05d}'.format(x, x + T)), x)
 
     if stamp_generator_fn is None:
         stamp_generator_fn = stamp_generator
-    formats = allowed_formats()  # List of ffmpeg compatible formats
+    if formats is None:
+        formats = allowed_formats()  # List of ffmpeg compatible formats
     tree = Directory_Tree(root)  # Directory tree
     """
     Tree generates an object-based tree of the directory treem, where folders are nodes and parameters are files.
