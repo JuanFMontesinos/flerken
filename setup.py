@@ -9,7 +9,7 @@ if mo:
 else:
     raise RuntimeError("Unable to find version string in %s." % (VERSIONFILE,))
 
-setup(name='flerken-nightly',
+setup(name='flerken',
       version=verstr,
       description='PyTorch extension with simplified trainer. ',
       url='https://github.com/JuanFMontesinos/flerken',

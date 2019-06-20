@@ -10,19 +10,19 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import os
-import sys
-sys.path.insert(0, os.path.abspath('../../flerken'))
+# import os
+# import sys
+# sys.path.insert(0, os.path.abspath('.'))
 
 
 # -- Project information -----------------------------------------------------
 
 project = 'Flerken'
-copyright = '2019, Juan Felipe Montesinos'
-author = 'Juan Felipe Montesinos'
+copyright = '2019, Juan F Montesinos'
+author = 'Juan F Montesinos'
 
 # The full version, including alpha/beta/rc tags
-release = '0.03'
+release = '0.0.3'
 
 
 # -- General configuration ---------------------------------------------------
@@ -30,7 +30,7 @@ release = '0.03'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['rinoh.frontend.sphinx'
+extensions = [
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -53,9 +53,3 @@ html_theme = 'alabaster'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
-latex_elements = {
-	'papersize':'letterpaper',
-	'pointsize':'10pt',
-	'preamble':'',
-	'figure_align':'htbp'
-}
