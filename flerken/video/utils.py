@@ -34,8 +34,8 @@ def get_duration_fps(filename, display):
     result = subprocess.Popen(["ffprobe", str(filename)],
                               stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     output = [str(x) for x in result.stdout.readlines()]
-    info_lines = [x for x in output if "Duration" in x or "Stream" in x]
-    duration_line = [x for x in info_lines if "Duration" in x]
+    info_lines = [x for x in output if "Duration:" in x or "Stream" in x]
+    duration_line = [x for x in info_lines if "Duration:" in x]
     fps_line = [x for x in info_lines if "Stream" in x]
     if duration_line:
         duration_str = duration_line[0].split(",")[0]
@@ -216,8 +216,10 @@ def quirurgical_extractor_tree(root, dst, n_frames, T, size=None, sample_rate=No
     """
     audio_root = os.path.join(dst, 'audio')
     video_root = os.path.join(dst, 'frames')
-    os.makedirs(audio_root)  # Create directory
-    os.makedirs(video_root)
+    if not os.path.exists(audio_root):
+        os.makedirs(audio_root)  # Create directory
+    if not os.path.exists(video_root):
+        os.makedirs(video_root)
     tree.clone_tree(audio_root)  # Clone directory tree structure in for each one
     tree.clone_tree(video_root)
 
@@ -245,22 +247,29 @@ def quirurgical_extractor_tree(root, dst, n_frames, T, size=None, sample_rate=No
     a_path_generator = tree.named_parameters(audio_root)  # Generator of audio-wise output paths
     v_path_generator = tree.named_parameters(video_root)  # Generator of video-wise output paths
 
+    failure_list = []
     for i_path, a_path, v_path in zip(i_path_generator, a_path_generator, v_path_generator):
         # This for loop provides needed paths recording-wise
-
-        if i_path[1][1:] in formats:  # Check file has a valid ffmpeg format.
-            stamp_gen = stamp_generator_fn(i_path[0] + i_path[1])
-            path_stamp_gen = path_stamp_generator(v_path[0], stamp_gen, T)
-            """
-            Generator that calculate amount of segments,t,  and dynamically generates S video subfolder paths.
-            Obviously, this generator provides t segments and t subfolder names.
-            """
-            if multiprocessing == 0:
-                for path, t in path_stamp_gen:
-                    quirurgical_extractor(i_path[0] + i_path[1], path, a_path[0], t, n_frames, T, size, sample_rate)
-            else:
-                pool = mp.Pool(multiprocessing)
-                results = [pool.apply(quirurgical_extractor,
-                                      args=(i_path[0] + i_path[1], path, a_path[0], t, n_frames, T, size, sample_rate))
-                           for path, t in path_stamp_gen]
-                pool.close()
+        try:
+            if i_path[1][1:] in formats:  # Check file has a valid ffmpeg format.
+                stamp_gen = stamp_generator_fn(i_path[0] + i_path[1])
+                path_stamp_gen = path_stamp_generator(v_path[0], stamp_gen, T)
+                """
+                Generator that calculate amount of segments,t,  and dynamically generates S video subfolder paths.
+                Obviously, this generator provides t segments and t subfolder names.
+                """
+                if multiprocessing == 0:
+                    for path, t in path_stamp_gen:
+                        quirurgical_extractor(i_path[0] + i_path[1], path, a_path[0], t, n_frames, T, size, sample_rate)
+                else:
+                    pool = mp.Pool(multiprocessing)
+                    results = [pool.apply(quirurgical_extractor,
+                                          args=(i_path[0] + i_path[1], path, a_path[0], t, n_frames, T, size, sample_rate))
+                               for path, t in path_stamp_gen]
+                    pool.close()
+        except:
+            failure_list.append(i_path)
+    print('Following videos have failed (from python side):\n')
+    for v in failure_list:
+        print('{0} \n'.format(v))
+    return failure_list
