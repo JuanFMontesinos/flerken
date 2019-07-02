@@ -2,13 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c008b4ec-f275-498a-9c6f-d42e222cc6b8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/flerken/framework/python_inheritance.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/flerken/framework/reproducibility.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/framework/test_classitems.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/framework/test_python_inheritance.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flerken/_version.py" beforeDir="false" afterPath="$PROJECT_DIR$/flerken/_version.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flerken/framework/classitems.py" beforeDir="false" afterPath="$PROJECT_DIR$/flerken/framework/classitems.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flerken/framework/pytorchframework.py" beforeDir="false" afterPath="$PROJECT_DIR$/flerken/framework/pytorchframework.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -36,6 +29,18 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/flerken/framework/pytorchframework.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="416">
+              <caret line="49" selection-start-line="49" selection-end-line="49" />
+              <folding>
+                <element signature="e#204#216#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/framework/test_classitems.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -49,15 +54,6 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/flerken/framework/sqlite_tools.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="27" column="27" selection-start-line="27" selection-start-column="27" selection-end-line="27" selection-end-column="27" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/flerken/_version.py">
           <provider selected="true" editor-type-id="text-editor">
             <state>
@@ -190,11 +186,11 @@
         <option value="$PROJECT_DIR$/flerken/framework/python_inheritance.py" />
         <option value="$PROJECT_DIR$/test/framework/test_python_inheritance.py" />
         <option value="$PROJECT_DIR$/flerken/framework/reproducibility.py" />
-        <option value="$PROJECT_DIR$/flerken/framework/pytorchframework.py" />
         <option value="$PROJECT_DIR$/flerken/framework/classitems.py" />
         <option value="$PROJECT_DIR$/test/framework/test_classitems.py" />
         <option value="$PROJECT_DIR$/flerken/framework/sqlite_tools.py" />
         <option value="$PROJECT_DIR$/flerken/_version.py" />
+        <option value="$PROJECT_DIR$/flerken/framework/pytorchframework.py" />
       </list>
     </option>
   </component>
@@ -440,7 +436,7 @@
       <workItem from="1561013855466" duration="1106000" />
       <workItem from="1561114544492" duration="599000" />
       <workItem from="1561971284269" duration="4456000" />
-      <workItem from="1561999742253" duration="26917000" />
+      <workItem from="1561999742253" duration="27590000" />
     </task>
     <servers />
   </component>
@@ -477,7 +473,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="258723000" />
+    <option name="totallyTimeSpent" value="259396000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -948,16 +944,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/flerken/framework/pytorchframework.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-161">
-          <caret line="353" column="8" selection-start-line="353" selection-start-column="8" selection-end-line="353" selection-end-column="8" />
-          <folding>
-            <element signature="e#204#216#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/framework/test_framework.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-675">
@@ -1030,13 +1016,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/framework/test_classitems.py">
+    <entry file="file://$PROJECT_DIR$/flerken/_version.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-270">
-          <caret line="9" column="51" lean-forward="true" selection-start-line="9" selection-start-column="51" selection-end-line="9" selection-end-column="51" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
+        <state>
+          <caret column="24" selection-start-column="24" selection-end-column="24" />
         </state>
       </provider>
     </entry>
@@ -1047,10 +1030,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/flerken/_version.py">
+    <entry file="file://$PROJECT_DIR$/test/framework/test_classitems.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="24" selection-start-column="24" selection-end-column="24" />
+        <state relative-caret-position="-270">
+          <caret line="9" column="51" lean-forward="true" selection-start-line="9" selection-start-column="51" selection-end-line="9" selection-end-column="51" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flerken/framework/pytorchframework.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="416">
+          <caret line="49" selection-start-line="49" selection-end-line="49" />
+          <folding>
+            <element signature="e#204#216#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

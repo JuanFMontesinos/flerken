@@ -42,6 +42,12 @@ def set_training(func):
         self = args[0]
         self.hyperparameters()
         self.__atribute_assertion__()
+        if isinstance(self.acc_, classitems.TensorAccuracyItem):
+            if self.acc_.gt_transforms == 'auto':
+                self.acc_.predict_gt_transforms(self.criterion)
+            if self.acc_.pred_transforms == 'auto':
+                self.acc_pred_transforms(self.criterion)
+
         if not hasattr(self, 'init_function'):
             self.init_function = partial(network_initialization.init_weights, init_type=self.initializer)
         self.scheduler = classitems.Scheduler(self.scheduler)
@@ -62,11 +68,6 @@ def config(func):
     def inner(*args, **kwargs):
         self = args[0]
         self.set_config()
-        if isinstance(self.acc_, classitems.TensorAccuracyItem):
-            if self.acc_.gt_transforms == 'auto':
-                self.acc_.predict_gt_transforms(self.criterion)
-            if self.acc_.pred_transforms == 'auto':
-                self.acc_pred_transforms(self.criterion)
 
         return func(*args, **kwargs)
 
