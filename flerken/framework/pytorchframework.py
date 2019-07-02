@@ -10,6 +10,7 @@ import os
 import uuid
 import numpy as np
 import logging
+import random
 import sys
 import time
 import shutil
@@ -61,6 +62,12 @@ def config(func):
     def inner(*args, **kwargs):
         self = args[0]
         self.set_config()
+        if isinstance(self.acc_, classitems.TensorAccuracyItem):
+            if self.acc_.gt_transforms == 'auto':
+                self.acc_.predict_gt_transforms(self.criterion)
+            if self.acc_.pred_transforms == 'auto':
+                self.acc_pred_transforms(self.criterion)
+
         return func(*args, **kwargs)
 
     return inner
@@ -243,8 +250,10 @@ class framework(object):
         self.model_logger.info(self.model)
         self.__setloggers__(writemode='w', to_console=False)
 
-        self.key = {'ID': self.workname, 'MODEL': self.model_version,
-                    'DATE_OF_CREATION': now.strftime("%Y-%m-%d %H:%M")}
+        self.key = {'ID': self.workname,
+                    'MODEL': self.model_version,
+                    'DATE_OF_CREATION': now.strftime("%Y-%m-%d %H:%M"),
+                    'VERSION': 0}
         self.db.insert_value(self.key)  # Creates the table
         self.loaded_model = True
 
@@ -272,6 +281,8 @@ class framework(object):
                                                        torch.backends.cudnn.version(), torch.cuda.device_count(),
                                                        acum, torch.cuda.current_device(), torch.cuda.device_count(),
                                                        torch.cuda.current_device()))
+
+
 
 
 class pytorchfw(framework):
@@ -772,7 +783,7 @@ def test():
         def forward(self, x):
             x = self.module1(x)
             x = self.module2(x)
-            return torch.nn.functional.sigmoid(x)
+            return torch.sigmoid(x)
 
     class db(torch.utils.data.Dataset):
         def __len__(self):

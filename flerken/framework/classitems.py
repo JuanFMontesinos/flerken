@@ -5,10 +5,14 @@ from collections.abc import Iterable
 from six import callable
 import time
 from torch.optim.lr_scheduler import _LRScheduler, ReduceLROnPlateau
+from torch.nn import BCEWithLogitsLoss, BCELoss, NLLLoss, CrossEntropyLoss
+
 from sklearn.metrics import accuracy_score, confusion_matrix
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 from itertools import cycle
+
+from ..dataloaders.transforms import Compose
 
 
 class AverageMeter(object):
@@ -216,7 +220,7 @@ class NullItem(object):
 
 
 class TensorAccuracyItem(AccuracyItem):
-    def __init__(self, labels, obj=None, gttransforms=None, predtransforms=None):
+    def __init__(self, labels, obj=None, gttransforms='auto', predtransforms='auto'):
         super(TensorAccuracyItem, self).__init__(labels)
         self.constructor(obj)
         self._valid_states = ('val', 'test', 'train')
@@ -245,6 +249,39 @@ class TensorAccuracyItem(AccuracyItem):
             raise Exception('Empty object cannot be attached to tensorboard')
         else:
             return tensor.detach().cpu()
+
+    @staticmethod
+    def _loss_availability(loss):
+        available_losses = (BCEWithLogitsLoss, BCELoss, NLLLoss, CrossEntropyLoss)
+        flag = False
+        for ok in available_losses:
+            flag = flag or isinstance(loss, ok)
+        if flag is not True:
+            raise TypeError(
+                'Accuracy transformations for %s Loss cannot be handled automatically' % loss.__class__.__name__)
+        return flag
+
+    def predict_gt_transforms(self, loss):
+        self._loss_availability(loss)
+        if isinstance(loss, torch.nn.BCEWithLogitsLoss):
+            self.gt_transforms = None
+        elif isinstance(loss, torch.nn.BCELoss):
+            self.gt_transforms = None
+        elif isinstance(loss, torch.nn.NLLLoss):
+            self.gt_transforms = None
+        elif isinstance(loss, torch.nn.CrossEntropyLoss):
+            self.gt_transforms = None
+
+    def predict_pred_transforms(self, loss):
+        self._loss_availability(loss)
+        if isinstance(loss, torch.nn.BCEWithLogitsLoss):
+            self.pred_transforms = Compose([torch.sigmoid, lambda x: (x > 0.5).float()])
+        elif isinstance(loss, torch.nn.BCELoss):
+            self.pred_transforms = Compose([lambda x: (x > 0.5).float()])
+        elif isinstance(loss, torch.nn.NLLLoss):
+            self.pred_transforms = Compose([lambda x: (torch.argmax(torch.softmax(x, 1), dim=1)).float()])
+        elif isinstance(loss, torch.nn.CrossEntropyLoss):
+            self.pred_transforms = Compose([lambda x: (torch.argmax(x, dim=1)).float()])
 
 
 class Array(object):
