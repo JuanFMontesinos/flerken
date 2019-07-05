@@ -254,7 +254,7 @@ class framework(object):
         self.key = {'ID': self.workname,
                     'MODEL': self.model_version,
                     'DATE_OF_CREATION': now.strftime("%Y-%m-%d %H:%M"),
-                    'VERSION': 0}
+                    }
         self.db.insert_value(self.key)  # Creates the table
         self.loaded_model = True
 
