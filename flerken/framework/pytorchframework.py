@@ -46,7 +46,7 @@ def set_training(func):
             if self.acc_.gt_transforms == 'auto':
                 self.acc_.predict_gt_transforms(self.criterion)
             if self.acc_.pred_transforms == 'auto':
-                self.acc_pred_transforms(self.criterion)
+                self.acc_.predict_pred_transforms(self.criterion)
 
         if not hasattr(self, 'init_function'):
             self.init_function = partial(network_initialization.init_weights, init_type=self.initializer)
