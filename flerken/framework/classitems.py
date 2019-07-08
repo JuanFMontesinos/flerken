@@ -542,6 +542,13 @@ class Scheduler(object):
         def __repr__(self):
             array = self.__class__.__name__ + '(\n'
             dic = self.state_dict()
+
+            for key in dic:
+                try:
+                    str(dic[key])
+
+                except RecursionError:
+                    obj.disabled_keys.append(key)
             for key in dic:
                 array += '\t {0}: {1} \n'.format(key, dic[key])
             array += ')\n'
@@ -557,6 +564,9 @@ class Scheduler(object):
             dic = self.__class__.state_dict(self)
             dic.pop('show_lr')
             dic.pop('state_dict')
+            dic.pop('disabled_keys')
+            for key in self.disabled_keys:
+                dic.pop(key)
             return dic
 
         if not isscheduler(obj):
@@ -566,6 +576,8 @@ class Scheduler(object):
             obj.__class__.__repr__ = __repr__
             obj.state_dict = types.MethodType(state_dict, obj)
             obj.show_lr = types.MethodType(show_lr, obj)
+            obj.disabled_keys = []
+            str(obj)
         return obj
 
 
