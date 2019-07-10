@@ -1,0 +1,1028 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>flerken.framework package &mdash; Flerken 0.0.3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Flerken
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">flerken.framework package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-flerken.framework.classitems">flerken.framework.classitems module</a></li>
+<li><a class="reference internal" href="#module-flerken.framework.decorators">flerken.framework.decorators module</a></li>
+<li><a class="reference internal" href="#module-flerken.framework.network_initialization">flerken.framework.network_initialization module</a></li>
+<li><a class="reference internal" href="#module-flerken.framework.pytorchframework">flerken.framework.pytorchframework module</a></li>
+<li><a class="reference internal" href="#module-flerken.framework.sqlite_tools">flerken.framework.sqlite_tools module</a></li>
+<li><a class="reference internal" href="#module-flerken.framework.traceback_gradients">flerken.framework.traceback_gradients module</a></li>
+<li><a class="reference internal" href="#module-flerken.framework.utils">flerken.framework.utils module</a></li>
+<li><a class="reference internal" href="#module-flerken.framework">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Flerken</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>flerken.framework package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/flerken.framework.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="flerken-framework-package">
+<h1>flerken.framework package<a class="headerlink" href="#flerken-framework-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-flerken.framework.classitems">
+<span id="flerken-framework-classitems-module"></span><h2>flerken.framework.classitems module<a class="headerlink" href="#module-flerken.framework.classitems" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="flerken.framework.classitems.AccMeter">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.framework.classitems.</code><code class="sig-name descname">AccMeter</code><span class="sig-paren">(</span><em class="sig-param">labels</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#AccMeter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.AccMeter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="flerken.framework.classitems.AccMeter.plot_confusion_matrix">
+<code class="sig-name descname">plot_confusion_matrix</code><span class="sig-paren">(</span><em class="sig-param">normalize</em>, <em class="sig-param">title</em>, <em class="sig-param">cmap</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#AccMeter.plot_confusion_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.AccMeter.plot_confusion_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function prints and plots the confusion matrix.
+Normalization can be applied by setting <cite>normalize=True</cite>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.AccMeter.tensor2label">
+<code class="sig-name descname">tensor2label</code><span class="sig-paren">(</span><em class="sig-param">tensor</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#AccMeter.tensor2label"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.AccMeter.tensor2label" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.AccMeter.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">mode</em>, <em class="sig-param">array</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#AccMeter.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.AccMeter.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.AccMeter.update_epoch">
+<code class="sig-name descname">update_epoch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#AccMeter.update_epoch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.AccMeter.update_epoch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.framework.classitems.AccuracyItem">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.framework.classitems.</code><code class="sig-name descname">AccuracyItem</code><span class="sig-paren">(</span><em class="sig-param">labels</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#AccuracyItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.AccuracyItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="flerken.framework.classitems.AccuracyItem.enabled">
+<em class="property">property </em><code class="sig-name descname">enabled</code><a class="headerlink" href="#flerken.framework.classitems.AccuracyItem.enabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.AccuracyItem.get_acc">
+<code class="sig-name descname">get_acc</code><span class="sig-paren">(</span><em class="sig-param">mode</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#AccuracyItem.get_acc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.AccuracyItem.get_acc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.AccuracyItem.plot_confusion_matrix">
+<code class="sig-name descname">plot_confusion_matrix</code><span class="sig-paren">(</span><em class="sig-param">mode</em>, <em class="sig-param">normalize=False</em>, <em class="sig-param">title=None</em>, <em class="sig-param">cmap=&lt;matplotlib.colors.LinearSegmentedColormap object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#AccuracyItem.plot_confusion_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.AccuracyItem.plot_confusion_matrix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.AccuracyItem.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">mode</em>, <em class="sig-param">gt</em>, <em class="sig-param">pred</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#AccuracyItem.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.AccuracyItem.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.AccuracyItem.update_epoch">
+<code class="sig-name descname">update_epoch</code><span class="sig-paren">(</span><em class="sig-param">mode</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#AccuracyItem.update_epoch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.AccuracyItem.update_epoch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.framework.classitems.Array">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.framework.classitems.</code><code class="sig-name descname">Array</code><a class="reference internal" href="_modules/flerken/framework/classitems.html#Array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.Array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="flerken.framework.classitems.Array.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#Array.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.Array.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.Array.update_epoch">
+<code class="sig-name descname">update_epoch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#Array.update_epoch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.Array.update_epoch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.framework.classitems.AverageMeter">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.framework.classitems.</code><code class="sig-name descname">AverageMeter</code><span class="sig-paren">(</span><em class="sig-param">hist=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#AverageMeter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.AverageMeter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Computes and stores the average and current value</p>
+<dl class="method">
+<dt id="flerken.framework.classitems.AverageMeter.reset">
+<code class="sig-name descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#AverageMeter.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.AverageMeter.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.AverageMeter.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">val</em>, <em class="sig-param">n=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#AverageMeter.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.AverageMeter.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.framework.classitems.Compose">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.framework.classitems.</code><code class="sig-name descname">Compose</code><span class="sig-paren">(</span><em class="sig-param">transforms</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#Compose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.Compose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.framework.classitems.GradientPlotter">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.framework.classitems.</code><code class="sig-name descname">GradientPlotter</code><span class="sig-paren">(</span><em class="sig-param">freq</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#GradientPlotter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.GradientPlotter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="flerken.framework.classitems.GradientPlotter.plot_gradients">
+<em class="property">static </em><code class="sig-name descname">plot_gradients</code><span class="sig-paren">(</span><em class="sig-param">named_parameters</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#GradientPlotter.plot_gradients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.GradientPlotter.plot_gradients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the gradients flowing through different layers in the net during training.
+Can be used for checking for possible gradient vanishing / exploding problems.</p>
+<p>Usage: Plug this function in Trainer class after loss.backwards() as
+“plot_grad_flow(self.model.named_parameters())” to visualize the gradient flow</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.framework.classitems.NullItem">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.framework.classitems.</code><code class="sig-name descname">NullItem</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#NullItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.NullItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="flerken.framework.classitems.NullItem.constructor">
+<code class="sig-name descname">constructor</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#NullItem.constructor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.NullItem.constructor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.NullItem.get_acc">
+<code class="sig-name descname">get_acc</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#NullItem.get_acc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.NullItem.get_acc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.NullItem.plot_confusion_matrix">
+<code class="sig-name descname">plot_confusion_matrix</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#NullItem.plot_confusion_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.NullItem.plot_confusion_matrix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.NullItem.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#NullItem.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.NullItem.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.NullItem.update_epoch">
+<code class="sig-name descname">update_epoch</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#NullItem.update_epoch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.NullItem.update_epoch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.framework.classitems.NullScheduler">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.framework.classitems.</code><code class="sig-name descname">NullScheduler</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#NullScheduler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.NullScheduler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.optim.lr_scheduler._LRScheduler</span></code></p>
+<dl class="method">
+<dt id="flerken.framework.classitems.NullScheduler.load_state_dict">
+<code class="sig-name descname">load_state_dict</code><span class="sig-paren">(</span><em class="sig-param">state_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#NullScheduler.load_state_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.NullScheduler.load_state_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.NullScheduler.state_dict">
+<code class="sig-name descname">state_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#NullScheduler.state_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.NullScheduler.state_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.NullScheduler.step">
+<code class="sig-name descname">step</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#NullScheduler.step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.NullScheduler.step" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.framework.classitems.Scheduler">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.framework.classitems.</code><code class="sig-name descname">Scheduler</code><a class="reference internal" href="_modules/flerken/framework/classitems.html#Scheduler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.Scheduler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.framework.classitems.TensorAccuracyItem">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.framework.classitems.</code><code class="sig-name descname">TensorAccuracyItem</code><span class="sig-paren">(</span><em class="sig-param">labels</em>, <em class="sig-param">obj=None</em>, <em class="sig-param">gttransforms='auto'</em>, <em class="sig-param">predtransforms='auto'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorAccuracyItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorAccuracyItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flerken.framework.classitems.AccuracyItem" title="flerken.framework.classitems.AccuracyItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">flerken.framework.classitems.AccuracyItem</span></code></a></p>
+<dl class="method">
+<dt id="flerken.framework.classitems.TensorAccuracyItem.constructor">
+<code class="sig-name descname">constructor</code><span class="sig-paren">(</span><em class="sig-param">obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorAccuracyItem.constructor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorAccuracyItem.constructor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.TensorAccuracyItem.predict_gt_transforms">
+<code class="sig-name descname">predict_gt_transforms</code><span class="sig-paren">(</span><em class="sig-param">loss</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorAccuracyItem.predict_gt_transforms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorAccuracyItem.predict_gt_transforms" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.TensorAccuracyItem.predict_pred_transforms">
+<code class="sig-name descname">predict_pred_transforms</code><span class="sig-paren">(</span><em class="sig-param">loss</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorAccuracyItem.predict_pred_transforms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorAccuracyItem.predict_pred_transforms" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.TensorAccuracyItem.tensor2data">
+<em class="property">static </em><code class="sig-name descname">tensor2data</code><span class="sig-paren">(</span><em class="sig-param">tensor</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorAccuracyItem.tensor2data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorAccuracyItem.tensor2data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.framework.classitems.TensorAverageMeter">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.framework.classitems.</code><code class="sig-name descname">TensorAverageMeter</code><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorAverageMeter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorAverageMeter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Computes and stores the average and current value</p>
+<dl class="method">
+<dt id="flerken.framework.classitems.TensorAverageMeter.numpy">
+<code class="sig-name descname">numpy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorAverageMeter.numpy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorAverageMeter.numpy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.TensorAverageMeter.reset">
+<code class="sig-name descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorAverageMeter.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorAverageMeter.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.TensorAverageMeter.tensor2data">
+<em class="property">static </em><code class="sig-name descname">tensor2data</code><span class="sig-paren">(</span><em class="sig-param">tensor</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorAverageMeter.tensor2data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorAverageMeter.tensor2data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.TensorAverageMeter.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">val</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorAverageMeter.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorAverageMeter.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.framework.classitems.TensorBItem">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.framework.classitems.</code><code class="sig-name descname">TensorBItem</code><span class="sig-paren">(</span><em class="sig-param">**config</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorBItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorBItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="flerken.framework.classitems.TensorBItem.constructor">
+<code class="sig-name descname">constructor</code><span class="sig-paren">(</span><em class="sig-param">item</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorBItem.constructor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorBItem.constructor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.TensorBItem.ctx_tag">
+<em class="property">static </em><code class="sig-name descname">ctx_tag</code><span class="sig-paren">(</span><em class="sig-param">state</em>, <em class="sig-param">name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorBItem.ctx_tag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorBItem.ctx_tag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.TensorBItem.gather_config">
+<code class="sig-name descname">gather_config</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorBItem.gather_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorBItem.gather_config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.TensorBItem.get_properties">
+<code class="sig-name descname">get_properties</code><span class="sig-paren">(</span><em class="sig-param">item</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorBItem.get_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorBItem.get_properties" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.TensorBItem.get_type">
+<em class="property">static </em><code class="sig-name descname">get_type</code><span class="sig-paren">(</span><em class="sig-param">item</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorBItem.get_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorBItem.get_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.TensorBItem.is_number">
+<code class="sig-name descname">is_number</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorBItem.is_number"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorBItem.is_number" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.TensorBItem.is_numpy">
+<code class="sig-name descname">is_numpy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorBItem.is_numpy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorBItem.is_numpy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.TensorBItem.is_scalar">
+<code class="sig-name descname">is_scalar</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorBItem.is_scalar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorBItem.is_scalar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.TensorBItem.is_str">
+<code class="sig-name descname">is_str</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorBItem.is_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorBItem.is_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.TensorBItem.is_tensor">
+<code class="sig-name descname">is_tensor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorBItem.is_tensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorBItem.is_tensor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.TensorBItem.is_torch_number">
+<code class="sig-name descname">is_torch_number</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorBItem.is_torch_number"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorBItem.is_torch_number" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.TensorBItem.is_tuple_list">
+<code class="sig-name descname">is_tuple_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorBItem.is_tuple_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorBItem.is_tuple_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.TensorBItem.set_transforms">
+<em class="property">static </em><code class="sig-name descname">set_transforms</code><span class="sig-paren">(</span><em class="sig-param">transforms</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorBItem.set_transforms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorBItem.set_transforms" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.TensorBItem.tensor2data">
+<em class="property">static </em><code class="sig-name descname">tensor2data</code><span class="sig-paren">(</span><em class="sig-param">tensor</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorBItem.tensor2data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorBItem.tensor2data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.framework.classitems.TensorScalarItem">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.framework.classitems.</code><code class="sig-name descname">TensorScalarItem</code><span class="sig-paren">(</span><em class="sig-param">obj=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorScalarItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorScalarItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="flerken.framework.classitems.TensorScalarItem.constructor">
+<code class="sig-name descname">constructor</code><span class="sig-paren">(</span><em class="sig-param">obj=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorScalarItem.constructor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorScalarItem.constructor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.TensorScalarItem.update_epoch">
+<code class="sig-name descname">update_epoch</code><span class="sig-paren">(</span><em class="sig-param">mode</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#TensorScalarItem.update_epoch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.TensorScalarItem.update_epoch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.framework.classitems.Timers">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.framework.classitems.</code><code class="sig-name descname">Timers</code><a class="reference internal" href="_modules/flerken/framework/classitems.html#Timers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.Timers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="flerken.framework.classitems.Timers.enabled">
+<em class="property">property </em><code class="sig-name descname">enabled</code><a class="headerlink" href="#flerken.framework.classitems.Timers.enabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.Timers.epoch_logger">
+<code class="sig-name descname">epoch_logger</code><span class="sig-paren">(</span><em class="sig-param">current_epoch</em>, <em class="sig-param">total_epochs</em>, <em class="sig-param">epoch_loss</em>, <em class="sig-param">logger</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#Timers.epoch_logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.Timers.epoch_logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.Timers.print_logger">
+<code class="sig-name descname">print_logger</code><span class="sig-paren">(</span><em class="sig-param">t</em>, <em class="sig-param">j</em>, <em class="sig-param">iterations</em>, <em class="sig-param">logger</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#Timers.print_logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.Timers.print_logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.Timers.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">mode</em>, <em class="sig-param">value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#Timers.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.Timers.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.Timers.update_epoch">
+<code class="sig-name descname">update_epoch</code><span class="sig-paren">(</span><em class="sig-param">mode</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#Timers.update_epoch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.Timers.update_epoch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.Timers.update_timeb">
+<code class="sig-name descname">update_timeb</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#Timers.update_timeb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.Timers.update_timeb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.classitems.Timers.update_timed">
+<code class="sig-name descname">update_timed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#Timers.update_timed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.Timers.update_timed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="flerken.framework.classitems.isscheduler">
+<code class="sig-prename descclassname">flerken.framework.classitems.</code><code class="sig-name descname">isscheduler</code><span class="sig-paren">(</span><em class="sig-param">x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/classitems.html#isscheduler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.classitems.isscheduler" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-flerken.framework.decorators">
+<span id="flerken-framework-decorators-module"></span><h2>flerken.framework.decorators module<a class="headerlink" href="#module-flerken.framework.decorators" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-flerken.framework.network_initialization">
+<span id="flerken-framework-network-initialization-module"></span><h2>flerken.framework.network_initialization module<a class="headerlink" href="#module-flerken.framework.network_initialization" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="flerken.framework.network_initialization.init_weights">
+<code class="sig-prename descclassname">flerken.framework.network_initialization.</code><code class="sig-name descname">init_weights</code><span class="sig-paren">(</span><em class="sig-param">net</em>, <em class="sig-param">init_type='normal'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/network_initialization.html#init_weights"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.network_initialization.init_weights" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.framework.network_initialization.weights_init_kaiming">
+<code class="sig-prename descclassname">flerken.framework.network_initialization.</code><code class="sig-name descname">weights_init_kaiming</code><span class="sig-paren">(</span><em class="sig-param">m</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/network_initialization.html#weights_init_kaiming"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.network_initialization.weights_init_kaiming" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.framework.network_initialization.weights_init_normal">
+<code class="sig-prename descclassname">flerken.framework.network_initialization.</code><code class="sig-name descname">weights_init_normal</code><span class="sig-paren">(</span><em class="sig-param">m</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/network_initialization.html#weights_init_normal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.network_initialization.weights_init_normal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.framework.network_initialization.weights_init_orthogonal">
+<code class="sig-prename descclassname">flerken.framework.network_initialization.</code><code class="sig-name descname">weights_init_orthogonal</code><span class="sig-paren">(</span><em class="sig-param">m</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/network_initialization.html#weights_init_orthogonal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.network_initialization.weights_init_orthogonal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.framework.network_initialization.weights_init_xavier">
+<code class="sig-prename descclassname">flerken.framework.network_initialization.</code><code class="sig-name descname">weights_init_xavier</code><span class="sig-paren">(</span><em class="sig-param">m</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/network_initialization.html#weights_init_xavier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.network_initialization.weights_init_xavier" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-flerken.framework.pytorchframework">
+<span id="flerken-framework-pytorchframework-module"></span><h2>flerken.framework.pytorchframework module<a class="headerlink" href="#module-flerken.framework.pytorchframework" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="flerken.framework.pytorchframework.assert_workdir">
+<code class="sig-prename descclassname">flerken.framework.pytorchframework.</code><code class="sig-name descname">assert_workdir</code><span class="sig-paren">(</span><em class="sig-param">func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#assert_workdir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.assert_workdir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.framework.pytorchframework.checkpoint_on_key">
+<code class="sig-prename descclassname">flerken.framework.pytorchframework.</code><code class="sig-name descname">checkpoint_on_key</code><span class="sig-paren">(</span><em class="sig-param">func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#checkpoint_on_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.checkpoint_on_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.framework.pytorchframework.config">
+<code class="sig-prename descclassname">flerken.framework.pytorchframework.</code><code class="sig-name descname">config</code><span class="sig-paren">(</span><em class="sig-param">func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.framework.pytorchframework.create_folder">
+<code class="sig-prename descclassname">flerken.framework.pytorchframework.</code><code class="sig-name descname">create_folder</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#create_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.create_folder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.framework.pytorchframework.dl">
+<code class="sig-prename descclassname">flerken.framework.pytorchframework.</code><code class="sig-name descname">dl</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#dl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.dl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="flerken.framework.pytorchframework.framework">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.framework.pytorchframework.</code><code class="sig-name descname">framework</code><span class="sig-paren">(</span><em class="sig-param">model</em>, <em class="sig-param">rootdir</em>, <em class="sig-param">workname</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#framework"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.framework" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.framework.init_workname">
+<code class="sig-name descname">init_workname</code><span class="sig-paren">(</span><em class="sig-param">workname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#framework.init_workname"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.framework.init_workname" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.framework.print_info">
+<code class="sig-name descname">print_info</code><span class="sig-paren">(</span><em class="sig-param">log</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#framework.print_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.framework.print_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.framework.set_property">
+<code class="sig-name descname">set_property</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">value</em>, <em class="sig-param">set_function_name</em>, <em class="sig-param">get_function_name</em>, <em class="sig-param">del_function_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#framework.set_property"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.framework.set_property" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.framework.set_property_twin">
+<code class="sig-name descname">set_property_twin</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">value</em>, <em class="sig-param">set_function_name</em>, <em class="sig-param">get_function_name</em>, <em class="sig-param">del_function_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#framework.set_property_twin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.framework.set_property_twin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.framework.state">
+<em class="property">property </em><code class="sig-name descname">state</code><a class="headerlink" href="#flerken.framework.pytorchframework.framework.state" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.framework.training">
+<em class="property">property </em><code class="sig-name descname">training</code><a class="headerlink" href="#flerken.framework.pytorchframework.framework.training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.framework.workdir">
+<em class="property">property </em><code class="sig-name descname">workdir</code><a class="headerlink" href="#flerken.framework.pytorchframework.framework.workdir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.framework.workname">
+<em class="property">property </em><code class="sig-name descname">workname</code><a class="headerlink" href="#flerken.framework.pytorchframework.framework.workname" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.framework.pytorchframework.pytorchfw">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.framework.pytorchframework.</code><code class="sig-name descname">pytorchfw</code><span class="sig-paren">(</span><em class="sig-param">model: torch.nn.Module</em>, <em class="sig-param">rootdir: str</em>, <em class="sig-param">workname: (&lt;class 'str'&gt;</em>, <em class="sig-param">None)</em>, <em class="sig-param">main_device: (&lt;class 'int'&gt;</em>, <em class="sig-param">&lt;class 'str'&gt;)</em>, <em class="sig-param">trackgrad: bool</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#pytorchfw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.pytorchfw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flerken.framework.pytorchframework.framework" title="flerken.framework.pytorchframework.framework"><code class="xref py py-class docutils literal notranslate"><span class="pre">flerken.framework.pytorchframework.framework</span></code></a></p>
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.pytorchfw.absolute_iter">
+<em class="property">property </em><code class="sig-name descname">absolute_iter</code><a class="headerlink" href="#flerken.framework.pytorchframework.pytorchfw.absolute_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.pytorchfw.acc">
+<em class="property">property </em><code class="sig-name descname">acc</code><a class="headerlink" href="#flerken.framework.pytorchframework.pytorchfw.acc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.pytorchfw.epoch">
+<em class="property">property </em><code class="sig-name descname">epoch</code><a class="headerlink" href="#flerken.framework.pytorchframework.pytorchfw.epoch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.pytorchfw.gradients">
+<code class="sig-name descname">gradients</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#pytorchfw.gradients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.pytorchfw.gradients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.pytorchfw.hyperparameters">
+<code class="sig-name descname">hyperparameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#pytorchfw.hyperparameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.pytorchfw.hyperparameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.pytorchfw.infer">
+<code class="sig-name descname">infer</code><span class="sig-paren">(</span><em class="sig-param">*inputs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#pytorchfw.infer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.pytorchfw.infer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.pytorchfw.load_model">
+<code class="sig-name descname">load_model</code><span class="sig-paren">(</span><em class="sig-param">directory</em>, <em class="sig-param">strict_loading=True</em>, <em class="sig-param">from_checkpoint=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#pytorchfw.load_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.pytorchfw.load_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load model function which allows to load from a python dict, path to weights or checkpoint.
+If called enables framework.loaded_model = True</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>directory</strong> (<em>dict</em><em>,</em><em>str</em>) – Loaded state dict or path to weights or checkpoint.</p></li>
+<li><p><strong>strict_loading</strong> (<em>bool</em>) – PyTorch strict_loading flag. Impose exact matching between loaded weights and model.</p></li>
+<li><p><strong>from_checkpoint</strong> (<em>bool</em>) – Forces function to interpret given weights as checkpoint dictionary.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.pytorchfw.loss">
+<em class="property">property </em><code class="sig-name descname">loss</code><a class="headerlink" href="#flerken.framework.pytorchframework.pytorchfw.loss" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.pytorchfw.main_device">
+<em class="property">property </em><code class="sig-name descname">main_device</code><a class="headerlink" href="#flerken.framework.pytorchframework.pytorchfw.main_device" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.pytorchfw.run_epoch">
+<code class="sig-name descname">run_epoch</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#pytorchfw.run_epoch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.pytorchfw.run_epoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the proper function depending on the context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – passed arguments</p></li>
+<li><p><strong>kwargs</strong> – passed keywords</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.pytorchfw.save_checkpoint">
+<code class="sig-name descname">save_checkpoint</code><span class="sig-paren">(</span><em class="sig-param">filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#pytorchfw.save_checkpoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.pytorchfw.save_checkpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save checkpoint function. By default saves last epoch for training and best validation epoch. If there is
+no validation then best train epoch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – Custom filename to save weights. Defautl is framework.checkpoint_name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.pytorchfw.save_gradients">
+<code class="sig-name descname">save_gradients</code><span class="sig-paren">(</span><em class="sig-param">absolute_iter</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#pytorchfw.save_gradients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.pytorchfw.save_gradients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.pytorchfw.set_config">
+<code class="sig-name descname">set_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#pytorchfw.set_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.pytorchfw.set_config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.pytorchfw.set_model_training">
+<code class="sig-name descname">set_model_training</code><span class="sig-paren">(</span><em class="sig-param">flag</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#pytorchfw.set_model_training"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.pytorchfw.set_model_training" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trigger function to enable or disable model.train() and model.eval()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>flag</strong> (<em>bool</em>) – True –&gt; activate model.train() mode. False –&gt; activate model.eval() mode</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.pytorchfw.set_optim">
+<code class="sig-name descname">set_optim</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#pytorchfw.set_optim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.pytorchfw.set_optim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.pytorchfw.tensorboard_writer">
+<code class="sig-name descname">tensorboard_writer</code><span class="sig-paren">(</span><em class="sig-param">loss</em>, <em class="sig-param">output</em>, <em class="sig-param">gt</em>, <em class="sig-param">absolute_iter</em>, <em class="sig-param">visualization</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#pytorchfw.tensorboard_writer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.pytorchfw.tensorboard_writer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.pytorchfw.test">
+<code class="sig-name descname">test</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#pytorchfw.test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.pytorchfw.test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Analogous for train_epoch.
+:return: None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.pytorchfw.train">
+<code class="sig-name descname">train</code><span class="sig-paren">(</span><em class="sig-param">args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#pytorchfw.train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.pytorchfw.train" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.pytorchfw.train_epoch">
+<code class="sig-name descname">train_epoch</code><span class="sig-paren">(</span><em class="sig-param">logger</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#pytorchfw.train_epoch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.pytorchfw.train_epoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trains model for an epoch following an standard training.
+1. Data loading
+2. Data allocation
+3. Model forward
+4. Optimizer.zero_grad
+5. output, loss and acc computation
+7 Loss backward
+8. In-Place gradient modification
+9. Gradient healty plot
+10. Databse update and checkpoint save
+:param logger: Logging instance to pass logs
+:return: None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.pytorchframework.pytorchfw.validate_epoch">
+<code class="sig-name descname">validate_epoch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#pytorchfw.validate_epoch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.pytorchfw.validate_epoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Analogous for train_epoch.
+:return: None</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="flerken.framework.pytorchframework.set_training">
+<code class="sig-prename descclassname">flerken.framework.pytorchframework.</code><code class="sig-name descname">set_training</code><span class="sig-paren">(</span><em class="sig-param">func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#set_training"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.set_training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.framework.pytorchframework.test">
+<code class="sig-prename descclassname">flerken.framework.pytorchframework.</code><code class="sig-name descname">test</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/pytorchframework.html#test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.pytorchframework.test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-flerken.framework.sqlite_tools">
+<span id="flerken-framework-sqlite-tools-module"></span><h2>flerken.framework.sqlite_tools module<a class="headerlink" href="#module-flerken.framework.sqlite_tools" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="flerken.framework.sqlite_tools.connect">
+<code class="sig-prename descclassname">flerken.framework.sqlite_tools.</code><code class="sig-name descname">connect</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/sqlite_tools.html#connect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.sqlite_tools.connect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.framework.sqlite_tools.delete">
+<code class="sig-prename descclassname">flerken.framework.sqlite_tools.</code><code class="sig-name descname">delete</code><span class="sig-paren">(</span><em class="sig-param">cursor</em>, <em class="sig-param">conn</em>, <em class="sig-param">id</em>, <em class="sig-param">table</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/sqlite_tools.html#delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.sqlite_tools.delete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.framework.sqlite_tools.exists">
+<code class="sig-prename descclassname">flerken.framework.sqlite_tools.</code><code class="sig-name descname">exists</code><span class="sig-paren">(</span><em class="sig-param">cursor</em>, <em class="sig-param">id</em>, <em class="sig-param">table</em>, <em class="sig-param">rowid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/sqlite_tools.html#exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.sqlite_tools.exists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.framework.sqlite_tools.fields2str">
+<code class="sig-prename descclassname">flerken.framework.sqlite_tools.</code><code class="sig-name descname">fields2str</code><span class="sig-paren">(</span><em class="sig-param">value_names</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/sqlite_tools.html#fields2str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.sqlite_tools.fields2str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.framework.sqlite_tools.init_table">
+<code class="sig-prename descclassname">flerken.framework.sqlite_tools.</code><code class="sig-name descname">init_table</code><span class="sig-paren">(</span><em class="sig-param">cursor</em>, <em class="sig-param">table</em>, <em class="sig-param">verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/sqlite_tools.html#init_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.sqlite_tools.init_table" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.framework.sqlite_tools.insert_value">
+<code class="sig-prename descclassname">flerken.framework.sqlite_tools.</code><code class="sig-name descname">insert_value</code><span class="sig-paren">(</span><em class="sig-param">cursor</em>, <em class="sig-param">conn</em>, <em class="sig-param">values</em>, <em class="sig-param">table</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/sqlite_tools.html#insert_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.sqlite_tools.insert_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.framework.sqlite_tools.names2str">
+<code class="sig-prename descclassname">flerken.framework.sqlite_tools.</code><code class="sig-name descname">names2str</code><span class="sig-paren">(</span><em class="sig-param">value_names</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/sqlite_tools.html#names2str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.sqlite_tools.names2str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="flerken.framework.sqlite_tools.sq">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.framework.sqlite_tools.</code><code class="sig-name descname">sq</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/sqlite_tools.html#sq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.sqlite_tools.sq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="flerken.framework.sqlite_tools.sq.delete">
+<code class="sig-name descname">delete</code><span class="sig-paren">(</span><em class="sig-param">id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/sqlite_tools.html#sq.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.sqlite_tools.sq.delete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.sqlite_tools.sq.destructor">
+<code class="sig-name descname">destructor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/sqlite_tools.html#sq.destructor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.sqlite_tools.sq.destructor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.sqlite_tools.sq.exists">
+<code class="sig-name descname">exists</code><span class="sig-paren">(</span><em class="sig-param">id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/sqlite_tools.html#sq.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.sqlite_tools.sq.exists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.sqlite_tools.sq.insert_value">
+<code class="sig-name descname">insert_value</code><span class="sig-paren">(</span><em class="sig-param">values</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/sqlite_tools.html#sq.insert_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.sqlite_tools.sq.insert_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.sqlite_tools.sq.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">values</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/sqlite_tools.html#sq.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.sqlite_tools.sq.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="flerken.framework.sqlite_tools.test">
+<code class="sig-prename descclassname">flerken.framework.sqlite_tools.</code><code class="sig-name descname">test</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/sqlite_tools.html#test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.sqlite_tools.test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.framework.sqlite_tools.update">
+<code class="sig-prename descclassname">flerken.framework.sqlite_tools.</code><code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">cursor</em>, <em class="sig-param">conn</em>, <em class="sig-param">values</em>, <em class="sig-param">table</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/sqlite_tools.html#update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.sqlite_tools.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.framework.sqlite_tools.values2update">
+<code class="sig-prename descclassname">flerken.framework.sqlite_tools.</code><code class="sig-name descname">values2update</code><span class="sig-paren">(</span><em class="sig-param">value_names</em>, <em class="sig-param">value_fields</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/sqlite_tools.html#values2update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.sqlite_tools.values2update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-flerken.framework.traceback_gradients">
+<span id="flerken-framework-traceback-gradients-module"></span><h2>flerken.framework.traceback_gradients module<a class="headerlink" href="#module-flerken.framework.traceback_gradients" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="flerken.framework.traceback_gradients.tracegrad">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.framework.traceback_gradients.</code><code class="sig-name descname">tracegrad</code><span class="sig-paren">(</span><em class="sig-param">model</em>, <em class="sig-param">verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/traceback_gradients.html#tracegrad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.traceback_gradients.tracegrad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="flerken.framework.traceback_gradients.tracegrad.as_image">
+<code class="sig-name descname">as_image</code><span class="sig-paren">(</span><em class="sig-param">function=&lt;function invariant&gt;</em>, <em class="sig-param">colormap=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/traceback_gradients.html#tracegrad.as_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.traceback_gradients.tracegrad.as_image" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.traceback_gradients.tracegrad.filtro">
+<code class="sig-name descname">filtro</code><span class="sig-paren">(</span><em class="sig-param">layer</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/traceback_gradients.html#tracegrad.filtro"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.traceback_gradients.tracegrad.filtro" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.traceback_gradients.tracegrad.grad">
+<code class="sig-name descname">grad</code><span class="sig-paren">(</span><em class="sig-param">numpy=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/traceback_gradients.html#tracegrad.grad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.traceback_gradients.tracegrad.grad" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.traceback_gradients.tracegrad.plot_grad_flow">
+<code class="sig-name descname">plot_grad_flow</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/traceback_gradients.html#tracegrad.plot_grad_flow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.traceback_gradients.tracegrad.plot_grad_flow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the gradients flowing through different layers in the net during training.
+Can be used for checking for possible gradient vanishing / exploding problems.</p>
+<p>Usage: Plug this function in Trainer class after loss.backwards() as 
+“plot_grad_flow(self.model.named_parameters())” to visualize the gradient flow</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-flerken.framework.utils">
+<span id="flerken-framework-utils-module"></span><h2>flerken.framework.utils module<a class="headerlink" href="#module-flerken.framework.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="flerken.framework.utils.AverageMeter">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.framework.utils.</code><code class="sig-name descname">AverageMeter</code><span class="sig-paren">(</span><em class="sig-param">hist=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/utils.html#AverageMeter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.utils.AverageMeter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Computes and stores the average and current value</p>
+<dl class="method">
+<dt id="flerken.framework.utils.AverageMeter.reset">
+<code class="sig-name descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/utils.html#AverageMeter.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.utils.AverageMeter.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flerken.framework.utils.AverageMeter.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">val</em>, <em class="sig-param">n=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/utils.html#AverageMeter.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.utils.AverageMeter.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="flerken.framework.utils.setup_logger">
+<code class="sig-prename descclassname">flerken.framework.utils.</code><code class="sig-name descname">setup_logger</code><span class="sig-paren">(</span><em class="sig-param">logger_name</em>, <em class="sig-param">log_file</em>, <em class="sig-param">level=30</em>, <em class="sig-param">FORMAT='%(message)s'</em>, <em class="sig-param">writemode='w'</em>, <em class="sig-param">to_console=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/framework/utils.html#setup_logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.utils.setup_logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-flerken.framework">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-flerken.framework" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="flerken.framework.inference">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.framework.</code><code class="sig-name descname">inference</code><a class="reference internal" href="_modules/flerken/framework.html#inference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.inference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.framework.test">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.framework.</code><code class="sig-name descname">test</code><a class="reference internal" href="_modules/flerken/framework.html#test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.framework.val">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.framework.</code><code class="sig-name descname">val</code><a class="reference internal" href="_modules/flerken/framework.html#val"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.val" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.framework.train">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.framework.</code><code class="sig-name descname">train</code><a class="reference internal" href="_modules/flerken/framework.html#train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.framework.ctx_iter">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.framework.</code><code class="sig-name descname">ctx_iter</code><a class="reference internal" href="_modules/flerken/framework.html#ctx_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.framework.ctx_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Juan F Montesinos
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

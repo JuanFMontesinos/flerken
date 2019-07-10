@@ -1,0 +1,321 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>flerken.framework.sqlite_tools &mdash; Flerken 0.0.3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Flerken
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Flerken</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../flerken.html">flerken</a> &raquo;</li>
+        
+          <li><a href="../framework.html">flerken.framework</a> &raquo;</li>
+        
+      <li>flerken.framework.sqlite_tools</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for flerken.framework.sqlite_tools</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">import</span> <span class="nn">sqlite3</span>
+
+
+<div class="viewcode-block" id="connect"><a class="viewcode-back" href="../../../flerken.framework.html#flerken.framework.sqlite_tools.connect">[docs]</a><span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Opened database at </span><span class="si">{}</span><span class="s1"> sucessfully&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">conn</span><span class="p">,</span> <span class="n">cursor</span></div>
+
+
+<div class="viewcode-block" id="init_table"><a class="viewcode-back" href="../../../flerken.framework.html#flerken.framework.sqlite_tools.init_table">[docs]</a><span class="k">def</span> <span class="nf">init_table</span><span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;CREATE TABLE </span><span class="si">{0}</span><span class="s1"></span>
+<span class="s1">         (ID TEXT PRIMARY KEY     NOT NULL,</span>
+<span class="s1">         DATE_OF_CREATION            TEXT     NOT NULL,</span>
+<span class="s1">         MODEL TEXT ,</span>
+<span class="s1">         LR REAL,</span>
+<span class="s1">         LOSS REAL,</span>
+<span class="s1">         ACC REAL,</span>
+<span class="s1">         VLOSS REAL,</span>
+<span class="s1">         VACC REAL,</span>
+<span class="s1">         EPOCH INTEGER,</span>
+<span class="s1">         OPTIMIZER TEXT,</span>
+<span class="s1">         SCHEDULER TEXT,</span>
+<span class="s1">         CHECKPOINT INTEGER,</span>
+<span class="s1">         ITERATIONS INTEGER);&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Table sucessfully created&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="names2str"><a class="viewcode-back" href="../../../flerken.framework.html#flerken.framework.sqlite_tools.names2str">[docs]</a><span class="k">def</span> <span class="nf">names2str</span><span class="p">(</span><span class="n">value_names</span><span class="p">):</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">value_names</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="n">f</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span>
+    <span class="k">return</span> <span class="n">text</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="fields2str"><a class="viewcode-back" href="../../../flerken.framework.html#flerken.framework.sqlite_tools.fields2str">[docs]</a><span class="k">def</span> <span class="nf">fields2str</span><span class="p">(</span><span class="n">value_names</span><span class="p">):</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">value_names</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&#39;&quot;</span> <span class="o">+</span> <span class="n">f</span> <span class="o">+</span> <span class="s2">&quot;&#39;&quot;</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span>
+    <span class="k">return</span> <span class="n">text</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="values2update"><a class="viewcode-back" href="../../../flerken.framework.html#flerken.framework.sqlite_tools.values2update">[docs]</a><span class="k">def</span> <span class="nf">values2update</span><span class="p">(</span><span class="n">value_names</span><span class="p">,</span> <span class="n">value_fields</span><span class="p">):</span>
+    <span class="n">value_fields</span> <span class="o">=</span> <span class="p">[</span><span class="n">q</span> <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">str</span> <span class="k">else</span> <span class="s2">&quot;&#39;&quot;</span> <span class="o">+</span> <span class="n">q</span> <span class="o">+</span> <span class="s2">&quot;&#39;&quot;</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">value_fields</span><span class="p">]</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="nb">str</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">value_names</span><span class="p">,</span> <span class="n">value_fields</span><span class="p">):</span>
+        <span class="n">string</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> = </span><span class="si">{1}</span><span class="s2">,&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">string</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="insert_value"><a class="viewcode-back" href="../../../flerken.framework.html#flerken.framework.sqlite_tools.insert_value">[docs]</a><span class="k">def</span> <span class="nf">insert_value</span><span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">table</span><span class="p">):</span>
+    <span class="n">value_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">value_field</span> <span class="o">=</span> <span class="p">[</span><span class="n">values</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">value_names</span><span class="p">]</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO </span><span class="si">{0}</span><span class="s2"> (</span><span class="si">{1}</span><span class="s2">) </span><span class="se">\</span>
+<span class="s2">      VALUES (</span><span class="si">{2}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">names2str</span><span class="p">(</span><span class="n">value_names</span><span class="p">),</span> <span class="n">fields2str</span><span class="p">(</span><span class="n">value_field</span><span class="p">)))</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="delete"><a class="viewcode-back" href="../../../flerken.framework.html#flerken.framework.sqlite_tools.delete">[docs]</a><span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">table</span><span class="p">):</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="s2">&quot;&#39;&quot;</span> <span class="o">+</span> <span class="nb">id</span> <span class="o">+</span> <span class="s2">&quot;&#39;&quot;</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DELETE from  </span><span class="si">{0}</span><span class="s2"> where ID = </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="nb">id</span><span class="p">))</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="exists"><a class="viewcode-back" href="../../../flerken.framework.html#flerken.framework.sqlite_tools.exists">[docs]</a><span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">rowid</span><span class="p">):</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="s2">&quot;&#39;&quot;</span> <span class="o">+</span> <span class="nb">id</span> <span class="o">+</span> <span class="s2">&quot;&#39;&quot;</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT </span><span class="si">{0}</span><span class="s2"> FROM </span><span class="si">{1}</span><span class="s2"> WHERE </span><span class="si">{0}</span><span class="s2"> = </span><span class="si">{2}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rowid</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="nb">id</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="update"><a class="viewcode-back" href="../../../flerken.framework.html#flerken.framework.sqlite_tools.update">[docs]</a><span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">table</span><span class="p">):</span>
+    <span class="n">value_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">value_field</span> <span class="o">=</span> <span class="p">[</span><span class="n">values</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">value_names</span><span class="p">]</span>
+    <span class="n">rowid</span> <span class="o">=</span> <span class="n">value_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="s2">&quot;&#39;&quot;</span> <span class="o">+</span> <span class="n">value_field</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;&#39;&quot;</span>
+    <span class="k">del</span> <span class="n">value_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">del</span> <span class="n">value_field</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">vals</span> <span class="o">=</span> <span class="n">values2update</span><span class="p">(</span><span class="n">value_names</span><span class="p">,</span> <span class="n">value_field</span><span class="p">)</span>
+
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;UPDATE </span><span class="si">{0}</span><span class="s2"> SET </span><span class="si">{1}</span><span class="s2"> WHERE </span><span class="si">{2}</span><span class="s2"> = </span><span class="si">{3}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">vals</span><span class="p">,</span> <span class="n">rowid</span><span class="p">,</span> <span class="n">idx</span><span class="p">))</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="sq"><a class="viewcode-back" href="../../../flerken.framework.html#flerken.framework.sqlite_tools.sq">[docs]</a><span class="k">class</span> <span class="nc">sq</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dst</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table</span> <span class="o">=</span> <span class="s1">&#39;EXPERIMENTS&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">init_table</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+<div class="viewcode-block" id="sq.insert_value"><a class="viewcode-back" href="../../../flerken.framework.html#flerken.framework.sqlite_tools.sq.insert_value">[docs]</a>    <span class="k">def</span> <span class="nf">insert_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="n">insert_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="sq.delete"><a class="viewcode-back" href="../../../flerken.framework.html#flerken.framework.sqlite_tools.sq.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="sq.destructor"><a class="viewcode-back" href="../../../flerken.framework.html#flerken.framework.sqlite_tools.sq.destructor">[docs]</a>    <span class="k">def</span> <span class="nf">destructor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="sq.exists"><a class="viewcode-back" href="../../../flerken.framework.html#flerken.framework.sqlite_tools.sq.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">,</span> <span class="s1">&#39;ID&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="sq.update"><a class="viewcode-back" href="../../../flerken.framework.html#flerken.framework.sqlite_tools.sq.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="test"><a class="viewcode-back" href="../../../flerken.framework.html#flerken.framework.sqlite_tools.test">[docs]</a><span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+    <span class="n">db</span> <span class="o">=</span> <span class="n">sq</span><span class="p">(</span><span class="s1">&#39;test_db.sqlite&#39;</span><span class="p">)</span>
+    <span class="n">tester</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span> <span class="s1">&#39;kawasaki&#39;</span><span class="p">,</span> <span class="s1">&#39;DATE_OF_CREATION&#39;</span><span class="p">:</span> <span class="mi">151</span><span class="p">}</span>
+    <span class="n">tester2</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span> <span class="s1">&#39;nagasaki&#39;</span><span class="p">,</span> <span class="s1">&#39;DATE_OF_CREATION&#39;</span><span class="p">:</span> <span class="mi">115</span><span class="p">}</span>
+    <span class="n">tester3</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span> <span class="s1">&#39;nagasaki&#39;</span><span class="p">,</span> <span class="s1">&#39;DATE_OF_CREATION&#39;</span><span class="p">:</span> <span class="mi">55</span><span class="p">,</span> <span class="s1">&#39;LR&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">}</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">insert_value</span><span class="p">(</span><span class="n">tester</span><span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">insert_value</span><span class="p">(</span><span class="n">tester2</span><span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;kawasaki&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;kawasaki&#39;</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;nagasaki&#39;</span><span class="p">))</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">tester3</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;test sucessful&#39;</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Juan F Montesinos
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

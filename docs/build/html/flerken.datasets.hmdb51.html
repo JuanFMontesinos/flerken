@@ -1,0 +1,602 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>flerken.datasets.hmdb51 package &mdash; Flerken 0.0.3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Flerken
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">flerken.datasets.hmdb51 package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-flerken.datasets.hmdb51.hmdb51">flerken.datasets.hmdb51.hmdb51 module</a></li>
+<li><a class="reference internal" href="#module-flerken.datasets.hmdb51.hmdb51_json">flerken.datasets.hmdb51.hmdb51_json module</a></li>
+<li><a class="reference internal" href="#module-flerken.datasets.hmdb51.n_frames_ucf101_hmdb51">flerken.datasets.hmdb51.n_frames_ucf101_hmdb51 module</a></li>
+<li><a class="reference internal" href="#module-flerken.datasets.hmdb51.spatial_transforms">flerken.datasets.hmdb51.spatial_transforms module</a></li>
+<li><a class="reference internal" href="#module-flerken.datasets.hmdb51.target_transforms">flerken.datasets.hmdb51.target_transforms module</a></li>
+<li><a class="reference internal" href="#module-flerken.datasets.hmdb51.temporal_transforms">flerken.datasets.hmdb51.temporal_transforms module</a></li>
+<li><a class="reference internal" href="#module-flerken.datasets.hmdb51.video_jpg_ucf101_hmdb51">flerken.datasets.hmdb51.video_jpg_ucf101_hmdb51 module</a></li>
+<li><a class="reference internal" href="#module-flerken.datasets.hmdb51">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Flerken</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>flerken.datasets.hmdb51 package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/flerken.datasets.hmdb51.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="flerken-datasets-hmdb51-package">
+<h1>flerken.datasets.hmdb51 package<a class="headerlink" href="#flerken-datasets-hmdb51-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-flerken.datasets.hmdb51.hmdb51">
+<span id="flerken-datasets-hmdb51-hmdb51-module"></span><h2>flerken.datasets.hmdb51.hmdb51 module<a class="headerlink" href="#module-flerken.datasets.hmdb51.hmdb51" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="flerken.datasets.hmdb51.hmdb51.HMDB51">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.datasets.hmdb51.hmdb51.</code><code class="sig-name descname">HMDB51</code><span class="sig-paren">(</span><em class="sig-param">root_path</em>, <em class="sig-param">annotation_path</em>, <em class="sig-param">subset</em>, <em class="sig-param">n_samples_for_each_video=1</em>, <em class="sig-param">spatial_transform=None</em>, <em class="sig-param">temporal_transform=None</em>, <em class="sig-param">target_transform=None</em>, <em class="sig-param">sample_duration=16</em>, <em class="sig-param">get_loader=&lt;function get_default_video_loader&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/hmdb51.html#HMDB51"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.hmdb51.HMDB51" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.Dataset</span></code></p>
+<dl>
+<dt>Args:</dt><dd><blockquote>
+<div><p>root (string): Root directory path.
+spatial_transform (callable, optional): A function/transform that  takes in an PIL image</p>
+<blockquote>
+<div><p>and returns a transformed version. E.g, <code class="docutils literal notranslate"><span class="pre">transforms.RandomCrop</span></code></p>
+</div></blockquote>
+<dl class="simple">
+<dt>temporal_transform (callable, optional): A function/transform that  takes in a list of frame indices</dt><dd><p>and returns a transformed version</p>
+</dd>
+<dt>target_transform (callable, optional): A function/transform that takes in the</dt><dd><p>target and transforms it.</p>
+</dd>
+</dl>
+<p>loader (callable, optional): A function to load an video given its path and frame indices.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>classes (list): List of the class names.
+class_to_idx (dict): Dict with items (class_name, class_index).
+imgs (list): List of (image path, class_index) tuples</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="flerken.datasets.hmdb51.hmdb51.accimage_loader">
+<code class="sig-prename descclassname">flerken.datasets.hmdb51.hmdb51.</code><code class="sig-name descname">accimage_loader</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/hmdb51.html#accimage_loader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.hmdb51.accimage_loader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.datasets.hmdb51.hmdb51.get_class_labels">
+<code class="sig-prename descclassname">flerken.datasets.hmdb51.hmdb51.</code><code class="sig-name descname">get_class_labels</code><span class="sig-paren">(</span><em class="sig-param">data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/hmdb51.html#get_class_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.hmdb51.get_class_labels" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.datasets.hmdb51.hmdb51.get_default_image_loader">
+<code class="sig-prename descclassname">flerken.datasets.hmdb51.hmdb51.</code><code class="sig-name descname">get_default_image_loader</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/hmdb51.html#get_default_image_loader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.hmdb51.get_default_image_loader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.datasets.hmdb51.hmdb51.get_default_video_loader">
+<code class="sig-prename descclassname">flerken.datasets.hmdb51.hmdb51.</code><code class="sig-name descname">get_default_video_loader</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/hmdb51.html#get_default_video_loader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.hmdb51.get_default_video_loader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.datasets.hmdb51.hmdb51.get_video_names_and_annotations">
+<code class="sig-prename descclassname">flerken.datasets.hmdb51.hmdb51.</code><code class="sig-name descname">get_video_names_and_annotations</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">subset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/hmdb51.html#get_video_names_and_annotations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.hmdb51.get_video_names_and_annotations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.datasets.hmdb51.hmdb51.load_annotation_data">
+<code class="sig-prename descclassname">flerken.datasets.hmdb51.hmdb51.</code><code class="sig-name descname">load_annotation_data</code><span class="sig-paren">(</span><em class="sig-param">data_file_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/hmdb51.html#load_annotation_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.hmdb51.load_annotation_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.datasets.hmdb51.hmdb51.load_value_file">
+<code class="sig-prename descclassname">flerken.datasets.hmdb51.hmdb51.</code><code class="sig-name descname">load_value_file</code><span class="sig-paren">(</span><em class="sig-param">file_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/hmdb51.html#load_value_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.hmdb51.load_value_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.datasets.hmdb51.hmdb51.make_dataset">
+<code class="sig-prename descclassname">flerken.datasets.hmdb51.hmdb51.</code><code class="sig-name descname">make_dataset</code><span class="sig-paren">(</span><em class="sig-param">root_path</em>, <em class="sig-param">annotation_path</em>, <em class="sig-param">subset</em>, <em class="sig-param">n_samples_for_each_video</em>, <em class="sig-param">sample_duration</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/hmdb51.html#make_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.hmdb51.make_dataset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.datasets.hmdb51.hmdb51.pil_loader">
+<code class="sig-prename descclassname">flerken.datasets.hmdb51.hmdb51.</code><code class="sig-name descname">pil_loader</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/hmdb51.html#pil_loader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.hmdb51.pil_loader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.datasets.hmdb51.hmdb51.video_loader">
+<code class="sig-prename descclassname">flerken.datasets.hmdb51.hmdb51.</code><code class="sig-name descname">video_loader</code><span class="sig-paren">(</span><em class="sig-param">video_dir_path</em>, <em class="sig-param">frame_indices</em>, <em class="sig-param">image_loader</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/hmdb51.html#video_loader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.hmdb51.video_loader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-flerken.datasets.hmdb51.hmdb51_json">
+<span id="flerken-datasets-hmdb51-hmdb51-json-module"></span><h2>flerken.datasets.hmdb51.hmdb51_json module<a class="headerlink" href="#module-flerken.datasets.hmdb51.hmdb51_json" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="flerken.datasets.hmdb51.hmdb51_json.convert_csv_to_dict">
+<code class="sig-prename descclassname">flerken.datasets.hmdb51.hmdb51_json.</code><code class="sig-name descname">convert_csv_to_dict</code><span class="sig-paren">(</span><em class="sig-param">csv_dir_path</em>, <em class="sig-param">split_index</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/hmdb51_json.html#convert_csv_to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.hmdb51_json.convert_csv_to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.datasets.hmdb51.hmdb51_json.convert_hmdb51_csv_to_activitynet_json">
+<code class="sig-prename descclassname">flerken.datasets.hmdb51.hmdb51_json.</code><code class="sig-name descname">convert_hmdb51_csv_to_activitynet_json</code><span class="sig-paren">(</span><em class="sig-param">csv_dir_path</em>, <em class="sig-param">split_index</em>, <em class="sig-param">dst_json_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/hmdb51_json.html#convert_hmdb51_csv_to_activitynet_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.hmdb51_json.convert_hmdb51_csv_to_activitynet_json" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.datasets.hmdb51.hmdb51_json.get_labels">
+<code class="sig-prename descclassname">flerken.datasets.hmdb51.hmdb51_json.</code><code class="sig-name descname">get_labels</code><span class="sig-paren">(</span><em class="sig-param">csv_dir_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/hmdb51_json.html#get_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.hmdb51_json.get_labels" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-flerken.datasets.hmdb51.n_frames_ucf101_hmdb51">
+<span id="flerken-datasets-hmdb51-n-frames-ucf101-hmdb51-module"></span><h2>flerken.datasets.hmdb51.n_frames_ucf101_hmdb51 module<a class="headerlink" href="#module-flerken.datasets.hmdb51.n_frames_ucf101_hmdb51" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="flerken.datasets.hmdb51.n_frames_ucf101_hmdb51.class_process">
+<code class="sig-prename descclassname">flerken.datasets.hmdb51.n_frames_ucf101_hmdb51.</code><code class="sig-name descname">class_process</code><span class="sig-paren">(</span><em class="sig-param">dir_path</em>, <em class="sig-param">class_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/n_frames_ucf101_hmdb51.html#class_process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.n_frames_ucf101_hmdb51.class_process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-flerken.datasets.hmdb51.spatial_transforms">
+<span id="flerken-datasets-hmdb51-spatial-transforms-module"></span><h2>flerken.datasets.hmdb51.spatial_transforms module<a class="headerlink" href="#module-flerken.datasets.hmdb51.spatial_transforms" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="flerken.datasets.hmdb51.spatial_transforms.CenterCrop">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.datasets.hmdb51.spatial_transforms.</code><code class="sig-name descname">CenterCrop</code><span class="sig-paren">(</span><em class="sig-param">size</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/spatial_transforms.html#CenterCrop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.spatial_transforms.CenterCrop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Crops the given PIL.Image at the center.
+Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>size (sequence or int): Desired output size of the crop. If size is an</dt><dd><p>int instead of sequence like (h, w), a square crop (size, size) is
+made.</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="method">
+<dt id="flerken.datasets.hmdb51.spatial_transforms.CenterCrop.randomize_parameters">
+<code class="sig-name descname">randomize_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/spatial_transforms.html#CenterCrop.randomize_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.spatial_transforms.CenterCrop.randomize_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.datasets.hmdb51.spatial_transforms.Compose">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.datasets.hmdb51.spatial_transforms.</code><code class="sig-name descname">Compose</code><span class="sig-paren">(</span><em class="sig-param">transforms</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/spatial_transforms.html#Compose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.spatial_transforms.Compose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Composes several transforms together.
+Args:</p>
+<blockquote>
+<div><p>transforms (list of <code class="docutils literal notranslate"><span class="pre">Transform</span></code> objects): list of transforms to compose.</p>
+</div></blockquote>
+<dl>
+<dt>Example:</dt><dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">transforms</span><span class="o">.</span><span class="n">CenterCrop</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">])</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="method">
+<dt id="flerken.datasets.hmdb51.spatial_transforms.Compose.randomize_parameters">
+<code class="sig-name descname">randomize_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/spatial_transforms.html#Compose.randomize_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.spatial_transforms.Compose.randomize_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.datasets.hmdb51.spatial_transforms.CornerCrop">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.datasets.hmdb51.spatial_transforms.</code><code class="sig-name descname">CornerCrop</code><span class="sig-paren">(</span><em class="sig-param">size</em>, <em class="sig-param">crop_position=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/spatial_transforms.html#CornerCrop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.spatial_transforms.CornerCrop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="flerken.datasets.hmdb51.spatial_transforms.CornerCrop.randomize_parameters">
+<code class="sig-name descname">randomize_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/spatial_transforms.html#CornerCrop.randomize_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.spatial_transforms.CornerCrop.randomize_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.datasets.hmdb51.spatial_transforms.MultiScaleCornerCrop">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.datasets.hmdb51.spatial_transforms.</code><code class="sig-name descname">MultiScaleCornerCrop</code><span class="sig-paren">(</span><em class="sig-param">scales, size, interpolation=2, crop_positions=['c', 'tl', 'tr', 'bl', 'br']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/spatial_transforms.html#MultiScaleCornerCrop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.spatial_transforms.MultiScaleCornerCrop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Crop the given PIL.Image to randomly selected size.
+A crop of size is selected from scales of the original size.
+A position of cropping is randomly selected from 4 corners and 1 center.
+This crop is finally resized to given size.
+Args:</p>
+<blockquote>
+<div><p>scales: cropping scales of the original size
+size: size of the smaller edge
+interpolation: Default: PIL.Image.BILINEAR</p>
+</div></blockquote>
+<dl class="method">
+<dt id="flerken.datasets.hmdb51.spatial_transforms.MultiScaleCornerCrop.randomize_parameters">
+<code class="sig-name descname">randomize_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/spatial_transforms.html#MultiScaleCornerCrop.randomize_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.spatial_transforms.MultiScaleCornerCrop.randomize_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.datasets.hmdb51.spatial_transforms.MultiScaleRandomCrop">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.datasets.hmdb51.spatial_transforms.</code><code class="sig-name descname">MultiScaleRandomCrop</code><span class="sig-paren">(</span><em class="sig-param">scales</em>, <em class="sig-param">size</em>, <em class="sig-param">interpolation=2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/spatial_transforms.html#MultiScaleRandomCrop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.spatial_transforms.MultiScaleRandomCrop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="flerken.datasets.hmdb51.spatial_transforms.MultiScaleRandomCrop.randomize_parameters">
+<code class="sig-name descname">randomize_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/spatial_transforms.html#MultiScaleRandomCrop.randomize_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.spatial_transforms.MultiScaleRandomCrop.randomize_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.datasets.hmdb51.spatial_transforms.Normalize">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.datasets.hmdb51.spatial_transforms.</code><code class="sig-name descname">Normalize</code><span class="sig-paren">(</span><em class="sig-param">mean</em>, <em class="sig-param">std</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/spatial_transforms.html#Normalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.spatial_transforms.Normalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Normalize an tensor image with mean and standard deviation.
+Given mean: (R, G, B) and std: (R, G, B),
+will normalize each channel of the torch.*Tensor, i.e.
+channel = (channel - mean) / std
+Args:</p>
+<blockquote>
+<div><p>mean (sequence): Sequence of means for R, G, B channels respecitvely.
+std (sequence): Sequence of standard deviations for R, G, B channels</p>
+<blockquote>
+<div><p>respecitvely.</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="method">
+<dt id="flerken.datasets.hmdb51.spatial_transforms.Normalize.randomize_parameters">
+<code class="sig-name descname">randomize_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/spatial_transforms.html#Normalize.randomize_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.spatial_transforms.Normalize.randomize_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.datasets.hmdb51.spatial_transforms.RandomHorizontalFlip">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.datasets.hmdb51.spatial_transforms.</code><code class="sig-name descname">RandomHorizontalFlip</code><a class="reference internal" href="_modules/flerken/datasets/hmdb51/spatial_transforms.html#RandomHorizontalFlip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.spatial_transforms.RandomHorizontalFlip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Horizontally flip the given PIL.Image randomly with a probability of 0.5.</p>
+<dl class="method">
+<dt id="flerken.datasets.hmdb51.spatial_transforms.RandomHorizontalFlip.randomize_parameters">
+<code class="sig-name descname">randomize_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/spatial_transforms.html#RandomHorizontalFlip.randomize_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.spatial_transforms.RandomHorizontalFlip.randomize_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.datasets.hmdb51.spatial_transforms.Scale">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.datasets.hmdb51.spatial_transforms.</code><code class="sig-name descname">Scale</code><span class="sig-paren">(</span><em class="sig-param">size</em>, <em class="sig-param">interpolation=2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/spatial_transforms.html#Scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.spatial_transforms.Scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Rescale the input PIL.Image to the given size.
+Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>size (sequence or int): Desired output size. If size is a sequence like</dt><dd><p>(w, h), output size will be matched to this. If size is an int,
+smaller edge of the image will be matched to this number.
+i.e, if height &gt; width, then image will be rescaled to
+(size * height / width, size)</p>
+</dd>
+<dt>interpolation (int, optional): Desired interpolation. Default is</dt><dd><p><code class="docutils literal notranslate"><span class="pre">PIL.Image.BILINEAR</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="method">
+<dt id="flerken.datasets.hmdb51.spatial_transforms.Scale.randomize_parameters">
+<code class="sig-name descname">randomize_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/spatial_transforms.html#Scale.randomize_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.spatial_transforms.Scale.randomize_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.datasets.hmdb51.spatial_transforms.ToTensor">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.datasets.hmdb51.spatial_transforms.</code><code class="sig-name descname">ToTensor</code><span class="sig-paren">(</span><em class="sig-param">norm_value=255</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/spatial_transforms.html#ToTensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.spatial_transforms.ToTensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Convert a <code class="docutils literal notranslate"><span class="pre">PIL.Image</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> to tensor.
+Converts a PIL.Image or numpy.ndarray (H x W x C) in the range
+[0, 255] to a torch.FloatTensor of shape (C x H x W) in the range [0.0, 1.0].</p>
+<dl class="method">
+<dt id="flerken.datasets.hmdb51.spatial_transforms.ToTensor.randomize_parameters">
+<code class="sig-name descname">randomize_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/spatial_transforms.html#ToTensor.randomize_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.spatial_transforms.ToTensor.randomize_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-flerken.datasets.hmdb51.target_transforms">
+<span id="flerken-datasets-hmdb51-target-transforms-module"></span><h2>flerken.datasets.hmdb51.target_transforms module<a class="headerlink" href="#module-flerken.datasets.hmdb51.target_transforms" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="flerken.datasets.hmdb51.target_transforms.ClassLabel">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.datasets.hmdb51.target_transforms.</code><code class="sig-name descname">ClassLabel</code><a class="reference internal" href="_modules/flerken/datasets/hmdb51/target_transforms.html#ClassLabel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.target_transforms.ClassLabel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.datasets.hmdb51.target_transforms.Compose">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.datasets.hmdb51.target_transforms.</code><code class="sig-name descname">Compose</code><span class="sig-paren">(</span><em class="sig-param">transforms</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/target_transforms.html#Compose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.target_transforms.Compose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.datasets.hmdb51.target_transforms.VideoID">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.datasets.hmdb51.target_transforms.</code><code class="sig-name descname">VideoID</code><a class="reference internal" href="_modules/flerken/datasets/hmdb51/target_transforms.html#VideoID"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.target_transforms.VideoID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-flerken.datasets.hmdb51.temporal_transforms">
+<span id="flerken-datasets-hmdb51-temporal-transforms-module"></span><h2>flerken.datasets.hmdb51.temporal_transforms module<a class="headerlink" href="#module-flerken.datasets.hmdb51.temporal_transforms" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="flerken.datasets.hmdb51.temporal_transforms.LoopPadding">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.datasets.hmdb51.temporal_transforms.</code><code class="sig-name descname">LoopPadding</code><span class="sig-paren">(</span><em class="sig-param">size</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/temporal_transforms.html#LoopPadding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.temporal_transforms.LoopPadding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.datasets.hmdb51.temporal_transforms.TemporalBeginCrop">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.datasets.hmdb51.temporal_transforms.</code><code class="sig-name descname">TemporalBeginCrop</code><span class="sig-paren">(</span><em class="sig-param">size</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/temporal_transforms.html#TemporalBeginCrop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.temporal_transforms.TemporalBeginCrop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Temporally crop the given frame indices at a beginning.</p>
+<p>If the number of frames is less than the size,
+loop the indices as many times as necessary to satisfy the size.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>size (int): Desired output size of the crop.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.datasets.hmdb51.temporal_transforms.TemporalCenterCrop">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.datasets.hmdb51.temporal_transforms.</code><code class="sig-name descname">TemporalCenterCrop</code><span class="sig-paren">(</span><em class="sig-param">size</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/temporal_transforms.html#TemporalCenterCrop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.temporal_transforms.TemporalCenterCrop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Temporally crop the given frame indices at a center.</p>
+<p>If the number of frames is less than the size,
+loop the indices as many times as necessary to satisfy the size.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>size (int): Desired output size of the crop.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="flerken.datasets.hmdb51.temporal_transforms.TemporalRandomCrop">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.datasets.hmdb51.temporal_transforms.</code><code class="sig-name descname">TemporalRandomCrop</code><span class="sig-paren">(</span><em class="sig-param">size</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/temporal_transforms.html#TemporalRandomCrop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.temporal_transforms.TemporalRandomCrop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Temporally crop the given frame indices at a random location.</p>
+<p>If the number of frames is less than the size,
+loop the indices as many times as necessary to satisfy the size.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>size (int): Desired output size of the crop.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-flerken.datasets.hmdb51.video_jpg_ucf101_hmdb51">
+<span id="flerken-datasets-hmdb51-video-jpg-ucf101-hmdb51-module"></span><h2>flerken.datasets.hmdb51.video_jpg_ucf101_hmdb51 module<a class="headerlink" href="#module-flerken.datasets.hmdb51.video_jpg_ucf101_hmdb51" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="flerken.datasets.hmdb51.video_jpg_ucf101_hmdb51.class_process">
+<code class="sig-prename descclassname">flerken.datasets.hmdb51.video_jpg_ucf101_hmdb51.</code><code class="sig-name descname">class_process</code><span class="sig-paren">(</span><em class="sig-param">dir_path</em>, <em class="sig-param">dst_dir_path</em>, <em class="sig-param">class_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/video_jpg_ucf101_hmdb51.html#class_process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.video_jpg_ucf101_hmdb51.class_process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-flerken.datasets.hmdb51">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-flerken.datasets.hmdb51" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="flerken.datasets.hmdb51.video_jpg_ucf101_hmdb51">
+<code class="sig-prename descclassname">flerken.datasets.hmdb51.</code><code class="sig-name descname">video_jpg_ucf101_hmdb51</code><span class="sig-paren">(</span><em class="sig-param">avi_video_directory</em>, <em class="sig-param">jpg_video_directory</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51.html#video_jpg_ucf101_hmdb51"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.video_jpg_ucf101_hmdb51" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.datasets.hmdb51.n_frames_ucf101_hmdb51">
+<code class="sig-prename descclassname">flerken.datasets.hmdb51.</code><code class="sig-name descname">n_frames_ucf101_hmdb51</code><span class="sig-paren">(</span><em class="sig-param">jpg_video_directory</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51.html#n_frames_ucf101_hmdb51"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.n_frames_ucf101_hmdb51" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="flerken.datasets.hmdb51.hmdb51_json">
+<code class="sig-prename descclassname">flerken.datasets.hmdb51.</code><code class="sig-name descname">hmdb51_json</code><span class="sig-paren">(</span><em class="sig-param">annotation_dir_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51.html#hmdb51_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.hmdb51_json" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="flerken.datasets.hmdb51.HMDB51">
+<em class="property">class </em><code class="sig-prename descclassname">flerken.datasets.hmdb51.</code><code class="sig-name descname">HMDB51</code><span class="sig-paren">(</span><em class="sig-param">root_path</em>, <em class="sig-param">annotation_path</em>, <em class="sig-param">subset</em>, <em class="sig-param">n_samples_for_each_video=1</em>, <em class="sig-param">spatial_transform=None</em>, <em class="sig-param">temporal_transform=None</em>, <em class="sig-param">target_transform=None</em>, <em class="sig-param">sample_duration=16</em>, <em class="sig-param">get_loader=&lt;function get_default_video_loader&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flerken/datasets/hmdb51/hmdb51.html#HMDB51"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flerken.datasets.hmdb51.HMDB51" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.Dataset</span></code></p>
+<dl>
+<dt>Args:</dt><dd><blockquote>
+<div><p>root (string): Root directory path.
+spatial_transform (callable, optional): A function/transform that  takes in an PIL image</p>
+<blockquote>
+<div><p>and returns a transformed version. E.g, <code class="docutils literal notranslate"><span class="pre">transforms.RandomCrop</span></code></p>
+</div></blockquote>
+<dl class="simple">
+<dt>temporal_transform (callable, optional): A function/transform that  takes in a list of frame indices</dt><dd><p>and returns a transformed version</p>
+</dd>
+<dt>target_transform (callable, optional): A function/transform that takes in the</dt><dd><p>target and transforms it.</p>
+</dd>
+</dl>
+<p>loader (callable, optional): A function to load an video given its path and frame indices.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>classes (list): List of the class names.
+class_to_idx (dict): Dict with items (class_name, class_index).
+imgs (list): List of (image path, class_index) tuples</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Juan F Montesinos
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

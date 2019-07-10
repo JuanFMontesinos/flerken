@@ -1,0 +1,555 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>flerken.datasets.hmdb51.spatial_transforms &mdash; Flerken 0.0.3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Flerken
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Flerken</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../../flerken.html">flerken</a> &raquo;</li>
+        
+          <li><a href="../hmdb51.html">flerken.datasets.hmdb51</a> &raquo;</li>
+        
+      <li>flerken.datasets.hmdb51.spatial_transforms</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for flerken.datasets.hmdb51.spatial_transforms</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">numbers</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageOps</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">accimage</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">accimage</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="Compose"><a class="viewcode-back" href="../../../../flerken.datasets.hmdb51.html#flerken.datasets.hmdb51.spatial_transforms.Compose">[docs]</a><span class="k">class</span> <span class="nc">Compose</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Composes several transforms together.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        transforms (list of ``Transform`` objects): list of transforms to compose.</span>
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; transforms.Compose([</span>
+<span class="sd">        &gt;&gt;&gt;     transforms.CenterCrop(10),</span>
+<span class="sd">        &gt;&gt;&gt;     transforms.ToTensor(),</span>
+<span class="sd">        &gt;&gt;&gt; ])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transforms</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transforms</span> <span class="o">=</span> <span class="n">transforms</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">transforms</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">t</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">img</span>
+
+<div class="viewcode-block" id="Compose.randomize_parameters"><a class="viewcode-back" href="../../../../flerken.datasets.hmdb51.html#flerken.datasets.hmdb51.spatial_transforms.Compose.randomize_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">randomize_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">transforms</span><span class="p">:</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">randomize_parameters</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="ToTensor"><a class="viewcode-back" href="../../../../flerken.datasets.hmdb51.html#flerken.datasets.hmdb51.spatial_transforms.ToTensor">[docs]</a><span class="k">class</span> <span class="nc">ToTensor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a ``PIL.Image`` or ``numpy.ndarray`` to tensor.</span>
+<span class="sd">    Converts a PIL.Image or numpy.ndarray (H x W x C) in the range</span>
+<span class="sd">    [0, 255] to a torch.FloatTensor of shape (C x H x W) in the range [0.0, 1.0].</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">norm_value</span><span class="o">=</span><span class="mi">255</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">norm_value</span> <span class="o">=</span> <span class="n">norm_value</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pic</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            pic (PIL.Image or numpy.ndarray): Image to be converted to tensor.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Tensor: Converted image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="c1"># handle numpy array</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">pic</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+            <span class="c1"># backward compatibility</span>
+            <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">norm_value</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">accimage</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">accimage</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>
+            <span class="n">nppic</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">pic</span><span class="o">.</span><span class="n">channels</span><span class="p">,</span> <span class="n">pic</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">pic</span><span class="o">.</span><span class="n">width</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="n">pic</span><span class="o">.</span><span class="n">copyto</span><span class="p">(</span><span class="n">nppic</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">nppic</span><span class="p">)</span>
+
+        <span class="c1"># handle PIL Image</span>
+        <span class="k">if</span> <span class="n">pic</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">pic</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;I;16&#39;</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ByteTensor</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ByteStorage</span><span class="o">.</span><span class="n">from_buffer</span><span class="p">(</span><span class="n">pic</span><span class="o">.</span><span class="n">tobytes</span><span class="p">()))</span>
+        <span class="c1"># PIL image mode: 1, L, P, I, F, RGB, YCbCr, RGBA, CMYK</span>
+        <span class="k">if</span> <span class="n">pic</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;YCbCr&#39;</span><span class="p">:</span>
+            <span class="n">nchannel</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="k">elif</span> <span class="n">pic</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;I;16&#39;</span><span class="p">:</span>
+            <span class="n">nchannel</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">nchannel</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pic</span><span class="o">.</span><span class="n">mode</span><span class="p">)</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">pic</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">pic</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nchannel</span><span class="p">)</span>
+        <span class="c1"># put it from HWC to CHW format</span>
+        <span class="c1"># yikes, this transpose takes 80% of the loading time/CPU</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">ByteTensor</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">norm_value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">img</span>
+
+<div class="viewcode-block" id="ToTensor.randomize_parameters"><a class="viewcode-back" href="../../../../flerken.datasets.hmdb51.html#flerken.datasets.hmdb51.spatial_transforms.ToTensor.randomize_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">randomize_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
+
+
+<div class="viewcode-block" id="Normalize"><a class="viewcode-back" href="../../../../flerken.datasets.hmdb51.html#flerken.datasets.hmdb51.spatial_transforms.Normalize">[docs]</a><span class="k">class</span> <span class="nc">Normalize</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Normalize an tensor image with mean and standard deviation.</span>
+<span class="sd">    Given mean: (R, G, B) and std: (R, G, B),</span>
+<span class="sd">    will normalize each channel of the torch.*Tensor, i.e.</span>
+<span class="sd">    channel = (channel - mean) / std</span>
+<span class="sd">    Args:</span>
+<span class="sd">        mean (sequence): Sequence of means for R, G, B channels respecitvely.</span>
+<span class="sd">        std (sequence): Sequence of standard deviations for R, G, B channels</span>
+<span class="sd">            respecitvely.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mean</span> <span class="o">=</span> <span class="n">mean</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">std</span> <span class="o">=</span> <span class="n">std</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            tensor (Tensor): Tensor image of size (C, H, W) to be normalized.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Tensor: Normalized image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: make efficient</span>
+        <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">std</span><span class="p">):</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">sub_</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">div_</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tensor</span>
+
+<div class="viewcode-block" id="Normalize.randomize_parameters"><a class="viewcode-back" href="../../../../flerken.datasets.hmdb51.html#flerken.datasets.hmdb51.spatial_transforms.Normalize.randomize_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">randomize_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
+
+
+<div class="viewcode-block" id="Scale"><a class="viewcode-back" href="../../../../flerken.datasets.hmdb51.html#flerken.datasets.hmdb51.spatial_transforms.Scale">[docs]</a><span class="k">class</span> <span class="nc">Scale</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Rescale the input PIL.Image to the given size.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        size (sequence or int): Desired output size. If size is a sequence like</span>
+<span class="sd">            (w, h), output size will be matched to this. If size is an int,</span>
+<span class="sd">            smaller edge of the image will be matched to this number.</span>
+<span class="sd">            i.e, if height &gt; width, then image will be rescaled to</span>
+<span class="sd">            (size * height / width, size)</span>
+<span class="sd">        interpolation (int, optional): Desired interpolation. Default is</span>
+<span class="sd">            ``PIL.Image.BILINEAR``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">size</span><span class="p">,</span>
+                          <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">collections</span><span class="o">.</span><span class="n">Iterable</span><span class="p">)</span> <span class="ow">and</span>
+                                   <span class="nb">len</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span> <span class="o">=</span> <span class="n">interpolation</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            img (PIL.Image): Image to be scaled.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            PIL.Image: Rescaled image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">w</span> <span class="o">&lt;=</span> <span class="n">h</span> <span class="ow">and</span> <span class="n">w</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">h</span> <span class="o">&lt;=</span> <span class="n">w</span> <span class="ow">and</span> <span class="n">h</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">img</span>
+            <span class="k">if</span> <span class="n">w</span> <span class="o">&lt;</span> <span class="n">h</span><span class="p">:</span>
+                <span class="n">ow</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+                <span class="n">oh</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="n">h</span> <span class="o">/</span> <span class="n">w</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">ow</span><span class="p">,</span> <span class="n">oh</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">oh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+                <span class="n">ow</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="n">w</span> <span class="o">/</span> <span class="n">h</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">ow</span><span class="p">,</span> <span class="n">oh</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Scale.randomize_parameters"><a class="viewcode-back" href="../../../../flerken.datasets.hmdb51.html#flerken.datasets.hmdb51.spatial_transforms.Scale.randomize_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">randomize_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
+
+
+<div class="viewcode-block" id="CenterCrop"><a class="viewcode-back" href="../../../../flerken.datasets.hmdb51.html#flerken.datasets.hmdb51.spatial_transforms.CenterCrop">[docs]</a><span class="k">class</span> <span class="nc">CenterCrop</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Crops the given PIL.Image at the center.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        size (sequence or int): Desired output size of the crop. If size is an</span>
+<span class="sd">            int instead of sequence like (h, w), a square crop (size, size) is</span>
+<span class="sd">            made.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">numbers</span><span class="o">.</span><span class="n">Number</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">size</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">size</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            img (PIL.Image): Image to be cropped.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            PIL.Image: Cropped image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">th</span><span class="p">,</span> <span class="n">tw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">((</span><span class="n">w</span> <span class="o">-</span> <span class="n">tw</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">))</span>
+        <span class="n">y1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">((</span><span class="n">h</span> <span class="o">-</span> <span class="n">th</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">crop</span><span class="p">((</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x1</span> <span class="o">+</span> <span class="n">tw</span><span class="p">,</span> <span class="n">y1</span> <span class="o">+</span> <span class="n">th</span><span class="p">))</span>
+
+<div class="viewcode-block" id="CenterCrop.randomize_parameters"><a class="viewcode-back" href="../../../../flerken.datasets.hmdb51.html#flerken.datasets.hmdb51.spatial_transforms.CenterCrop.randomize_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">randomize_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
+
+
+<div class="viewcode-block" id="CornerCrop"><a class="viewcode-back" href="../../../../flerken.datasets.hmdb51.html#flerken.datasets.hmdb51.spatial_transforms.CornerCrop">[docs]</a><span class="k">class</span> <span class="nc">CornerCrop</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">crop_position</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="k">if</span> <span class="n">crop_position</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">randomize</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">randomize</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">crop_position</span> <span class="o">=</span> <span class="n">crop_position</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">crop_positions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;tl&#39;</span><span class="p">,</span> <span class="s1">&#39;tr&#39;</span><span class="p">,</span> <span class="s1">&#39;bl&#39;</span><span class="p">,</span> <span class="s1">&#39;br&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+        <span class="n">image_width</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">image_height</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_position</span> <span class="o">==</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span>
+            <span class="n">th</span><span class="p">,</span> <span class="n">tw</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">((</span><span class="n">image_width</span> <span class="o">-</span> <span class="n">tw</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">))</span>
+            <span class="n">y1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">((</span><span class="n">image_height</span> <span class="o">-</span> <span class="n">th</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">))</span>
+            <span class="n">x2</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">+</span> <span class="n">tw</span>
+            <span class="n">y2</span> <span class="o">=</span> <span class="n">y1</span> <span class="o">+</span> <span class="n">th</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_position</span> <span class="o">==</span> <span class="s1">&#39;tl&#39;</span><span class="p">:</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">y1</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">x2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+            <span class="n">y2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_position</span> <span class="o">==</span> <span class="s1">&#39;tr&#39;</span><span class="p">:</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="n">image_width</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+            <span class="n">y1</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">x2</span> <span class="o">=</span> <span class="n">image_width</span>
+            <span class="n">y2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_position</span> <span class="o">==</span> <span class="s1">&#39;bl&#39;</span><span class="p">:</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">y1</span> <span class="o">=</span> <span class="n">image_height</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+            <span class="n">x2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+            <span class="n">y2</span> <span class="o">=</span> <span class="n">image_height</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_position</span> <span class="o">==</span> <span class="s1">&#39;br&#39;</span><span class="p">:</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="n">image_width</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+            <span class="n">y1</span> <span class="o">=</span> <span class="n">image_height</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+            <span class="n">x2</span> <span class="o">=</span> <span class="n">image_width</span>
+            <span class="n">y2</span> <span class="o">=</span> <span class="n">image_height</span>
+
+        <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">crop</span><span class="p">((</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">img</span>
+
+<div class="viewcode-block" id="CornerCrop.randomize_parameters"><a class="viewcode-back" href="../../../../flerken.datasets.hmdb51.html#flerken.datasets.hmdb51.spatial_transforms.CornerCrop.randomize_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">randomize_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">randomize</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">crop_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_positions</span><span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span>
+                <span class="mi">0</span><span class="p">,</span>
+                <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_positions</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span></div></div>
+
+
+<div class="viewcode-block" id="RandomHorizontalFlip"><a class="viewcode-back" href="../../../../flerken.datasets.hmdb51.html#flerken.datasets.hmdb51.spatial_transforms.RandomHorizontalFlip">[docs]</a><span class="k">class</span> <span class="nc">RandomHorizontalFlip</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Horizontally flip the given PIL.Image randomly with a probability of 0.5.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            img (PIL.Image): Image to be flipped.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            PIL.Image: Randomly flipped image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">FLIP_LEFT_RIGHT</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">img</span>
+
+<div class="viewcode-block" id="RandomHorizontalFlip.randomize_parameters"><a class="viewcode-back" href="../../../../flerken.datasets.hmdb51.html#flerken.datasets.hmdb51.spatial_transforms.RandomHorizontalFlip.randomize_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">randomize_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="MultiScaleCornerCrop"><a class="viewcode-back" href="../../../../flerken.datasets.hmdb51.html#flerken.datasets.hmdb51.spatial_transforms.MultiScaleCornerCrop">[docs]</a><span class="k">class</span> <span class="nc">MultiScaleCornerCrop</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Crop the given PIL.Image to randomly selected size.</span>
+<span class="sd">    A crop of size is selected from scales of the original size.</span>
+<span class="sd">    A position of cropping is randomly selected from 4 corners and 1 center.</span>
+<span class="sd">    This crop is finally resized to given size.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        scales: cropping scales of the original size</span>
+<span class="sd">        size: size of the smaller edge</span>
+<span class="sd">        interpolation: Default: PIL.Image.BILINEAR</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">scales</span><span class="p">,</span>
+                 <span class="n">size</span><span class="p">,</span>
+                 <span class="n">interpolation</span><span class="o">=</span><span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">,</span>
+                 <span class="n">crop_positions</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;tl&#39;</span><span class="p">,</span> <span class="s1">&#39;tr&#39;</span><span class="p">,</span> <span class="s1">&#39;bl&#39;</span><span class="p">,</span> <span class="s1">&#39;br&#39;</span><span class="p">]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scales</span> <span class="o">=</span> <span class="n">scales</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span> <span class="o">=</span> <span class="n">interpolation</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">crop_positions</span> <span class="o">=</span> <span class="n">crop_positions</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+        <span class="n">min_length</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">crop_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">min_length</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
+
+        <span class="n">image_width</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">image_height</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_position</span> <span class="o">==</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span>
+            <span class="n">center_x</span> <span class="o">=</span> <span class="n">image_width</span> <span class="o">//</span> <span class="mi">2</span>
+            <span class="n">center_y</span> <span class="o">=</span> <span class="n">image_height</span> <span class="o">//</span> <span class="mi">2</span>
+            <span class="n">box_half</span> <span class="o">=</span> <span class="n">crop_size</span> <span class="o">//</span> <span class="mi">2</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="n">center_x</span> <span class="o">-</span> <span class="n">box_half</span>
+            <span class="n">y1</span> <span class="o">=</span> <span class="n">center_y</span> <span class="o">-</span> <span class="n">box_half</span>
+            <span class="n">x2</span> <span class="o">=</span> <span class="n">center_x</span> <span class="o">+</span> <span class="n">box_half</span>
+            <span class="n">y2</span> <span class="o">=</span> <span class="n">center_y</span> <span class="o">+</span> <span class="n">box_half</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_position</span> <span class="o">==</span> <span class="s1">&#39;tl&#39;</span><span class="p">:</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">y1</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">x2</span> <span class="o">=</span> <span class="n">crop_size</span>
+            <span class="n">y2</span> <span class="o">=</span> <span class="n">crop_size</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_position</span> <span class="o">==</span> <span class="s1">&#39;tr&#39;</span><span class="p">:</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="n">image_width</span> <span class="o">-</span> <span class="n">crop_size</span>
+            <span class="n">y1</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">x2</span> <span class="o">=</span> <span class="n">image_width</span>
+            <span class="n">y2</span> <span class="o">=</span> <span class="n">crop_size</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_position</span> <span class="o">==</span> <span class="s1">&#39;bl&#39;</span><span class="p">:</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">y1</span> <span class="o">=</span> <span class="n">image_height</span> <span class="o">-</span> <span class="n">crop_size</span>
+            <span class="n">x2</span> <span class="o">=</span> <span class="n">crop_size</span>
+            <span class="n">y2</span> <span class="o">=</span> <span class="n">image_height</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_position</span> <span class="o">==</span> <span class="s1">&#39;br&#39;</span><span class="p">:</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="n">image_width</span> <span class="o">-</span> <span class="n">crop_size</span>
+            <span class="n">y1</span> <span class="o">=</span> <span class="n">image_height</span> <span class="o">-</span> <span class="n">crop_size</span>
+            <span class="n">x2</span> <span class="o">=</span> <span class="n">image_width</span>
+            <span class="n">y2</span> <span class="o">=</span> <span class="n">image_height</span>
+
+        <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">crop</span><span class="p">((</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MultiScaleCornerCrop.randomize_parameters"><a class="viewcode-back" href="../../../../flerken.datasets.hmdb51.html#flerken.datasets.hmdb51.spatial_transforms.MultiScaleCornerCrop.randomize_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">randomize_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scales</span><span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scales</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">crop_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_positions</span><span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_positions</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span></div></div>
+
+
+<div class="viewcode-block" id="MultiScaleRandomCrop"><a class="viewcode-back" href="../../../../flerken.datasets.hmdb51.html#flerken.datasets.hmdb51.spatial_transforms.MultiScaleRandomCrop">[docs]</a><span class="k">class</span> <span class="nc">MultiScaleRandomCrop</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scales</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scales</span> <span class="o">=</span> <span class="n">scales</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span> <span class="o">=</span> <span class="n">interpolation</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+        <span class="n">min_length</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">crop_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">min_length</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
+
+        <span class="n">image_width</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">image_height</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">x1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tl_x</span> <span class="o">*</span> <span class="p">(</span><span class="n">image_width</span> <span class="o">-</span> <span class="n">crop_size</span><span class="p">)</span>
+        <span class="n">y1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tl_y</span> <span class="o">*</span> <span class="p">(</span><span class="n">image_height</span> <span class="o">-</span> <span class="n">crop_size</span><span class="p">)</span>
+        <span class="n">x2</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">+</span> <span class="n">crop_size</span>
+        <span class="n">y2</span> <span class="o">=</span> <span class="n">y1</span> <span class="o">+</span> <span class="n">crop_size</span>
+
+        <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">crop</span><span class="p">((</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MultiScaleRandomCrop.randomize_parameters"><a class="viewcode-back" href="../../../../flerken.datasets.hmdb51.html#flerken.datasets.hmdb51.spatial_transforms.MultiScaleRandomCrop.randomize_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">randomize_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scales</span><span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scales</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tl_x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tl_y</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Juan F Montesinos
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
