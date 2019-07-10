@@ -249,7 +249,7 @@ class framework(object):
         self.model_logger = logging.getLogger('model_logger')
         self.model_logger.info('Model Version: {0}'.format(self.model_version))
         self.model_logger.info(self.model)
-        self.__setloggers__(writemode='w', to_console=False)
+        self.__setloggers__(writemode='w', to_console=False,level=logging.INFO)
 
         self.key = {'ID': self.workname,
                     'MODEL': self.model_version,
@@ -464,7 +464,7 @@ class pytorchfw(framework):
         except AssertionError:
             raise FileNotFoundError("=> No checkpoint found at '{}'".format(directory))
 
-        self.__setloggers__(writemode='a', to_console=False)
+        self.__setloggers__(writemode='a', to_console=False,level = logging.INFO)
 
         print("=> Loading checkpoint '{}'".format(directory))
         checkpoint = torch.load(directory, map_location=lambda storage, loc: storage)
@@ -541,7 +541,6 @@ class pytorchfw(framework):
             new_state_dict[name] = v
         self.model.load_state_dict(new_state_dict, strict=strict_loading)
         self.loaded_model = True
-        # TODO initilize this variable
 
     def run_epoch(self, *args, **kwargs):
         """
@@ -589,7 +588,7 @@ class pytorchfw(framework):
                     output = self.model(*inputs) if isinstance(inputs, list) else self.model(inputs)
 
                     if hasattr(self, 'outputdevice'):
-                        device = torch.device(self.outputdevice)  # TODO keep an eye here
+                        device = torch.device(self.outputdevice)
                     else:
                         if isinstance(output, (list, tuple)):
                             device = output[0].device
@@ -659,7 +658,7 @@ class pytorchfw(framework):
 
     def test(self):
         """
-        Analogous for train_epoch.
+        Analogous to train_epoch.
         :return: None
         """
         with tqdm(self.val_loader, desc='Test: [{0}/{1}]'.format(self.epoch, self.EPOCHS)) as pbar, ctx_iter(

@@ -1,10 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-__author__ = "Juan Montesinos"
-__version__ = "0.1"
-__maintainer__ = "Juan Montesinos"
-__email__ = "juanfelipe.montesinos@upf.edu"
-__status__ = "Prototype"
 
 from torch.nn import init
 

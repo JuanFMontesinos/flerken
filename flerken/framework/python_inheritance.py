@@ -1,6 +1,8 @@
 import json
 import os
 
+__all__ = ['ClassDict']
+
 
 class ClassDict(dict):
     """
