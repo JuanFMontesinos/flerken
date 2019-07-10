@@ -1,1 +1,1 @@
-__version__ = "0.2.4.post4train"
+__version__ = "0.2.4.post4"
