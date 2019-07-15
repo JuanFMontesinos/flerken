@@ -48,7 +48,7 @@ class TestFramework(unittest.TestCase):
         self.assertEqual(self.fw.start_epoch, 1)
         self.maxDiff = None
         for x in self.fw.key: # Key 2 key comparison cannot be done as values are added after saving checkpoint
-            self.assertEqual(self.fw.key[x], key[x])
+            self.assertEqual(self.fw.key[x], key[x]+1)
 
     def test_set_model_training(self):
         flag = self.fw.set_model_training(True)
