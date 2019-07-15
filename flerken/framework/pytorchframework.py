@@ -259,6 +259,12 @@ class framework(object):
         self.loaded_model = True
 
     def print_info(self, log):
+        """
+
+        :param log: Logging logger in which to parse info
+        :type log: logging.logger
+        :return: None
+        """
 
         result = subprocess.Popen(["nvidia-smi", "--format=csv",
                                    "--query-gpu=index,name,driver_version,memory.total,memory.used,memory.free"],
@@ -295,8 +301,12 @@ class pytorchfw(framework):
         :param model: torch model
         :type model: torch.nn.Module
         :param rootdir: Path to root directory for all experiments
-        :type model: str
-        :returns: None
+        :type rootdir: str
+        :param workname: Experiment name to resume from or path to pretrained weights.
+        :type workname: str, None
+        :param main_device: GPU taken as main gpu. 'cpu' enables cpu mode.
+        :type main_device: str,int,torch.device
+
         """
         super(pytorchfw, self).__init__(model, rootdir, workname)
         self.checkpoint_name = 'checkpoint.pth'
@@ -472,9 +482,9 @@ class pytorchfw(framework):
         self.load_model(checkpoint['state_dict'])
         self.optimizer.load_state_dict(checkpoint['optimizer'])
         self.loss_.constructor(checkpoint['loss'])  # TODO verify this is ok for savecheckpoint
-        self.acc_.constructor()
-        self.absolute_iter = checkpoint['iter']
+        self.acc_.constructor(None)
         self.key.update(checkpoint['key'])
+        self.absolute_iter = checkpoint['iter']
         self.scheduler.load_state_dict(checkpoint['scheduler'])
         print("=> Loaded checkpoint '{}' (epoch {})"
               .format(directory, checkpoint['epoch']))
@@ -753,25 +763,70 @@ class pytorchfw(framework):
     @set_training
     @config
     def train(self, args):
+        """
+        Main training function to be overwritten.
+        Example:
+            database = call_your_db()
+            self.train_loader = self.val_loader = torch.utils.data.DataLoader(database, batch_size=self.batch_size)
+            for self.epoch in range(self.start_epoch, self.EPOCHS):
+                with train(self):
+                    self.run_epoch(self.train_iter_logger)
+                with val(self):
+                    self.run_epoch()
+        :param args: Used defined optional arguments to setup training stage.
+        :return: Used defined
+        """
         NotImplementedError
 
     def tensorboard_writer(self, loss, output, gt, absolute_iter, visualization):
-        pass
+        """
+        Function called after each backpropagation. Allows to pass custom info to tensorboard_writer or to
+        compute custom operations over the output such as visualizations or metrics.
+        :param loss: Iteration loss.
+        :type loss: torch.tensor
+        :param output: Network's output (whatever it be)
+        :param gt: Ground-truth.
+        :param absolute_iter: Absolute iteration
+        :type absolute_iter: int
+        :param visualization: Visualization / extra information passed
+        """
 
     def infer(self, *inputs):
         NotImplementedError
 
     def hyperparameters(self):
+        """
+        Function in which to define ``training`` hyperparameters.
+        Example:
+            self.initializer = 'xavier'
+            self.EPOCHS = 15
+            self.LR = 0.001
+            self.optimizer = torch.optim.SGD(self.model.parameters(), lr=self.LR)
+            self.criterion = torch.nn.BCELoss().to(self.main_device)
+        :return: None
+        """
         NotImplementedError
 
     def gradients(self):
-        pass
+        """
+        Function called after backpropagation but before gradient update. Allows to in-place modify gradients before
+        updating.
+        """
 
     def set_config(self):
+        """
+        Function in which to define other necessary parameters such as metrics, wheter to use dataparallel or not,
+        batch size etcetera... Consider this function should contain necessary parameters to setup a validation step.
+        Example:
+            self.batch_size = 2
+            self.dataparallel = False
+            self.acc_ = classitems.TensorAccuracyItem(['perro', 'gato', 'loro'])
+        :return: None
+        """
         NotImplementedError
 
 
-def test():
+def _test():
     import torch.utils.data
 
     class toy_example(torch.nn.Module):
