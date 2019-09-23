@@ -14,14 +14,14 @@ def crop(img, i, j, h, w):
     Returns:
         PIL Image: Cropped image.
     """
-    return img[:, :, j:j + w, i:i + h]
+    return img[:, :, i:i + h, j:j + w]
 
 
 def center_crop(img, output_size):
     """This function is prepared to crop tensors provided by dataloader.
     Cited tensors has shape [1,N_maps,H,W]
     """
-    _, _, w, h = img.size()
+    _, _, h, w = img.size()
     th, tw = output_size[0], output_size[1]
     i = int(round((h - th) / 2.))
     j = int(round((w - tw) / 2.))
@@ -315,7 +315,7 @@ class UNet(nn.Module):
             x = self.final_act(x)
         if self.printing:
             print('UNet Output size {}'.format(x.size()))
-        else:
-            return x
+
+        return x
 
 

@@ -155,7 +155,7 @@ def quirurgical_extractor(video_path, dst_frames, dst_audio, t, n_frames, T, siz
     stream = ['ffmpeg', '-y', '-ss', str(t), '-i', video_path]
     if size is not None:
         stream.extend(['-s', size])
-    stream.extend(['-frames:v', str(n_frames), dst_frames + '/%02d.jpg', '-vn', '-ac', '1'])
+    stream.extend(['-frames:v', str(n_frames), dst_frames + '/%02d.png', '-vn', '-ac', '1'])
     if sample_rate is not None:
         stream.extend(['-ar', str(sample_rate)])
     stream.extend(['-t', str(T), dst_audio])
@@ -171,7 +171,7 @@ def quirurgical_extractor(video_path, dst_frames, dst_audio, t, n_frames, T, siz
 
 
 def quirurgical_extractor_tree(root, dst, n_frames, T, size=None, sample_rate=None, multiprocessing=0,
-                               stamp_generator_fn=None, formats=None):
+                               stamp_generator_fn=None, formats=None, ignore=[]):
     """
     Quirurgical extractor over a directory tree. Clones directory tree in dst folder twice, once for audio and another
     time for frames. For each recording there will be a folder with the same name in dst directory containing audio segm
@@ -191,6 +191,7 @@ def quirurgical_extractor_tree(root, dst, n_frames, T, size=None, sample_rate=No
     use a dictionary by passing dict.get method as generator function.
     :param formats: List of strings indicating allowed formats. Only files with chosen formats will be processed. By
     default this list is taken from ffmpeg -formats.
+    :param ignore: list of folders to be ignored at the time ob building directory tree
     """
 
     def stamp_generator(video_path):
@@ -208,7 +209,7 @@ def quirurgical_extractor_tree(root, dst, n_frames, T, size=None, sample_rate=No
         stamp_generator_fn = stamp_generator
     if formats is None:
         formats = allowed_formats()  # List of ffmpeg compatible formats
-    tree = Directory_Tree(root)  # Directory tree
+    tree = Directory_Tree(root, ignore=ignore)  # Directory tree
     """
     Tree generates an object-based tree of the directory treem, where folders are nodes and parameters are files.
     The idea is to replicate this directory tree for audio files and video files in audio_root and video_root 
@@ -264,7 +265,8 @@ def quirurgical_extractor_tree(root, dst, n_frames, T, size=None, sample_rate=No
                 else:
                     pool = mp.Pool(multiprocessing)
                     results = [pool.apply(quirurgical_extractor,
-                                          args=(i_path[0] + i_path[1], path, a_path[0], t, n_frames, T, size, sample_rate))
+                                          args=(
+                                          i_path[0] + i_path[1], path, a_path[0], t, n_frames, T, size, sample_rate))
                                for path, t in path_stamp_gen]
                     pool.close()
         except:
