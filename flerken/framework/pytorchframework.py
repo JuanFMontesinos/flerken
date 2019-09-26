@@ -486,8 +486,8 @@ class pytorchfw(framework):
     @assert_workdir
     def _set_writer(self, **kwargs):
         if not kwargs:
-            kwargs = {'logdir': os.path.join(self.workdir, 'tensorboard')}
-        self.summary_writer_path = kwargs['logdir']
+            kwargs = {'log_dir': os.path.join(self.workdir, 'tensorboard')}
+        self.summary_writer_path = kwargs['log_dir']
         self.writer = SummaryWriter(**kwargs)
 
     def _allocate_tensor(self, x, device=None):
@@ -796,7 +796,7 @@ class pytorchfw(framework):
 
         if self.dataparallel:
             self.model = torch.nn.DataParallel(self.model)
-        self._set_writer(logdir=os.path.join(self.workdir, 'tensorboard'))
+        self._set_writer(log_dir=os.path.join(self.workdir, 'tensorboard'))
 
     def save_gradients(self, absolute_iter):
         grads = self.tracker.grad(numpy=True)
