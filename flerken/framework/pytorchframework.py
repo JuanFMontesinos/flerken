@@ -169,7 +169,12 @@ class framework(object):
         pointer = getattr(self, name + '_')
         if self.iterating:
             pointer(val, self.state)
-
+        else:
+            if val == 'loss':
+                if self.state == 'train':
+                    self.key['LOSS'] = val
+                elif self.state == 'val':
+                    self.key['VLOSS'] = val
         if self.tensorboard_enabled:
             item = val.item()
             if self.iterating:
