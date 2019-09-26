@@ -7,8 +7,6 @@ install:
   - pip install -q -r requirements-dev.txt
   - pip install coverage
   - pip install coveralls
-  - sudo add-apt-repository -y ppa:mc3man/trusty-media
-  - sudo apt-get -qq update
   - sudo apt-get install -y ffmpeg
 script:
   - coverage run --source=./flerken test.py
