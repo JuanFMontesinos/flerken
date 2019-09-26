@@ -673,7 +673,7 @@ class pytorchfw(framework):
                     # compute gradient and do SGD step
                     self.optimizer.zero_grad()
                     self.loss.backward()
-                    if self.CHECKPOINT_OPTS.save_type == 'iter' and self.absolute_iter % self.CHECKPOINT_OPTS.saving_freq == 0:
+                    if self.CHECKPOINT_OPTS.save_type.lower() == 'iter' and self.absolute_iter % self.CHECKPOINT_OPTS.saving_freq == 0:
                         self.save_checkpoint()
                     self.gradients()
                     self.tensorboard_writer(self.loss, output, gt, self.absolute_iter, visualization)
@@ -700,7 +700,7 @@ class pytorchfw(framework):
         self.loss = self.loss_.data.update_epoch(self.state)
         self.acc = self.acc_.get_acc('train')
         self.__update_db__()
-        if self.CHECKPOINT_OPTS.save_type == 'CYCLE' and self.absolute_iter % self.CHECKPOINT_OPTS.saving_freQ == 0:
+        if self.CHECKPOINT_OPTS.save_type.lower() == 'cycle' and self.absolute_iter % self.CHECKPOINT_OPTS.saving_freq == 0:
             self.save_checkpoint()
         # probably does not require dense tracking
 
