@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-__author__ = "Juan Montesinos"
-__version__ = "0.2.3"
-__maintainer__ = "Juan Montesinos"
-__email__ = "juanfelipe.montesinos@upf.edu"
-__status__ = "Prototype"
 import torch
 import os
 import uuid
@@ -24,6 +19,7 @@ from .classitems import GradientPlotter as tracegrad
 from . import *
 from tqdm import tqdm
 from functools import wraps
+from ._options import *
 
 try:
     from torch.utils.tensorboard import SummaryWriter
@@ -34,6 +30,8 @@ from functools import partial
 
 LOGGING_FORMAT_B = "[%(filename)s: %(funcName)s] %(message)s]"
 LOGGIN_FORMAT_A = "[%(asctime)-15s %(filename)s:%(lineno)d %(funcName)s] %(message)s]"
+
+__all__ = ['config', 'assert_workdir', 'pytorchfw']
 
 
 def set_training(func):
@@ -107,7 +105,9 @@ def create_folder(path):
 
 class framework(object):
     def __init__(self, model, rootdir, workname, *args, **kwargs) -> None:
-
+        self.CHECKPOINT_OPTS = CHECKPOINT_OPTS
+        self.TRAINING_OPTIONS = TRAINING_OPTIONS
+        self.EXPERIMENT_OPTIONS = EXPERIMENT_OPTIONS
         self.model = model
         self.model_version = ''
         self.rootdir = rootdir
@@ -125,7 +125,7 @@ class framework(object):
 
     def __set_property_attr_twin__(self, name, value):
         setattr(self, '_' + name, value)
-        setattr(self, name + '_', value)
+        setattr(self, name + '_', classitems.TensorScalarItem())
 
     def __set_property_attr__(self, name, value):
         setattr(self, '_' + name, value)
@@ -141,7 +141,7 @@ class framework(object):
         if del_function_name is not None:
             del_function_name_base = del_function_name
             del_function_name += '_' + name
-            setattr(self, get_function_name, partial(getattr(self, del_function_name_base), name=name))
+            setattr(self, del_function_name, partial(getattr(self, del_function_name_base), name=name))
 
         if del_function_name is None:
             setattr(self.__class__, name, property(getattr(self, get_function_name),
@@ -159,6 +159,58 @@ class framework(object):
         self.__set_property_attr_twin__(name, value)
         self.__set_property__(name, set_function_name, get_function_name, del_function_name)
 
+    @staticmethod
+    def get_f(self, name):
+        return getattr(self, '_' + name)
+
+    @staticmethod
+    def set_f(self, val, name):
+        setattr(self, '_' + name, val)
+        pointer = getattr(self, name + '_')
+        if self.iterating:
+            pointer(val, self.state)
+
+        if self.tensorboard_enabled:
+            item = val.item()
+            if self.iterating:
+                if pointer.data.tuple[self.state].array.enabled:
+                    self.writer.add_scalars('%s_iter' % name, {self.state: item}, self.absolute_iter)
+            else:
+                if pointer.data.tuple[self.state].epoch_array.enabled:
+                    self.writer.add_scalars('%s_epoch' % name, {self.state: item}, self.epoch)
+
+    @staticmethod
+    def del_f(self, name):
+        delattr(self, '_' + name)
+        delattr(self, name + '_')
+
+    def set_tensor_scalar_item(self, var_name, mask=0x110101):
+        self.set_property_twin(var_name, None, 'set_f', 'get_f', 'del_f')
+        getattr(self, var_name + '_').data.enabled = mask
+
+    # @property
+    # def loss(self):
+    #     return self._loss
+    #
+    # @loss.setter
+    # def loss(self, loss):
+    #     self._loss = loss
+    #     if self.iterating:
+    #         self.loss_(loss, self.state)
+    #     else:
+    #         if self.state == 'train':
+    #             self.key['LOSS'] = loss
+    #         elif self.state == 'val':
+    #             self.key['VLOSS'] = loss
+    #
+    #     if self.tensorboard_enabled:
+    #         loss = loss.item()
+    #         if self.iterating:
+    #             if self.loss_.data.tuple[self.state].array.enabled:
+    #                 self.writer.add_scalars('loss', {self.state: loss}, self.absolute_iter)
+    #         else:
+    #             if self.loss_.data.tuple[self.state].epoch_array.enabled:
+    #                 self.writer.add_scalars('loss_epoch', {self.state: loss}, self.epoch)
     @property
     def state(self):
         return str(self._state)  # Protects the variable
@@ -243,13 +295,23 @@ class framework(object):
         self.start_epoch = 0
         self.absolute_iter = 0
         now = datetime.datetime.now()
-        self.workname = str(uuid.uuid4())[:7]
+        if self.EXPERIMENT_OPTIONS.experiment_name == 'datatime':
+            if self.EXPERIMENT_OPTIONS.experiment_name_complexity == 0:
+                self.workname = str(now)[:19]
+            else:
+                self.workname = str(now)
+        else:
+            if self.EXPERIMENT_OPTIONS.experiment_name_complexity == 0:
+                self.workname = str(uuid.uuid4())[:7]
+            else:
+                self.workname = str(uuid.uuid4())
         create_folder(self.workdir)
-        ptutils.setup_logger('model_logger', os.path.join(self.workdir, 'model_architecture.txt'), writemode='w')
-        self.model_logger = logging.getLogger('model_logger')
-        self.model_logger.info('Model Version: {0}'.format(self.model_version))
-        self.model_logger.info(self.model)
-        self.__setloggers__(writemode='w', to_console=False,level=logging.INFO)
+        if self.EXPERIMENT_OPTIONS.enable_model_logger:
+            ptutils.setup_logger('model_logger', os.path.join(self.workdir, 'model_architecture.txt'), writemode='w')
+            self.model_logger = logging.getLogger('model_logger')
+            self.model_logger.info('Model Version: {0}'.format(self.model_version))
+            self.model_logger.info(self.model)
+        self.__setloggers__(writemode='w', to_console=False, level=logging.INFO)
 
         self.key = {'ID': self.workname,
                     'MODEL': self.model_version,
@@ -290,8 +352,6 @@ class framework(object):
                                                        torch.cuda.current_device()))
 
 
-
-
 class pytorchfw(framework):
     def __init__(self, model: torch.nn.Module, rootdir: str, workname: (str, None), main_device: (int, str),
                  trackgrad: bool) -> None:
@@ -316,7 +376,8 @@ class pytorchfw(framework):
         if main_device != 'cpu':
             self.model.to(self.main_device)
         self.inizilizable_layers = [self.model]
-        self.loss_ = classitems.TensorScalarItem()
+        # self.loss_ = classitems.TensorScalarItem()
+        self.set_tensor_scalar_item('loss')
         self.tensorboard_enabled = True
         self.prevstate = 'train'
         self.iterating = False
@@ -390,29 +451,29 @@ class pytorchfw(framework):
         self._epoch = value
         self.key['EPOCH'] = self._epoch
 
-    @property
-    def loss(self):
-        return self._loss
-
-    @loss.setter
-    def loss(self, loss):
-        self._loss = loss
-        if self.iterating:
-            self.loss_(loss, self.state)
-        else:
-            if self.state == 'train':
-                self.key['LOSS'] = loss
-            elif self.state == 'val':
-                self.key['VLOSS'] = loss
-
-        if self.tensorboard_enabled:
-            loss = loss.item()
-            if self.iterating:
-                if self.loss_.data.tuple[self.state].array.enabled:
-                    self.writer.add_scalars('loss', {self.state: loss}, self.absolute_iter)
-            else:
-                if self.loss_.data.tuple[self.state].epoch_array.enabled:
-                    self.writer.add_scalars('loss_epoch', {self.state: loss}, self.epoch)
+    # @property
+    # def loss(self):
+    #     return self._loss
+    #
+    # @loss.setter
+    # def loss(self, loss):
+    #     self._loss = loss
+    #     if self.iterating:
+    #         self.loss_(loss, self.state)
+    #     else:
+    #         if self.state == 'train':
+    #             self.key['LOSS'] = loss
+    #         elif self.state == 'val':
+    #             self.key['VLOSS'] = loss
+    #
+    #     if self.tensorboard_enabled:
+    #         loss = loss.item()
+    #         if self.iterating:
+    #             if self.loss_.data.tuple[self.state].array.enabled:
+    #                 self.writer.add_scalars('loss', {self.state: loss}, self.absolute_iter)
+    #         else:
+    #             if self.loss_.data.tuple[self.state].epoch_array.enabled:
+    #                 self.writer.add_scalars('loss_epoch', {self.state: loss}, self.epoch)
 
     @property
     def main_device(self):
@@ -425,8 +486,8 @@ class pytorchfw(framework):
     @assert_workdir
     def _set_writer(self, **kwargs):
         if not kwargs:
-            kwargs = {'log_dir': os.path.join(self.workdir, 'tensorboard')}
-        self.summary_writer_path = kwargs['log_dir']
+            kwargs = {'logdir': os.path.join(self.workdir, 'tensorboard')}
+        self.summary_writer_path = kwargs['logdir']
         self.writer = SummaryWriter(**kwargs)
 
     def _allocate_tensor(self, x, device=None):
@@ -474,7 +535,7 @@ class pytorchfw(framework):
         except AssertionError:
             raise FileNotFoundError("=> No checkpoint found at '{}'".format(directory))
 
-        self.__setloggers__(writemode='a', to_console=False,level = logging.INFO)
+        self.__setloggers__(writemode='a', to_console=False, level=logging.INFO)
 
         print("=> Loading checkpoint '{}'".format(directory))
         checkpoint = torch.load(directory, map_location=lambda storage, loc: storage)
@@ -592,50 +653,55 @@ class pytorchfw(framework):
             for gt, inputs, visualization in pbar:
                 try:
                     self.absolute_iter += 1
-
-                    inputs = self._allocate_tensor(inputs)
+                    if self.TRAINING_OPTIONS.allocate_inputs:
+                        inputs = self._allocate_tensor(inputs)
 
                     output = self.model(*inputs) if isinstance(inputs, list) else self.model(inputs)
 
-                    if hasattr(self, 'outputdevice'):
-                        device = torch.device(self.outputdevice)
-                    else:
-                        if isinstance(output, (list, tuple)):
-                            device = output[0].device
+                    if self.TRAINING_OPTIONS.allocate_gt:
+                        if hasattr(self, 'outputdevice'):
+                            device = torch.device(self.outputdevice)
                         else:
-                            device = output.device
-
-                    gt = self._allocate_tensor(gt, device=device)
+                            if isinstance(output, (list, tuple)):
+                                device = output[0].device
+                            else:
+                                device = output.device
+                        gt = self._allocate_tensor(gt, device=device)
                     self.acc_('train', gt, output)
                     self.loss = self.criterion(output, gt)
 
                     # compute gradient and do SGD step
                     self.optimizer.zero_grad()
                     self.loss.backward()
+                    if self.CHECKPOINT_OPTS.save_type == 'iter' and self.absolute_iter % self.CHECKPOINT_OPTS.saving_freq == 0:
+                        self.save_checkpoint()
                     self.gradients()
                     self.tensorboard_writer(self.loss, output, gt, self.absolute_iter, visualization)
-                    if self.trackgrad:
+                    if self.trackgrad and self.tensorboard_enabled:
                         self.writer.add_figure('Gradients',
                                                self.tracker(self.model.named_parameters()),
                                                self.absolute_iter)
                     self.optimizer.step()
                     pbar.set_postfix(loss=self.loss.item())
-
-                    self.loss_.data.print_logger(self.epoch, j, self.train_iterations, logger)
+                    if self.TRAINING_OPTIONS.enable_train_logger:
+                        self.loss_.data.print_logger(self.epoch, j, self.train_iterations, logger)
                     j += 1
 
                 except Exception as e:
                     try:
-                        self.save_checkpoint(filename=os.path.join(self.workdir, 'checkpoint_backup.pth'))
+                        if self.TRAINING_OPTIONS.enable_backup:
+                            self.save_checkpoint(filename=os.path.join(self.workdir, 'checkpoint_backup.pth'))
                     except:
-                        self.err_logger.error('Failed to deal with exception. Couldnt save backup at {0} \n'
-                                              .format(os.path.join(self.workdir, 'checkpoint_backup.pth')))
-                    self.err_logger.error(str(e))
+                        if self.TRAINING_OPTIONS.enable_error_logger:
+                            self.err_logger.error('Failed to deal with exception. Couldnt save backup at {0} \n'
+                                                  .format(os.path.join(self.workdir, 'checkpoint_backup.pth')))
+                            self.err_logger.error(str(e))
                     raise e
         self.loss = self.loss_.data.update_epoch(self.state)
         self.acc = self.acc_.get_acc('train')
         self.__update_db__()
-        self.save_checkpoint()
+        if self.CHECKPOINT_OPTS.save_type == 'CYCLE' and self.absolute_iter % self.CHECKPOINT_OPTS.saving_freQ == 0:
+            self.save_checkpoint()
         # probably does not require dense tracking
 
     def validate_epoch(self):
@@ -730,7 +796,7 @@ class pytorchfw(framework):
 
         if self.dataparallel:
             self.model = torch.nn.DataParallel(self.model)
-        self._set_writer(log_dir=os.path.join(self.workdir, 'tensorboard'))
+        self._set_writer(logdir=os.path.join(self.workdir, 'tensorboard'))
 
     def save_gradients(self, absolute_iter):
         grads = self.tracker.grad(numpy=True)
