@@ -304,10 +304,19 @@ class UNet(nn.Module):
 
     def init_assertion(self):
         assert isinstance(self.dim, (tuple, list))
+        for x in self.dim:
+            assert x % 2 == 0
+        if list(map(lambda x: x / self.dim[0], self.dim)) != list(map(lambda x: 2 ** x, range(0, len(self.dim)))):
+            raise ValueError('Dimension vector must double their channels sequentially ej. [16,32,64,128,...]')
         assert isinstance(self.input_channels, int)
+        assert self.input_channels > 0
         assert isinstance(self.K, int)
+        assert self.K > 0
+
         if isnumber(self.film) and self.useBN == False:
-            raise ValueError('Conditioned U-Net enabled but batch normalization disabled. C-UNet only available with BN on')
+            raise ValueError(
+                'Conditioned U-Net enabled but batch normalization disabled. C-UNet only available with BN on.' \
+                ' Note: from a Python perspective, booleans are integers, thus numbers')
 
     def add_encoder(self, input_channels):
         encoder = []
@@ -374,5 +383,3 @@ class UNet(nn.Module):
             print('UNet Output size {}'.format(x.size()))
 
         return x
-
-

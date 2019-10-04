@@ -23,8 +23,12 @@ from ._options import *
 
 try:
     from torch.utils.tensorboard import SummaryWriter
+
+    TENSORBOARDX = False
 except:
     from tensorboardX import SummaryWriter
+
+    TENSORBOARDX = True
 
 from functools import partial
 
@@ -161,7 +165,7 @@ class framework(object):
     def set_property_twin(self, name, value, set_function_name, get_function_name, del_function_name):
         if name in self.RESERVED_KEYS:
             raise ValueError('%s is a reserved key' % name)
-        self.tensor_scalar_items.append('name')
+        self.tensor_scalar_items.append(name)
         self.__set_property_attr_twin__(name, value)
         self.__set_property__(name, set_function_name, get_function_name, del_function_name)
 
@@ -474,8 +478,13 @@ class pytorchfw(framework):
     @assert_workdir
     def _set_writer(self, **kwargs):
         if not kwargs:
-            kwargs = {'log_dir': os.path.join(self.workdir, 'tensorboard')}
-        self.summary_writer_path = kwargs['log_dir']
+            if TENSORBOARDX:
+                kwargs = {'logdir': os.path.join(self.workdir, 'tensorboard')}
+                self.summary_writer_path = kwargs['logdir']
+            else:
+                kwargs = {'log_dir': os.path.join(self.workdir, 'tensorboard')}
+                self.summary_writer_path = kwargs['log_dir']
+
         self.writer = SummaryWriter(**kwargs)
 
     def _allocate_tensor(self, x, device=None):
@@ -790,7 +799,10 @@ class pytorchfw(framework):
 
         if self.dataparallel:
             self.model = torch.nn.DataParallel(self.model)
-        self._set_writer(log_dir=os.path.join(self.workdir, 'tensorboard'))
+        if TENSORBOARDX:
+            self._set_writer(logdir=os.path.join(self.workdir, 'tensorboard'))
+        else:
+            self._set_writer(log_dir=os.path.join(self.workdir, 'tensorboard'))
 
     def save_gradients(self, absolute_iter):
         grads = self.tracker.grad(numpy=True)
