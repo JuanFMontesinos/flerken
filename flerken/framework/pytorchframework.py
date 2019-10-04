@@ -114,6 +114,7 @@ class framework(object):
         self._valid_states = ('inference', 'train', 'val', 'test')
         self.workdir_enabled = False
         self.RESERVED_KEYS = ['DATE_OF_CREATION', 'MODEL', 'LR', 'LOSS', 'ACC', 'ID']
+        self.tensor_scalar_items = []
         if not os.path.isdir(self.rootdir):
             raise Exception('Rootdir set is not a directory')
         self.db_name = 'experiment_db.sqlite'
@@ -152,10 +153,15 @@ class framework(object):
                                                    getattr(self, del_function_name)))
 
     def set_property(self, name, value, set_function_name, get_function_name, del_function_name):
+        if name in self.RESERVED_KEYS:
+            raise ValueError('%s is a reserved key' % name)
         self.__set_property_attr__(name, value)
         self.__set_property__(name, set_function_name, get_function_name, del_function_name)
 
     def set_property_twin(self, name, value, set_function_name, get_function_name, del_function_name):
+        if name in self.RESERVED_KEYS:
+            raise ValueError('%s is a reserved key' % name)
+        self.tensor_scalar_items.append('name')
         self.__set_property_attr_twin__(name, value)
         self.__set_property__(name, set_function_name, get_function_name, del_function_name)
 
@@ -193,29 +199,6 @@ class framework(object):
         self.set_property_twin(var_name, None, 'set_f', 'get_f', 'del_f')
         getattr(self, var_name + '_').data.enabled = mask
 
-    # @property
-    # def loss(self):
-    #     return self._loss
-    #
-    # @loss.setter
-    # def loss(self, loss):
-    #     self._loss = loss
-    #     if self.iterating:
-    #         self.loss_(loss, self.state)
-    #     else:
-    #         if self.state == 'train':
-    #             self.key['LOSS'] = loss
-    #         elif self.state == 'val':
-    #             self.key['VLOSS'] = loss
-    #
-    #     if self.tensorboard_enabled:
-    #         loss = loss.item()
-    #         if self.iterating:
-    #             if self.loss_.data.tuple[self.state].array.enabled:
-    #                 self.writer.add_scalars('loss', {self.state: loss}, self.absolute_iter)
-    #         else:
-    #             if self.loss_.data.tuple[self.state].epoch_array.enabled:
-    #                 self.writer.add_scalars('loss_epoch', {self.state: loss}, self.epoch)
     @property
     def state(self):
         return str(self._state)  # Protects the variable
@@ -702,7 +685,9 @@ class pytorchfw(framework):
                                                   .format(os.path.join(self.workdir, 'checkpoint_backup.pth')))
                             self.err_logger.error(str(e))
                     raise e
-        self.loss = self.loss_.data.update_epoch(self.state)
+        # self.loss = self.loss_.data.update_epoch(self.state)
+        for tsi in self.tensor_scalar_items:
+            setattr(self, tsi, getattr(self, tsi + '_').data.update_epoch(self.state))
         self.acc = self.acc_.get_acc('train')
         self.__update_db__()
         if self.CHECKPOINT_OPTS.save_type.lower() == 'cycle' and self.absolute_iter % self.CHECKPOINT_OPTS.saving_freq == 0:
@@ -734,7 +719,9 @@ class pytorchfw(framework):
                 self.loss = self.criterion(output, gt)
                 self.tensorboard_writer(self.loss, output, gt, self.absolute_iter, visualization)
                 pbar.set_postfix(loss=self.loss.item())
-        self.loss = self.loss_.data.update_epoch(self.state)
+        # self.loss = self.loss_.data.update_epoch(self.state)
+        for tsi in self.tensor_scalar_items:
+            setattr(self, tsi, getattr(self, tsi + '_').data.update_epoch(self.state))
         self.acc = self.acc_.get_acc('val')
 
     def test(self):
@@ -762,7 +749,9 @@ class pytorchfw(framework):
                 self.loss = self.criterion(output, gt)
                 self.tensorboard_writer(self.loss, output, gt, self.absolute_iter, visualization)
                 pbar.set_postfix(loss=self.loss.item())
-        self.loss = self.loss_.data.update_epoch(self.state)
+        # self.loss = self.loss_.data.update_epoch(self.state)
+        for tsi in self.tensor_scalar_items:
+            setattr(self, tsi, getattr(self, tsi + '_').data.update_epoch(self.state))
         self.acc = self.acc_.get_acc('test')
 
     def __atribute_assertion__(self):

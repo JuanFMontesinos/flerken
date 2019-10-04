@@ -1,7 +1,14 @@
 import torch
 import torch.nn as nn
+from numbers import Number
+from warnings import warn
 
-__all__=['UNet']
+__all__ = ['UNet']
+
+
+def isnumber(x):
+    return isinstance(x, Number)
+
 
 def crop(img, i, j, h, w):
     """Crop the given Image.
@@ -29,7 +36,8 @@ def center_crop(img, output_size):
 
 
 class ConvolutionalBlock(nn.Module):
-    def __init__(self, dim_in, dim_out, kernel_conv=3, kernel_MP=2, stride_conv=1, stride_MP=2, padding=1, bias=True,
+    def __init__(self, dim_in, dim_out, film, kernel_conv=3, kernel_MP=2, stride_conv=1, stride_MP=2, padding=1,
+                 bias=True,
                  useBN=False):
         super(ConvolutionalBlock, self).__init__()
         """Defines a (down)convolutional  block
@@ -49,6 +57,7 @@ class ConvolutionalBlock(nn.Module):
                 to_cat: output previous to Max Pooling for skip connections
                 to_down: Max Pooling output to be used as input for next block
         """
+        self.film = film
         self.useBN = useBN
         if self.useBN:
             self.Conv1 = nn.Conv2d(dim_in, dim_out, kernel_size=kernel_conv, stride=stride_conv, padding=padding,
@@ -69,13 +78,26 @@ class ConvolutionalBlock(nn.Module):
         self.MaxPooling = nn.MaxPool2d(kernel_size=kernel_MP, stride=stride_MP, padding=0, dilation=1,
                                        return_indices=False, ceil_mode=False)
 
-    def forward(self, x):
+        if isnumber(self.film):
+            self.scale = nn.Linear(self.film, dim_out)
+            self.bias = nn.Linear(self.film, dim_out)
+
+    def forward(self, *args):
+        if isnumber(self.film):
+            x, c = args
+        else:
+            x = args[0]
+
         if self.useBN:
             x = self.Conv1(x)
             x = self.BN1(x)
             x = self.ReLu1(x)
             x = self.Conv2(x)
             x = self.BN2(x)
+            if isnumber(self.film):
+                x = x.permute(0, 2, 3, 1)
+                x = self.scale(c) * x + self.bias(c)
+                x = x.permute(0, 3, 1, 2)
             to_cat = self.ReLu2(x)
             to_down = self.MaxPooling(to_cat)
         else:
@@ -183,9 +205,11 @@ class TransitionBlock(nn.Module):
                 x: block output
     """
 
-    def __init__(self, dim_in, dim_out, kernel_conv=3, kernel_UP=2, stride_conv=1, stride_UP=2, padding=1, bias=True,
+    def __init__(self, dim_in, dim_out, film, kernel_conv=3, kernel_UP=2, stride_conv=1, stride_UP=2, padding=1,
+                 bias=True,
                  useBN=False, ):
         super(TransitionBlock, self).__init__()
+        self.film = film
         self.useBN = useBN
         if self.useBN:
             self.Conv1 = nn.Conv2d(int(dim_in / 2), dim_in, kernel_size=kernel_conv, stride=stride_conv,
@@ -205,14 +229,25 @@ class TransitionBlock(nn.Module):
             self.ReLu2 = nn.ReLU(0)
         self.AtrousConv = nn.ConvTranspose2d(dim_in, dim_out, kernel_size=kernel_UP, stride=stride_UP, padding=0,
                                              dilation=1)
+        if isnumber(self.film):
+            self.scale = nn.Linear(self.film, dim_in)
+            self.bias = nn.Linear(self.film, dim_in)
 
-    def forward(self, x):
+    def forward(self, *args):
+        if isnumber(self.film):
+            x, c = args
+        else:
+            x = args[0]
         if self.useBN:
             x = self.Conv1(x)
             x = self.BN1(x)
             x = self.ReLu1(x)
             x = self.Conv2(x)
             x = self.BN2(x)
+            if isnumber(self.film):
+                x = x.permute(0, 2, 3, 1)
+                x = self.scale(c) * x + self.bias(c)
+                x = x.permute(0, 3, 1, 2)
             x = self.ReLu2(x)
         else:
             x = self.Conv1(x)
@@ -228,6 +263,8 @@ class UNet(nn.Module):
     """It's recommended to be very careful  while managing vectors, since they are inverted to
     set top blocks as block 0. Notice there are N upconv blocks and N-1 downconv blocks as bottom block
     is considered as upconvblock.
+
+    C-U-Net based on this paper https://arxiv.org/pdf/1904.05979.pdf
     """
     """
     Example:
@@ -244,16 +281,18 @@ class UNet(nn.Module):
 
     # TODO Use bilinear interpolation in addition to upconvolutions
 
-    def __init__(self, dimensions_vector, K, verbose=False, useBN=False, input_channels=1,
+    def __init__(self, dimensions_vector, K, film, verbose=False, useBN=False, input_channels=1,
                  activation=None, **kwargs):
         super(UNet, self).__init__()
         self.K = K
         self.printing = verbose
-
+        self.film = film
         self.useBN = useBN
 
         self.input_channels = input_channels
         self.dim = dimensions_vector
+        self.init_assertion()
+
         self.vec = range(len(self.dim))
         self.encoder = self.add_encoder(input_channels)
         self.decoder = self.add_decoder(**kwargs)
@@ -263,6 +302,13 @@ class UNet(nn.Module):
         if self.activation is not None:
             self.final_act = self.activation
 
+    def init_assertion(self):
+        assert isinstance(self.dim, (tuple, list))
+        assert isinstance(self.input_channels, int)
+        assert isinstance(self.K, int)
+        if isnumber(self.film) and self.useBN == False:
+            raise ValueError('Conditioned U-Net enabled but batch normalization disabled. C-UNet only available with BN on')
+
     def add_encoder(self, input_channels):
         encoder = []
         for i in range(len(self.dim) - 1):  # There are len(self.dim)-1 downconv blocks
@@ -270,9 +316,9 @@ class UNet(nn.Module):
                 print('Building Downconvolutional Block {} ...OK'.format(i))
             if i == 0:
                 """SET 1 IF GRAYSCALE OR 3 IF RGB========================================"""
-                encoder.append(ConvolutionalBlock(input_channels, self.dim[i], useBN=self.useBN))
+                encoder.append(ConvolutionalBlock(input_channels, self.dim[i], self.film, useBN=self.useBN))
             else:
-                encoder.append(ConvolutionalBlock(self.dim[i - 1], self.dim[i], useBN=self.useBN))
+                encoder.append(ConvolutionalBlock(self.dim[i - 1], self.dim[i], self.film, useBN=self.useBN))
         encoder = nn.Sequential(*encoder)
         return encoder
 
@@ -284,7 +330,7 @@ class UNet(nn.Module):
                 print('Building Upconvolutional Block {}...OK'.format(i))
             if i == max(self.vec):  # Special condition for lowest block
                 decoder.append(
-                    TransitionBlock(self.dim[i], self.dim[i - 1], useBN=self.useBN,
+                    TransitionBlock(self.dim[i], self.dim[i - 1], self.film, useBN=self.useBN,
                                     **kwargs))
             elif i == 0:  # Special case for last (top) upconv block
                 decoder.append(
@@ -294,20 +340,31 @@ class UNet(nn.Module):
         decoder = nn.Sequential(*decoder)
         return decoder
 
-    def forward(self, x):
+    def forward(self, *args):
+        if isnumber(self.film):
+            x, c = args
+        else:
+            x = args[0]
         if self.printing:
             print('UNet input size {0}'.format(x.size()))
         to_cat_vector = []
         for i in range(len(self.dim) - 1):
             if self.printing:
                 print('Forward Prop through DownConv block {}'.format(i))
-            to_cat, x = self.encoder[i](x)
+            if isnumber(self.film):
+
+                to_cat, x = self.encoder[i](x, c)
+            else:
+                to_cat, x = self.encoder[i](x)
             to_cat_vector.append(to_cat)
         for i in self.vec:
             if self.printing:
                 print('Concatenating and Building  UpConv Block {}'.format(i))
             if i == 0:
-                x = self.decoder[i](x)
+                if isnumber(self.film):
+                    x = self.decoder[i](x, c)
+                else:
+                    x = self.decoder[i](x)
             else:
                 x = self.decoder[i](x, to_cat_vector[-i])
         x = self.final_conv(x)
