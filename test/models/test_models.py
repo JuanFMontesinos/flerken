@@ -48,8 +48,8 @@ class TestVGG(unittest.TestCase):
 
 class TestUNet(unittest.TestCase):
     def setUp(self) -> None:
-        self.x = torch.rand(1, 1, 256, 256)
-        self.c = torch.zeros(1, 10).float()
+        self.x = torch.rand(2, 1, 256, 256)
+        self.c = torch.zeros(2, 10).float()
 
     def test_conditioned_cunet_bnon(self):
         model = UNet([16, 32, 64, 128, 256, 512], 1, 10, useBN=True, verbose=True)

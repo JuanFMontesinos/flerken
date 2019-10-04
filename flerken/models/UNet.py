@@ -95,9 +95,7 @@ class ConvolutionalBlock(nn.Module):
             x = self.Conv2(x)
             x = self.BN2(x)
             if isnumber(self.film):
-                x = x.permute(0, 2, 3, 1)
-                x = self.scale(c) * x + self.bias(c)
-                x = x.permute(0, 3, 1, 2)
+                x = self.scale(c).unsqueeze(2).unsqueeze(2) * x + self.bias(c).unsqueeze(2).unsqueeze(2)
             to_cat = self.ReLu2(x)
             to_down = self.MaxPooling(to_cat)
         else:
@@ -245,9 +243,7 @@ class TransitionBlock(nn.Module):
             x = self.Conv2(x)
             x = self.BN2(x)
             if isnumber(self.film):
-                x = x.permute(0, 2, 3, 1)
-                x = self.scale(c) * x + self.bias(c)
-                x = x.permute(0, 3, 1, 2)
+                x = self.scale(c).unsqueeze(2).unsqueeze(2) * x + self.bias(c).unsqueeze(2).unsqueeze(2)
             x = self.ReLu2(x)
         else:
             x = self.Conv1(x)
