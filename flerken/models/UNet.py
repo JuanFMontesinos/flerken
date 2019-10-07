@@ -37,7 +37,7 @@ def center_crop(img, output_size):
 
 class ConvolutionalBlock(nn.Module):
     def __init__(self, dim_in, dim_out, film, kernel_conv=3, kernel_MP=2, stride_conv=1, stride_MP=2, padding=1,
-                 bias=True,
+                 bias=True, dropout=False,
                  useBN=False, bn_momentum=0.1, **kwargs):
         super(ConvolutionalBlock, self).__init__()
         """Defines a (down)convolutional  block
@@ -57,8 +57,10 @@ class ConvolutionalBlock(nn.Module):
                 to_cat: output previous to Max Pooling for skip connections
                 to_down: Max Pooling output to be used as input for next block
         """
+        assert isinstance(dropout, Number)
         self.film = film
         self.useBN = useBN
+        self.dropout = dropout
         if self.useBN:
             self.Conv1 = nn.Conv2d(dim_in, dim_out, kernel_size=kernel_conv, stride=stride_conv, padding=padding,
                                    bias=bias)
@@ -75,6 +77,9 @@ class ConvolutionalBlock(nn.Module):
             self.Conv2 = nn.Conv2d(dim_out, dim_out, kernel_size=kernel_conv, stride=stride_conv, padding=padding,
                                    bias=bias)
             self.ReLu2 = nn.ReLU(0)
+        if self.dropout:
+            self.DO1 = nn.Dropout2d(self.dropout)
+            self.DO2 = nn.Dropout2d(self.dropout)
         self.MaxPooling = nn.MaxPool2d(kernel_size=kernel_MP, stride=stride_MP, padding=0, dilation=1,
                                        return_indices=False, ceil_mode=False)
 
@@ -92,17 +97,25 @@ class ConvolutionalBlock(nn.Module):
             x = self.Conv1(x)
             x = self.BN1(x)
             x = self.ReLu1(x)
+            if self.dropout:
+                x = self.DO1(x)
             x = self.Conv2(x)
             x = self.BN2(x)
             if isnumber(self.film):
                 x = self.scale(c).unsqueeze(2).unsqueeze(2) * x + self.bias(c).unsqueeze(2).unsqueeze(2)
             to_cat = self.ReLu2(x)
+            if self.dropout:
+                to_cat = self.DO2(to_cat)
             to_down = self.MaxPooling(to_cat)
         else:
             x = self.Conv1(x)
             x = self.ReLu1(x)
+            if self.dropout:
+                x = self.DO1(x)
             x = self.Conv2(x)
             to_cat = self.ReLu2(x)
+            if self.dropout:
+                to_cat = self.DO2(to_cat)
             to_down = self.MaxPooling(to_cat)
 
         return to_cat, to_down
@@ -110,7 +123,7 @@ class ConvolutionalBlock(nn.Module):
 
 class AtrousBlock(nn.Module):
     def __init__(self, dim_in, dim_out, kernel_conv=3, kernel_UP=2, stride_conv=1, stride_UP=2, padding=1, bias=True,
-                 useBN=False, finalblock=False, printing=False, bn_momentum=0.1, **kwargs):
+                 useBN=False, finalblock=False, printing=False, bn_momentum=0.1, dropout=False, **kwargs):
         """Defines a upconvolutional  block
         Args:
             dim_in: int dimension of feature maps of block input.
@@ -134,6 +147,8 @@ class AtrousBlock(nn.Module):
         self.useBN = useBN
         self.finalblock = finalblock
         self.printing = printing
+        self.dropout = dropout
+        assert isinstance(dropout, Number)
         if self.useBN:
 
             self.Conv1 = nn.Conv2d(2 * dim_in, dim_in, kernel_size=kernel_conv, stride=stride_conv, padding=padding,
@@ -152,7 +167,9 @@ class AtrousBlock(nn.Module):
             self.Conv2 = nn.Conv2d(dim_in, dim_in, kernel_size=kernel_conv, stride=stride_conv, padding=padding,
                                    bias=bias)
             self.ReLu2 = nn.ReLU(0)
-
+        if self.dropout:
+            self.DO1 = nn.Dropout2d(self.dropout)
+            self.DO2 = nn.Dropout2d(self.dropout)
         if not finalblock:
             self.AtrousConv = nn.ConvTranspose2d(dim_in, dim_out, kernel_size=kernel_UP, stride=stride_UP, padding=0,
                                                  dilation=1)
@@ -166,10 +183,14 @@ class AtrousBlock(nn.Module):
             x = torch.cat((x, to_cat), dim=1)
             x = self.Conv1(x)
             x = self.BN1(x)
+            if self.dropout:
+                x = self.DO1(x)
             x = self.ReLu1(x)
             x = self.Conv2(x)
             x = self.BN2(x)
             x = self.ReLu2(x)
+            if self.dropout:
+                x = self.DO2(x)
             if not self.finalblock:
                 x = self.AtrousConv(x)
         else:
@@ -177,8 +198,12 @@ class AtrousBlock(nn.Module):
             x = torch.cat((x, to_cat), dim=1)
             x = self.Conv1(x)
             x = self.ReLu1(x)
+            if self.dropout:
+                x = self.DO1(x)
             x = self.Conv2(x)
             x = self.ReLu2(x)
+            if self.dropout:
+                x = self.DO2(x)
             if not self.finalblock:
                 x = self.AtrousConv(x)
         return x
@@ -287,7 +312,7 @@ class UNet(nn.Module):
 
         self.input_channels = input_channels
         self.dim = dimensions_vector
-        self.init_assertion()
+        self.init_assertion(**kwargs)
 
         self.vec = range(len(self.dim))
         self.encoder = self.add_encoder(input_channels, **kwargs)
@@ -298,7 +323,7 @@ class UNet(nn.Module):
         if self.activation is not None:
             self.final_act = self.activation
 
-    def init_assertion(self):
+    def init_assertion(self, **kwargs):
         assert isinstance(self.dim, (tuple, list))
         for x in self.dim:
             assert x % 2 == 0
@@ -308,7 +333,16 @@ class UNet(nn.Module):
         assert self.input_channels > 0
         assert isinstance(self.K, int)
         assert self.K > 0
-
+        if kwargs.get('dropout') is not None:
+            dropout = kwargs['dropout']
+            assert isinstance(dropout, Number)
+            assert dropout >= 0
+            assert dropout <= 1
+        if kwargs.get('bn_momentum') is not None:
+            bn_momentum = kwargs['bn_momentum']
+            assert isinstance(bn_momentum, Number)
+            assert bn_momentum >= 0
+            assert bn_momentum <= 1
         if isnumber(self.film) and self.useBN == False:
             raise ValueError(
                 'Conditioned U-Net enabled but batch normalization disabled. C-UNet only available with BN on.' \
