@@ -38,7 +38,7 @@ def center_crop(img, output_size):
 class ConvolutionalBlock(nn.Module):
     def __init__(self, dim_in, dim_out, film, kernel_conv=3, kernel_MP=2, stride_conv=1, stride_MP=2, padding=1,
                  bias=True,
-                 useBN=False):
+                 useBN=False, bn_momentum=0.1, **kwargs):
         super(ConvolutionalBlock, self).__init__()
         """Defines a (down)convolutional  block
         Args:
@@ -62,11 +62,11 @@ class ConvolutionalBlock(nn.Module):
         if self.useBN:
             self.Conv1 = nn.Conv2d(dim_in, dim_out, kernel_size=kernel_conv, stride=stride_conv, padding=padding,
                                    bias=bias)
-            self.BN1 = nn.BatchNorm2d(dim_out)
+            self.BN1 = nn.BatchNorm2d(dim_out, momentum=bn_momentum)
             self.ReLu1 = nn.LeakyReLU(0.1)
             self.Conv2 = nn.Conv2d(dim_out, dim_out, kernel_size=kernel_conv, stride=stride_conv, padding=padding,
                                    bias=bias)
-            self.BN2 = nn.BatchNorm2d(dim_out)
+            self.BN2 = nn.BatchNorm2d(dim_out, momentum=bn_momentum)
             self.ReLu2 = nn.LeakyReLU(0.1)
         else:
             self.Conv1 = nn.Conv2d(dim_in, dim_out, kernel_size=kernel_conv, stride=stride_conv, padding=padding,
@@ -110,7 +110,7 @@ class ConvolutionalBlock(nn.Module):
 
 class AtrousBlock(nn.Module):
     def __init__(self, dim_in, dim_out, kernel_conv=3, kernel_UP=2, stride_conv=1, stride_UP=2, padding=1, bias=True,
-                 useBN=False, finalblock=False, printing=False):
+                 useBN=False, finalblock=False, printing=False, bn_momentum=0.1, **kwargs):
         """Defines a upconvolutional  block
         Args:
             dim_in: int dimension of feature maps of block input.
@@ -138,11 +138,11 @@ class AtrousBlock(nn.Module):
 
             self.Conv1 = nn.Conv2d(2 * dim_in, dim_in, kernel_size=kernel_conv, stride=stride_conv, padding=padding,
                                    bias=bias)
-            self.BN1 = nn.BatchNorm2d(dim_in)
+            self.BN1 = nn.BatchNorm2d(dim_in, momentum=bn_momentum)
             self.ReLu1 = nn.LeakyReLU(0.1)
             self.Conv2 = nn.Conv2d(dim_in, dim_in, kernel_size=kernel_conv, stride=stride_conv, padding=padding,
                                    bias=bias)
-            self.BN2 = nn.BatchNorm2d(dim_in)
+            self.BN2 = nn.BatchNorm2d(dim_in, momentum=bn_momentum)
             self.ReLu2 = nn.LeakyReLU(0.1)
         else:
 
@@ -205,18 +205,18 @@ class TransitionBlock(nn.Module):
 
     def __init__(self, dim_in, dim_out, film, kernel_conv=3, kernel_UP=2, stride_conv=1, stride_UP=2, padding=1,
                  bias=True,
-                 useBN=False, ):
+                 useBN=False, bn_momentum=0.1, **kwargs):
         super(TransitionBlock, self).__init__()
         self.film = film
         self.useBN = useBN
         if self.useBN:
             self.Conv1 = nn.Conv2d(int(dim_in / 2), dim_in, kernel_size=kernel_conv, stride=stride_conv,
                                    padding=padding, bias=bias)
-            self.BN1 = nn.BatchNorm2d(dim_in)
+            self.BN1 = nn.BatchNorm2d(dim_in, momentum=bn_momentum)
             self.ReLu1 = nn.LeakyReLU(0.1)
             self.Conv2 = nn.Conv2d(dim_in, dim_in, kernel_size=kernel_conv, stride=stride_conv, padding=padding,
                                    bias=bias)
-            self.BN2 = nn.BatchNorm2d(dim_in)
+            self.BN2 = nn.BatchNorm2d(dim_in, momentum=bn_momentum)
             self.ReLu2 = nn.LeakyReLU(0.1)
         else:
             self.Conv1 = nn.Conv2d(int(dim_in / 2), dim_in, kernel_size=kernel_conv, stride=stride_conv,
@@ -290,7 +290,7 @@ class UNet(nn.Module):
         self.init_assertion()
 
         self.vec = range(len(self.dim))
-        self.encoder = self.add_encoder(input_channels)
+        self.encoder = self.add_encoder(input_channels, **kwargs)
         self.decoder = self.add_decoder(**kwargs)
 
         self.activation = activation
@@ -314,16 +314,16 @@ class UNet(nn.Module):
                 'Conditioned U-Net enabled but batch normalization disabled. C-UNet only available with BN on.' \
                 ' Note: from a Python perspective, booleans are integers, thus numbers')
 
-    def add_encoder(self, input_channels):
+    def add_encoder(self, input_channels, **kwargs):
         encoder = []
         for i in range(len(self.dim) - 1):  # There are len(self.dim)-1 downconv blocks
             if self.printing:
                 print('Building Downconvolutional Block {} ...OK'.format(i))
             if i == 0:
                 """SET 1 IF GRAYSCALE OR 3 IF RGB========================================"""
-                encoder.append(ConvolutionalBlock(input_channels, self.dim[i], self.film, useBN=self.useBN))
+                encoder.append(ConvolutionalBlock(input_channels, self.dim[i], self.film, useBN=self.useBN, **kwargs))
             else:
-                encoder.append(ConvolutionalBlock(self.dim[i - 1], self.dim[i], self.film, useBN=self.useBN))
+                encoder.append(ConvolutionalBlock(self.dim[i - 1], self.dim[i], self.film, useBN=self.useBN, **kwargs))
         encoder = nn.Sequential(*encoder)
         return encoder
 
@@ -335,13 +335,12 @@ class UNet(nn.Module):
                 print('Building Upconvolutional Block {}...OK'.format(i))
             if i == max(self.vec):  # Special condition for lowest block
                 decoder.append(
-                    TransitionBlock(self.dim[i], self.dim[i - 1], self.film, useBN=self.useBN,
-                                    **kwargs))
+                    TransitionBlock(self.dim[i], self.dim[i - 1], self.film, useBN=self.useBN, **kwargs))
             elif i == 0:  # Special case for last (top) upconv block
                 decoder.append(
-                    AtrousBlock(self.dim[i], self.dim[i - 1], finalblock=True, useBN=self.useBN))
+                    AtrousBlock(self.dim[i], self.dim[i - 1], finalblock=True, useBN=self.useBN, **kwargs))
             else:
-                decoder.append(AtrousBlock(self.dim[i], self.dim[i - 1], useBN=self.useBN))
+                decoder.append(AtrousBlock(self.dim[i], self.dim[i - 1], useBN=self.useBN, **kwargs))
         decoder = nn.Sequential(*decoder)
         return decoder
 

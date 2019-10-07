@@ -88,3 +88,13 @@ class TestUNet(unittest.TestCase):
         out = model(self.x, self.c)
         self.assertFalse((out < 0).any().item())
         self.assertFalse((out > 1).any().item())
+
+    def test_conditioned_unet_bnmomentum(self):
+        MOMENTUM = 0.6
+        model = UNet([16, 32, 64, 128, 256, 512], 1, 10, useBN=True, verbose=True, bn_momentum=MOMENTUM)
+        for i in range(len(model.encoder._modules)):
+            assert model.encoder._modules[str(i)].BN1.momentum == MOMENTUM
+            assert model.encoder._modules[str(i)].BN2.momentum == MOMENTUM
+        for i in range(len(model.decoder._modules)):
+            assert model.decoder._modules[str(i)].BN1.momentum == MOMENTUM
+            assert model.decoder._modules[str(i)].BN2.momentum == MOMENTUM
