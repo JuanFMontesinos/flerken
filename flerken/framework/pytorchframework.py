@@ -622,7 +622,7 @@ class pytorchfw(framework):
         if self.state == 'train':
             self.train_epoch(*args, **kwargs)
         elif self.state == 'val':
-            self.validate_epoch(dataloader=self.val_loader, *args, **kwargs)
+            self.validate(dataloader=self.val_loader, *args, **kwargs)
         elif self.state == 'inference':
             self.inference(*args, **kwargs)
         elif self.state == 'test':
