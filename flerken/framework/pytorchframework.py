@@ -59,6 +59,7 @@ def set_training(func):
         self.key['OPTIMIZER'] = str(self.optimizer)
         self.key['MODEL'] = self.model_version
         self.key['SCHEDULER'] = str(self.scheduler)
+        self.key['BATCH_SIZE'] = int(self.batch_size)
         self.__update_db__()
         return func(*args, **kwargs)
 
@@ -621,11 +622,11 @@ class pytorchfw(framework):
         if self.state == 'train':
             self.train_epoch(*args, **kwargs)
         elif self.state == 'val':
-            self.validate_epoch(*args, **kwargs)
+            self.validate_epoch(dataloader=self.val_loader, *args, **kwargs)
         elif self.state == 'inference':
             self.inference(*args, **kwargs)
         elif self.state == 'test':
-            self.test(*args, **kwargs)
+            self.test(dataloader=self.test_loader, *args, **kwargs)
         else:
             raise ValueError('Not existing forwarding mode')
 
@@ -703,19 +704,21 @@ class pytorchfw(framework):
             self.save_checkpoint()
         # probably does not require dense tracking
 
-    def validate_epoch(self):
+    def validate(self, dataloader):
         """
         Analogous for train_epoch.
         :return: None
         """
-        with tqdm(self.val_loader, desc='Validation: [{0}/{1}]'.format(self.epoch, self.EPOCHS)) as pbar, ctx_iter(
+        with tqdm(dataloader, desc='{2}: [{0}/{1}]'.format(self.epoch, self.EPOCHS, self.state)) as pbar, ctx_iter(
                 self):
+            c = -1
             for gt, inputs, visualization in pbar:
+                c += 1
                 self.loss_.data.update_timed()
                 inputs = self._allocate_tensor(inputs)
 
                 output = self.model(*inputs) if isinstance(inputs, list) else self.model(inputs)
-                self.acc_('val', gt, output)
+                self.acc_(self.state, gt, output)
                 if hasattr(self, 'outputdevice'):
                     device = torch.device(self.outputdevice)
                 else:
@@ -726,42 +729,11 @@ class pytorchfw(framework):
 
                 gt = self._allocate_tensor(gt, device=device)
                 self.loss = self.criterion(output, gt)
-                self.tensorboard_writer(self.loss, output, gt, self.absolute_iter, visualization)
+                self.tensorboard_writer(self.loss, output, gt, c, visualization)
                 pbar.set_postfix(loss=self.loss.item())
-        # self.loss = self.loss_.data.update_epoch(self.state)
         for tsi in self.tensor_scalar_items:
             setattr(self, tsi, getattr(self, tsi + '_').data.update_epoch(self.state))
-        self.acc = self.acc_.get_acc('val')
-
-    def test(self):
-        """
-        Analogous to train_epoch.
-        :return: None
-        """
-        with tqdm(self.val_loader, desc='Test: [{0}/{1}]'.format(self.epoch, self.EPOCHS)) as pbar, ctx_iter(
-                self):
-            for gt, inputs, visualization in pbar:
-                self.loss_.data.update_timed()
-                inputs = self._allocate_tensor(inputs)
-
-                output = self.model(*inputs) if isinstance(inputs, list) else self.model(inputs)
-                self.acc_('test', gt, output)
-                if hasattr(self, 'outputdevice'):
-                    device = torch.device(self.outputdevice)
-                else:
-                    if isinstance(output, (list, tuple)):
-                        device = output[0].device
-                    else:
-                        device = output.device
-
-                gt = self._allocate_tensor(gt, device=device)
-                self.loss = self.criterion(output, gt)
-                self.tensorboard_writer(self.loss, output, gt, self.absolute_iter, visualization)
-                pbar.set_postfix(loss=self.loss.item())
-        # self.loss = self.loss_.data.update_epoch(self.state)
-        for tsi in self.tensor_scalar_items:
-            setattr(self, tsi, getattr(self, tsi + '_').data.update_epoch(self.state))
-        self.acc = self.acc_.get_acc('test')
+        self.acc = self.acc_.get_acc(self.state)
 
     def __atribute_assertion__(self):
         assert hasattr(self, 'assertion_variables')

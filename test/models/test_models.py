@@ -54,7 +54,12 @@ class TestUNet(unittest.TestCase):
     def test_conditioned_cunet_bnon(self):
         model = UNet([16, 32, 64, 128, 256, 512], 1, 10, useBN=True, verbose=True)
         out = model(self.x, self.c)
-
+    def test_conditioned_unet_dropout(self):
+        model = UNet([16, 32, 64, 128], 1, 10, useBN=True, verbose=True,dropout=0.5)
+        out = model(self.x, self.c)
+    def test_conditioned_unet_bn_momentum(self):
+        model = UNet([16, 32, 64, 128], 1, 10, useBN=True, verbose=True,bn_momentum=0.5)
+        out = model(self.x, self.c)
     def test_conditioned_cunet_bnoff(self):
         with self.assertRaises(ValueError):
             model = UNet([16, 32, 64, 128, 256, 512], 1, 10, useBN=False, verbose=True)
@@ -83,13 +88,19 @@ class TestUNet(unittest.TestCase):
         with self.assertRaises(AssertionError):
             model = UNet([16, 32], -1, None, useBN=False, verbose=True)
 
+    def test_dropout_assertion(self):
+        with self.assertRaises(AssertionError):
+            model = UNet([16, 32], 1, None, useBN=False, verbose=True, dropout=7)
+        with self.assertRaises(AssertionError):
+            model = UNet([16, 32], 1, None, useBN=False, verbose=True, dropout='pizza')
+
     def test_activation(self):
         model = UNet([16, 32, 64, 128], 1, 10, activation=torch.nn.Sigmoid(), useBN=True, verbose=True)
         out = model(self.x, self.c)
         self.assertFalse((out < 0).any().item())
         self.assertFalse((out > 1).any().item())
 
-    def test_conditioned_unet_bnmomentum(self):
+    def test_unet_bnmomentum(self):
         MOMENTUM = 0.6
         model = UNet([16, 32, 64, 128, 256, 512], 1, 10, useBN=True, verbose=True, bn_momentum=MOMENTUM)
         for i in range(len(model.encoder._modules)):
@@ -98,3 +109,13 @@ class TestUNet(unittest.TestCase):
         for i in range(len(model.decoder._modules)):
             assert model.decoder._modules[str(i)].BN1.momentum == MOMENTUM
             assert model.decoder._modules[str(i)].BN2.momentum == MOMENTUM
+
+    def test_unet_bnmomentum_assertion(self):
+        MOMENTUM = 'jamon'
+
+        with self.assertRaises(AssertionError):
+            model = UNet([16, 32, 64], 1, None, useBN=True, verbose=True, bn_momentum=MOMENTUM)
+        with self.assertRaises(AssertionError):
+            model = UNet([16, 32, 64], 1, None, useBN=True, verbose=True, bn_momentum=14)
+        with self.assertRaises(AssertionError):
+            model = UNet([16, 32, 64], 1, None, useBN=True, verbose=True, bn_momentum=-1)

@@ -187,7 +187,9 @@ class STFT(object):
     def __call__(self, raw_wf):
         if raw_wf.device != self.window.device:
             window = self.window.to(raw_wf.device)
-        stft = torch.stft(raw_wf, window=window, normalization=self.normalization, n_fft=self.n_fft,
+        else:
+            window = self.window
+        stft = torch.stft(raw_wf, window=window, n_fft=self.n_fft,
                           hop_length=self.hop_length, win_length=self.win_length,
                           center=self.center, pad_mode=self.pad_mode, normalized=self.normalized,
                           onesided=self.onesided)

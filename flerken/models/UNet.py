@@ -183,13 +183,13 @@ class AtrousBlock(nn.Module):
             x = torch.cat((x, to_cat), dim=1)
             x = self.Conv1(x)
             x = self.BN1(x)
-            if self.dropout:
+            if self.dropout and not self.finalblock:
                 x = self.DO1(x)
             x = self.ReLu1(x)
             x = self.Conv2(x)
             x = self.BN2(x)
             x = self.ReLu2(x)
-            if self.dropout:
+            if self.dropout and not self.finalblock:
                 x = self.DO2(x)
             if not self.finalblock:
                 x = self.AtrousConv(x)
