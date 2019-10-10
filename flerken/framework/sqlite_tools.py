@@ -16,6 +16,7 @@ def init_table(cursor, table, verbose=False):
          (ID TEXT PRIMARY KEY     NOT NULL,
          DATE_OF_CREATION            TEXT     NOT NULL,
          MODEL TEXT ,
+         BATCH_SIZE INTEGER,
          LR REAL,
          LOSS REAL,
          ACC REAL,
