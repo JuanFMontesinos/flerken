@@ -1,7 +1,7 @@
 import unittest
 from . import toy_fw, toy_example
 import torch
-
+from flerken.framework.debug import NaNError, InfError
 import shutil
 
 
@@ -31,7 +31,7 @@ class TestFramework(unittest.TestCase):
     def test_train_and_resume(self):
         from numbers import Number
         from flerken.framework import classitems
-        self.fw = toy_fw(toy_example(), './', None, 'cpu', True)
+        self.fw = toy_fw(toy_example(), './', None, 'cpu', True, debug=False)
         self.fw.train()
         self.assertIsInstance(self.fw.loss, float)
         self.assertIsInstance(self.fw.key['ACC'], Number)
@@ -53,6 +53,12 @@ class TestFramework(unittest.TestCase):
             else:
                 self.assertEqual(self.fw.key[x], key[x])
 
+
+
+    def test_train_debugger_normal(self):
+        fw = toy_fw(toy_example(isnan=True), './', None, 'cpu', True, debug=True)
+        with self.assertRaises(NaNError):
+            fw.train()
     def test_set_model_training(self):
         flag = self.fw.set_model_training(True)
         self.assertTrue(flag)

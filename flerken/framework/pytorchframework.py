@@ -20,6 +20,7 @@ from . import *
 from tqdm import tqdm
 from functools import wraps
 from ._options import *
+from .debug import NaNError, InfError, Debugger
 
 try:
     from torch.utils.tensorboard import SummaryWriter
@@ -181,7 +182,7 @@ class framework(object):
         if self.iterating:
             pointer(val, self.state)
         else:
-            if val == 'loss':
+            if name == 'loss':
                 if self.state == 'train':
                     self.key['LOSS'] = val
                 elif self.state == 'val':
@@ -347,7 +348,7 @@ class framework(object):
 
 class pytorchfw(framework):
     def __init__(self, model: torch.nn.Module, rootdir: str, workname: (str, None), main_device: (int, str),
-                 trackgrad: bool) -> None:
+                 trackgrad: bool, debug=False) -> None:
         """
         PyTorch Framework init function.
 
@@ -361,11 +362,17 @@ class pytorchfw(framework):
         :type main_device: str,int,torch.device
 
         """
-        super(pytorchfw, self).__init__(model, rootdir, workname)
+        self.debug = debug
+        if self.debug:
+            super(pytorchfw, self).__init__(Debugger(model, raise_exception=True), rootdir, workname)
+        else:
+            super(pytorchfw, self).__init__(model, rootdir, workname)
+
         self.checkpoint_name = 'checkpoint.pth'
         self.cuda = torch.cuda.is_available()
         self._main_device = 'cuda:{0}'.format(int(main_device)) if self.cuda and main_device != 'cpu' else 'cpu'
         self.main_device = self._main_device
+
         if main_device != 'cpu':
             self.model.to(self.main_device)
         self.inizilizable_layers = [self.model]
@@ -626,9 +633,29 @@ class pytorchfw(framework):
         elif self.state == 'inference':
             self.inference(*args, **kwargs)
         elif self.state == 'test':
-            self.test(dataloader=self.test_loader, *args, **kwargs)
+            self.validate(dataloader=self.test_loader, *args, **kwargs)
         else:
             raise ValueError('Not existing forwarding mode')
+
+    def error_handled_forward(self, c, inputs):
+        try:
+            output = self.model(*inputs) if isinstance(inputs, list) else self.model(inputs)
+        except InfError as ex:
+            raise type(ex)(
+                str(
+                    ex) + 'Inf detected! Iteration %d, epoch %d. Mode %s' % (c, self.epoch, self.state)).with_traceback(
+                sys.exc_info()[2])
+        except NaNError as ex:
+            raise type(ex)(
+                str(
+                    ex) + 'Nan detected! Iteration %d, epoch %d. Mode %s' % (c, self.epoch, self.state)).with_traceback(
+                sys.exc_info()[2])
+        except Exception as ex:
+            raise type(ex)(
+                str(
+                    ex) + 'Error raised. Iteration %d, epoch %d. Mode %s' % (c, self.epoch, self.state)).with_traceback(
+                sys.exc_info()[2])
+        return output
 
     def train_epoch(self, logger):
         """
@@ -654,7 +681,7 @@ class pytorchfw(framework):
                     if self.TRAINING_OPTIONS.allocate_inputs:
                         inputs = self._allocate_tensor(inputs)
 
-                    output = self.model(*inputs) if isinstance(inputs, list) else self.model(inputs)
+                    output = self.error_handled_forward(self.absolute_iter, inputs)
 
                     if self.TRAINING_OPTIONS.allocate_gt:
                         if hasattr(self, 'outputdevice'):
@@ -717,7 +744,7 @@ class pytorchfw(framework):
                 self.loss_.data.update_timed()
                 inputs = self._allocate_tensor(inputs)
 
-                output = self.model(*inputs) if isinstance(inputs, list) else self.model(inputs)
+                output = self.error_handled_forward(c, inputs)
                 self.acc_(self.state, gt, output)
                 if hasattr(self, 'outputdevice'):
                     device = torch.device(self.outputdevice)
