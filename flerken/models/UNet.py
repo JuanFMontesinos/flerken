@@ -122,7 +122,8 @@ class ConvolutionalBlock(nn.Module):
 
 
 class AtrousBlock(nn.Module):
-    def __init__(self, dim_in, dim_out, kernel_conv=3, kernel_UP=2, stride_conv=1, stride_UP=2, padding=1, bias=True,
+    def __init__(self, dim_in, dim_out, film, kernel_conv=3, kernel_UP=2, stride_conv=1, stride_UP=2, padding=1,
+                 bias=True,
                  useBN=False, finalblock=False, printing=False, bn_momentum=0.1, dropout=False, **kwargs):
         """Defines a upconvolutional  block
         Args:
@@ -148,6 +149,7 @@ class AtrousBlock(nn.Module):
         self.finalblock = finalblock
         self.printing = printing
         self.dropout = dropout
+        self.film = film
         assert isinstance(dropout, Number)
         if self.useBN:
 
@@ -173,8 +175,16 @@ class AtrousBlock(nn.Module):
         if not finalblock:
             self.AtrousConv = nn.ConvTranspose2d(dim_in, dim_out, kernel_size=kernel_UP, stride=stride_UP, padding=0,
                                                  dilation=1)
+        if isnumber(self.film):
+            self.scale = nn.Linear(self.film, dim_in)
+            self.bias = nn.Linear(self.film, dim_in)
 
-    def forward(self, x, to_cat=None):
+    def forward(self, *args):
+        if isnumber(self.film):
+            x, to_cat, c = args
+        else:
+            x, to_cat = args
+
         if self.printing:
             print('Incoming variable from previous Upconv Block: {}'.format(x.size()))
 
@@ -188,6 +198,8 @@ class AtrousBlock(nn.Module):
             x = self.ReLu1(x)
             x = self.Conv2(x)
             x = self.BN2(x)
+            if isnumber(self.film):
+                x = self.scale(c).unsqueeze(2).unsqueeze(2) * x + self.bias(c).unsqueeze(2).unsqueeze(2)
             x = self.ReLu2(x)
             if self.dropout and not self.finalblock:
                 x = self.DO2(x)
@@ -307,7 +319,13 @@ class UNet(nn.Module):
         super(UNet, self).__init__()
         self.K = K
         self.printing = verbose
-        self.film = film
+        if film is None:
+            self.film = None
+            self.film_where = []
+        elif isinstance(film, (tuple, list)):
+            self.film, self.film_where = film
+        else:
+            raise TypeError('Argument film must be None or tuple/list')
         self.useBN = useBN
 
         self.input_channels = input_channels
@@ -315,8 +333,20 @@ class UNet(nn.Module):
         self.init_assertion(**kwargs)
 
         self.vec = range(len(self.dim))
-        self.encoder = self.add_encoder(input_channels, **kwargs)
-        self.decoder = self.add_decoder(**kwargs)
+        if 'e' in self.film_where:
+            self.encoder = self.add_encoder(input_channels, self.film, **kwargs)
+        else:
+            self.encoder = self.add_encoder(input_channels, None, **kwargs)
+        if 'd' in self.film_where:
+            film_d = self.film
+        else:
+            film_d = None
+        if 'l' in self.film_where:
+            film_l = self.film
+        else:
+            film_l = None
+
+        self.decoder = self.add_decoder(film_d, film_l, **kwargs)
 
         self.activation = activation
         self.final_conv = nn.Conv2d(self.dim[0], self.K, kernel_size=1, stride=1, padding=0)
@@ -324,6 +354,10 @@ class UNet(nn.Module):
             self.final_act = self.activation
 
     def init_assertion(self, **kwargs):
+        if self.film is not None:
+            assert isinstance(self.film, Number)
+            for c in list(self.film_where):
+                assert c.lower() in ('e', 'd', 'l')
         assert isinstance(self.dim, (tuple, list))
         for x in self.dim:
             assert x % 2 == 0
@@ -348,20 +382,20 @@ class UNet(nn.Module):
                 'Conditioned U-Net enabled but batch normalization disabled. C-UNet only available with BN on.' \
                 ' Note: from a Python perspective, booleans are integers, thus numbers')
 
-    def add_encoder(self, input_channels, **kwargs):
+    def add_encoder(self, input_channels, film, **kwargs):
         encoder = []
         for i in range(len(self.dim) - 1):  # There are len(self.dim)-1 downconv blocks
             if self.printing:
                 print('Building Downconvolutional Block {} ...OK'.format(i))
             if i == 0:
                 """SET 1 IF GRAYSCALE OR 3 IF RGB========================================"""
-                encoder.append(ConvolutionalBlock(input_channels, self.dim[i], self.film, useBN=self.useBN, **kwargs))
+                encoder.append(ConvolutionalBlock(input_channels, self.dim[i], film, useBN=self.useBN, **kwargs))
             else:
-                encoder.append(ConvolutionalBlock(self.dim[i - 1], self.dim[i], self.film, useBN=self.useBN, **kwargs))
+                encoder.append(ConvolutionalBlock(self.dim[i - 1], self.dim[i], film, useBN=self.useBN, **kwargs))
         encoder = nn.Sequential(*encoder)
         return encoder
 
-    def add_decoder(self, **kwargs):
+    def add_decoder(self, film_d, film_l, **kwargs):
         decoder = []
         for i in self.vec[::-1]:  # [::-1] inverts the order to set top layer as layer 0 and to order
             # layers from the bottom to above according to  flow of information.
@@ -369,12 +403,12 @@ class UNet(nn.Module):
                 print('Building Upconvolutional Block {}...OK'.format(i))
             if i == max(self.vec):  # Special condition for lowest block
                 decoder.append(
-                    TransitionBlock(self.dim[i], self.dim[i - 1], self.film, useBN=self.useBN, **kwargs))
+                    TransitionBlock(self.dim[i], self.dim[i - 1], film_l, useBN=self.useBN, **kwargs))
             elif i == 0:  # Special case for last (top) upconv block
                 decoder.append(
-                    AtrousBlock(self.dim[i], self.dim[i - 1], finalblock=True, useBN=self.useBN, **kwargs))
+                    AtrousBlock(self.dim[i], self.dim[i - 1], film_d, finalblock=True, useBN=self.useBN, **kwargs))
             else:
-                decoder.append(AtrousBlock(self.dim[i], self.dim[i - 1], useBN=self.useBN, **kwargs))
+                decoder.append(AtrousBlock(self.dim[i], self.dim[i - 1], film_d, useBN=self.useBN, **kwargs))
         decoder = nn.Sequential(*decoder)
         return decoder
 
@@ -404,7 +438,10 @@ class UNet(nn.Module):
                 else:
                     x = self.decoder[i](x)
             else:
-                x = self.decoder[i](x, to_cat_vector[-i])
+                if isnumber(self.film):
+                    x = self.decoder[i](x, to_cat_vector[-i], c)
+                else:
+                    x = self.decoder[i](x, to_cat_vector[-i])
         x = self.final_conv(x)
         if self.activation is not None:
             x = self.final_act(x)
