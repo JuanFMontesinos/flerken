@@ -7,7 +7,6 @@ import numpy as np
 import logging
 import random
 import sys
-import time
 import shutil
 import datetime
 from collections import OrderedDict
@@ -16,11 +15,13 @@ from . import utils as ptutils, network_initialization, sqlite_tools
 from .traceback_gradients import tracegrad
 from . import classitems
 from .classitems import GradientPlotter as tracegrad
+from ..utils import BaseDict
 from . import *
 from tqdm import tqdm
 from functools import wraps
 from ._options import *
 from .debug import NaNError, InfError, Debugger
+from . import meters
 
 try:
     from torch.utils.tensorboard import SummaryWriter
@@ -45,15 +46,11 @@ def set_training(func):
         self = args[0]
         self.hyperparameters()
         self.__atribute_assertion__()
-        if isinstance(self.acc_, classitems.TensorAccuracyItem):
-            if self.acc_.gt_transforms == 'auto':
-                self.acc_.predict_gt_transforms(self.criterion)
-            if self.acc_.pred_transforms == 'auto':
-                self.acc_.predict_pred_transforms(self.criterion)
 
         if not hasattr(self, 'init_function'):
             self.init_function = partial(network_initialization.init_weights, init_type=self.initializer)
         self.scheduler = classitems.Scheduler(self.scheduler)
+        self.init_loss()
         self._train()
 
         self.key['LR'] = self.LR  # TODO Learning rate reduction by hand does not overwrite optimizer
@@ -130,9 +127,10 @@ class framework(object):
         self.init_workname(workname)
         self._state = 'train'
 
-    def __set_property_attr_twin__(self, name, value):
+    def __set_property_attr_twin__(self, name, value, **kwargs):
         setattr(self, '_' + name, value)
-        setattr(self, name + '_', classitems.TensorScalarItem())
+        obj = meters.get_scalar_warehouse(**kwargs)
+        setattr(self, name + '_', obj)
 
     def __set_property_attr__(self, name, value):
         setattr(self, '_' + name, value)
@@ -177,23 +175,35 @@ class framework(object):
 
     @staticmethod
     def set_f(self, val, name):
+        if name == 'acc':
+            val, table = val
+
         setattr(self, '_' + name, val)
         pointer = getattr(self, name + '_')
+        if torch.is_tensor(val):
+            item = val.item()
+        else:
+            item = val
         if self.iterating:
-            pointer(val, self.state)
+            pointer[self.state].send(item)
         else:
             if name == 'loss':
                 if self.state == 'train':
-                    self.key['LOSS'] = val
+                    self.key['LOSS'] = item
                 elif self.state == 'val':
-                    self.key['VLOSS'] = val
+                    self.key['VLOSS'] = item
+            elif name == 'acc':
+                if self.state == 'train':
+                    self.key['ACC'] = item
+                elif self.state == 'val':
+                    self.key['VACC'] = item
         if self.tensorboard_enabled:
-            item = val.item()
+
             if self.iterating:
-                if pointer.data.tuple[self.state].array.enabled:
+                if pointer[self.state]['iter'].enabled and self.metrics[name][self.state].on_the_fly:
                     self.writer.add_scalars('%s_iter' % name, {self.state: item}, self.absolute_iter)
             else:
-                if pointer.data.tuple[self.state].epoch_array.enabled:
+                if pointer[self.state]['epoch'].enabled:
                     self.writer.add_scalars('%s_epoch' % name, {self.state: item}, self.epoch)
 
     @staticmethod
@@ -201,9 +211,8 @@ class framework(object):
         delattr(self, '_' + name)
         delattr(self, name + '_')
 
-    def set_tensor_scalar_item(self, var_name, mask=0x110101):
+    def set_tensor_scalar_item(self, var_name):
         self.set_property_twin(var_name, None, 'set_f', 'get_f', 'del_f')
-        getattr(self, var_name + '_').data.enabled = mask
 
     @property
     def state(self):
@@ -376,9 +385,8 @@ class pytorchfw(framework):
         if main_device != 'cpu':
             self.model.to(self.main_device)
         self.inizilizable_layers = [self.model]
-        # self.loss_ = classitems.TensorScalarItem()
-        self.set_tensor_scalar_item('loss')
         self.tensorboard_enabled = True
+        self.metrics = BaseDict()
         self.prevstate = 'train'
         self.iterating = False
         self.scheduler = None
@@ -389,24 +397,22 @@ class pytorchfw(framework):
         if bool(trackgrad):
             self.tracker = tracegrad(trackgrad, self.model, verbose=False)
 
+    def init_loss(self):
+
+        self.metrics['loss'] = meters.get_loss_meter(self.criterion)
+        self.set_tensor_scalar_item('loss')
+
+    def init_acc(self, labels, on_the_fly):
+        self.metrics['acc'] = meters.get_acc_meter(labels, self.criterion, on_the_fly)
+        self.set_tensor_scalar_item('acc')
+
     def __enter__(self):
-        self.prev = torch.is_grad_enabled()
         self.prevmodelstate = self.model.training
 
-        if self.state == 'train':
-            torch._C.set_grad_enabled(True)
-            self.model.train()
-
-        else:
-            torch._C.set_grad_enabled(False)
-            self.model.eval()
-
     def __exit__(self, exc_type, exc_val, exc_tb):
-        torch.set_grad_enabled(self.prev)
         if not self.iterating:
             self.state = self.prevstate
         self.iterating = False
-        self.set_model_training(self.prevmodelstate)
         return False
 
     @property
@@ -450,30 +456,6 @@ class pytorchfw(framework):
     def epoch(self, value):
         self._epoch = value
         self.key['EPOCH'] = self._epoch
-
-    # @property
-    # def loss(self):
-    #     return self._loss
-    #
-    # @loss.setter
-    # def loss(self, loss):
-    #     self._loss = loss
-    #     if self.iterating:
-    #         self.loss_(loss, self.state)
-    #     else:
-    #         if self.state == 'train':
-    #             self.key['LOSS'] = loss
-    #         elif self.state == 'val':
-    #             self.key['VLOSS'] = loss
-    #
-    #     if self.tensorboard_enabled:
-    #         loss = loss.item()
-    #         if self.iterating:
-    #             if self.loss_.data.tuple[self.state].array.enabled:
-    #                 self.writer.add_scalars('loss', {self.state: loss}, self.absolute_iter)
-    #         else:
-    #             if self.loss_.data.tuple[self.state].epoch_array.enabled:
-    #                 self.writer.add_scalars('loss_epoch', {self.state: loss}, self.epoch)
 
     @property
     def main_device(self):
@@ -547,8 +529,10 @@ class pytorchfw(framework):
         self.start_epoch = checkpoint['epoch']
         self.load_model(checkpoint['state_dict'])
         self.optimizer.load_state_dict(checkpoint['optimizer'])
-        self.loss_.constructor(checkpoint['loss'])  # TODO verify this is ok for savecheckpoint
-        self.acc_.constructor(None)
+        print('Detecting scalars...')
+        for key in checkpoint['tsi']:
+            setattr(self, key + '_', checkpoint['tsi'][key])
+            print('>'+ key + ' loaded!')
         self.key.update(checkpoint['key'])
         self.absolute_iter = checkpoint['iter']
         self.scheduler.load_state_dict(checkpoint['scheduler'])
@@ -557,7 +541,7 @@ class pytorchfw(framework):
 
     @checkpoint_on_key
     @assert_workdir
-    def save_checkpoint(self, filename=None):
+    def save_checkpoint(self, metric, criteria, filename=None):
         """
         Save checkpoint function. By default saves last epoch for training and best validation epoch. If there is
         no validation then best train epoch.
@@ -572,10 +556,13 @@ class pytorchfw(framework):
             'arch': self.model_version,
             'state_dict': self.model.state_dict(),
             'optimizer': self.optimizer.state_dict(),
-            'loss': self.loss_,
             'key': self.key,
             'scheduler': self.scheduler.state_dict()
         }
+        tsi = {}
+        for key in self.tensor_scalar_items:
+            tsi.update({key: getattr(self, key + '_')})
+        state.update({'tsi': tsi})
         if filename is None:
             filename = os.path.join(self.workdir, self.checkpoint_name)
 
@@ -583,9 +570,13 @@ class pytorchfw(framework):
             filename = os.path.join(self.workdir, filename)
         print('Saving checkpoint at : {}'.format(filename))
         torch.save(state, filename)
-        if self.loss_.data.is_best:
+        if getattr(self, metric + '_')[self.state].is_best(criteria):
             shutil.copyfile(filename, os.path.join(self.workdir, 'best' + self.checkpoint_name))
         print('Checkpoint saved successfully')
+
+    def checkpoint(self, metric='loss', criteria=[max, lambda epoch, optimal: optimal > epoch], filename=None):
+
+        return partial(self.save_checkpoint, metric=metric, criteria=criteria, filename=filename)
 
     def load_model(self, directory, strict_loading=True, from_checkpoint=False, **kwargs):
         """
@@ -618,25 +609,6 @@ class pytorchfw(framework):
         self.model.load_state_dict(new_state_dict, strict=strict_loading)
         self.loaded_model = True
 
-    def run_epoch(self, *args, **kwargs):
-        """
-        Run the proper function depending on the context.
-
-        :param args: passed arguments
-        :param kwargs: passed keywords
-        :return: None
-        """
-        if self.state == 'train':
-            self.train_epoch(*args, **kwargs)
-        elif self.state == 'val':
-            self.validate(dataloader=self.val_loader, *args, **kwargs)
-        elif self.state == 'inference':
-            self.inference(*args, **kwargs)
-        elif self.state == 'test':
-            self.validate(dataloader=self.test_loader, *args, **kwargs)
-        else:
-            raise ValueError('Not existing forwarding mode')
-
     def error_handled_forward(self, c, inputs):
         try:
             output = self.model(*inputs) if isinstance(inputs, list) else self.model(inputs)
@@ -657,33 +629,25 @@ class pytorchfw(framework):
                 sys.exc_info()[2])
         return output
 
-    def train_epoch(self, logger):
-        """
-        Trains model for an epoch following an standard training.
-        1. Data loading
-        2. Data allocation
-        3. Model forward
-        4. Optimizer.zero_grad
-        5. output, loss and acc computation
-        7 Loss backward
-        8. In-Place gradient modification
-        9. Gradient healty plot
-        10. Databse update and checkpoint save
-        :param logger: Logging instance to pass logs
-        :return: None
-        """
-        j = 0
-        self.train_iterations = len(self.train_loader)
-        with tqdm(self.train_loader, desc='Epoch: [{0}/{1}]'.format(self.epoch, self.EPOCHS)) as pbar, ctx_iter(self):
+    def run_epoch(self, dataloader, metrics=[], checkpoint=lambda: None, allocate_input=True,
+                  allocate_gt=True):
+        j = -1
+        iterations = len(dataloader)
+        if torch.is_grad_enabled() and 'loss' not in metrics:
+            metrics.append('loss')
+        with tqdm(dataloader,
+                  desc='|| {2} || Epoch: [{0}/{1}]'.format(self.epoch, self.EPOCHS, self.state)) as pbar, ctx_iter(
+            self):
             for gt, inputs, visualization in pbar:
                 try:
+                    j += 1
                     self.absolute_iter += 1
-                    if self.TRAINING_OPTIONS.allocate_inputs:
+                    if allocate_input:
                         inputs = self._allocate_tensor(inputs)
 
                     output = self.error_handled_forward(self.absolute_iter, inputs)
 
-                    if self.TRAINING_OPTIONS.allocate_gt:
+                    if allocate_gt:
                         if hasattr(self, 'outputdevice'):
                             device = torch.device(self.outputdevice)
                         else:
@@ -692,25 +656,36 @@ class pytorchfw(framework):
                             else:
                                 device = output.device
                         gt = self._allocate_tensor(gt, device=device)
-                    self.acc_('train', gt, output)
-                    self.loss = self.criterion(output, gt)
+                    # for tsi in self.tensor_scalar_items:
+                    #     setattr(self, tsi, getattr(self, tsi + '_')[self.state]['iter'].process(store=True))
+                    for metric in metrics:
+                        self.metrics[metric][self.state].send(key='gt', value=gt)
+                        self.metrics[metric][self.state].send(key='pred', value=output)
+                        if self.metrics[metric][self.state].on_the_fly:
+                            if self.metrics[metric][self.state].redirect is not None:
+                                results = self.metrics[metric][self.state].process('pred', 'gt', store=False)
+                                for key in self.metrics[metric][self.state].redirect:
+                                    name = self.metrics[metric][self.state].redirect[key]
+                                    setattr(self, name, results[key])
+                            else:
+                                self.metrics[metric][self.state].process('gt', 'pred', store=True)
 
                     # compute gradient and do SGD step
-                    self.optimizer.zero_grad()
-                    self.loss.backward()
-                    if self.CHECKPOINT_OPTS.save_type.lower() == 'iter' and self.absolute_iter % self.CHECKPOINT_OPTS.saving_freq == 0:
-                        self.save_checkpoint()
-                    self.gradients()
+                    if torch.is_grad_enabled():
+                        self.optimizer.zero_grad()
+                        self.loss.backward()
+                        self.gradients()
+                        if self.trackgrad and self.tensorboard_enabled:
+                            self.writer.add_figure('Gradients',
+                                                   self.tracker(self.model.named_parameters()),
+                                                   self.absolute_iter)
+                            self.optimizer.step()
+                    # CHECKPOINT
+
                     self.tensorboard_writer(self.loss, output, gt, self.absolute_iter, visualization)
-                    if self.trackgrad and self.tensorboard_enabled:
-                        self.writer.add_figure('Gradients',
-                                               self.tracker(self.model.named_parameters()),
-                                               self.absolute_iter)
-                    self.optimizer.step()
-                    pbar.set_postfix(loss=self.loss.item())
-                    if self.TRAINING_OPTIONS.enable_train_logger:
-                        self.loss_.data.print_logger(self.epoch, j, self.train_iterations, logger)
-                    j += 1
+
+                    if 'loss' in metrics:
+                        pbar.set_postfix(loss=self.loss.item())
 
                 except Exception as e:
                     try:
@@ -722,45 +697,26 @@ class pytorchfw(framework):
                                                   .format(os.path.join(self.workdir, 'checkpoint_backup.pth')))
                             self.err_logger.error(str(e))
                     raise e
-        # self.loss = self.loss_.data.update_epoch(self.state)
-        for tsi in self.tensor_scalar_items:
-            setattr(self, tsi, getattr(self, tsi + '_').data.update_epoch(self.state))
-        self.acc = self.acc_.get_acc('train')
-        self.__update_db__()
-        if self.CHECKPOINT_OPTS.save_type.lower() == 'cycle' and self.absolute_iter % self.CHECKPOINT_OPTS.saving_freq == 0:
-            self.save_checkpoint()
-        # probably does not require dense tracking
 
-    def validate(self, dataloader):
-        """
-        Analogous for train_epoch.
-        :return: None
-        """
-        with tqdm(dataloader, desc='{2}: [{0}/{1}]'.format(self.epoch, self.EPOCHS, self.state)) as pbar, ctx_iter(
-                self):
-            c = -1
-            for gt, inputs, visualization in pbar:
-                c += 1
-                self.loss_.data.update_timed()
-                inputs = self._allocate_tensor(inputs)
-
-                output = self.error_handled_forward(c, inputs)
-                self.acc_(self.state, gt, output)
-                if hasattr(self, 'outputdevice'):
-                    device = torch.device(self.outputdevice)
+        for metric in metrics:
+            if not self.metrics[metric][self.state].on_the_fly:
+                if self.metrics[metric][self.state].redirect is not None:
+                    results = self.metrics[metric][self.state].process('gt', 'pred', store=False)
+                    for key in self.metrics[metric][self.state].redirect:
+                        name = self.metrics[metric][self.state].redirect[key]
+                        setattr(self, name, results[key])
+                        getattr(self, name + '_')[self.state].reset()
                 else:
-                    if isinstance(output, (list, tuple)):
-                        device = output[0].device
-                    else:
-                        device = output.device
+                    results = self.metrics[metric][self.state].process('gt', 'pred', store=True)
+            else:
+                if self.metrics[metric][self.state].redirect is not None:
+                    for key in self.metrics[metric][self.state].redirect:
+                        name = self.metrics[metric][self.state].redirect[key]
+                        setattr(self, name, getattr(self, name + '_')[self.state].process(store=True))
 
-                gt = self._allocate_tensor(gt, device=device)
-                self.loss = self.criterion(output, gt)
-                self.tensorboard_writer(self.loss, output, gt, c, visualization)
-                pbar.set_postfix(loss=self.loss.item())
-        for tsi in self.tensor_scalar_items:
-            setattr(self, tsi, getattr(self, tsi + '_').data.update_epoch(self.state))
-        self.acc = self.acc_.get_acc(self.state)
+        # Metrics
+        self.__update_db__()
+        checkpoint()
 
     def __atribute_assertion__(self):
         assert hasattr(self, 'assertion_variables')

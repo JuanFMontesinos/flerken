@@ -43,7 +43,6 @@ class TestFramework(unittest.TestCase):
         self.fw.scheduler = classitems.Scheduler(self.fw.scheduler)
         self.assertTrue(self.fw.resume)
         self.fw.EPOCHS = 2
-
         self.fw._loadcheckpoint()
         self.assertEqual(self.fw.start_epoch, 1)
         self.maxDiff = None
@@ -52,7 +51,8 @@ class TestFramework(unittest.TestCase):
                 self.assertEqual(self.fw.key[x], key[x] + 1)
             else:
                 self.assertEqual(self.fw.key[x], key[x])
-
+        self.fw = toy_fw(toy_example(), './', self.fw.workname, 'cpu', True)
+        self.fw.train()
 
 
     def test_train_debugger_normal(self):

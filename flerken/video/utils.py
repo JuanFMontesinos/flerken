@@ -93,7 +93,7 @@ def apply_single(video_path: str, dst_path: str, input_options: list, output_opt
         print(stderr.decode("utf-8"))
 
 
-def apply_tree(root, dst, input_options=list(), output_options=list(), multiprocessing=0, fn=apply_single):
+def apply_tree(root, dst, input_options=list(), output_options=list(), multiprocessing=0, fn=apply_single, ignore=[]):
     """
     Applies ffmpeg processing for a given directory tree for whatever which fits this format:
         ffmpeg [input options] -i input [output options] output
@@ -110,7 +110,7 @@ def apply_tree(root, dst, input_options=list(), output_options=list(), multiproc
     :return: None
     """
     formats = allowed_formats()  # List of ffmpeg compatible formats
-    tree = Directory_Tree(root)  # Directory tree
+    tree = Directory_Tree(root, ignore=ignore)  # Directory tree
     if not os.path.exists(dst):
         os.mkdir(dst)
     tree.clone_tree(dst)  # Generates new directory structure (folders)
@@ -266,7 +266,8 @@ def quirurgical_extractor_tree(root, dst, n_frames, T, size=None, sample_rate=No
                     pool = mp.Pool(multiprocessing)
                     results = [pool.apply(quirurgical_extractor,
                                           args=(
-                                          i_path[0] + i_path[1], path, a_path[0], t, n_frames, T, size, sample_rate))
+                                              i_path[0] + i_path[1], path, a_path[0], t, n_frames, T, size,
+                                              sample_rate))
                                for path, t in path_stamp_gen]
                     pool.close()
         except:

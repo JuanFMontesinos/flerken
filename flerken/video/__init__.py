@@ -10,6 +10,7 @@ def allowed_formats():
         if x[0] == 'E' or x[0] == 'D' or x[0] == 'DE' or x[0] == 'ED':
             for element in x[1].split(','):
                 remake.update({element: x[0]})
+    remake.update({'mkv': 'D'})
     return remake
 
 
