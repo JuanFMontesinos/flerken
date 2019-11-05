@@ -574,7 +574,7 @@ class pytorchfw(framework):
             shutil.copyfile(filename, os.path.join(self.workdir, 'best' + self.checkpoint_name))
         print('Checkpoint saved successfully')
 
-    def checkpoint(self, metric='loss', criteria=[max, lambda epoch, optimal: optimal > epoch], filename=None):
+    def checkpoint(self, metric='loss', criteria=[min, lambda epoch, optimal: optimal > epoch], filename=None):
 
         return partial(self.save_checkpoint, metric=metric, criteria=criteria, filename=filename)
 
@@ -630,7 +630,7 @@ class pytorchfw(framework):
         return output
 
     def run_epoch(self, dataloader, metrics=[], checkpoint=lambda: None, allocate_input=True,
-                  allocate_gt=True):
+                  allocate_gt=True, send=('gt', 'pred')):
         j = -1
         iterations = len(dataloader)
         if torch.is_grad_enabled() and 'loss' not in metrics:
@@ -638,37 +638,39 @@ class pytorchfw(framework):
         with tqdm(dataloader,
                   desc='|| {2} || Epoch: [{0}/{1}]'.format(self.epoch, self.EPOCHS, self.state)) as pbar, ctx_iter(
             self):
-            for gt, inputs, visualization in pbar:
+            for gt, inputs, vs in pbar:
                 try:
                     j += 1
                     self.absolute_iter += 1
                     if allocate_input:
                         inputs = self._allocate_tensor(inputs)
 
-                    output = self.error_handled_forward(self.absolute_iter, inputs)
+                    pred = self.error_handled_forward(self.absolute_iter, inputs)
 
                     if allocate_gt:
                         if hasattr(self, 'outputdevice'):
                             device = torch.device(self.outputdevice)
                         else:
-                            if isinstance(output, (list, tuple)):
-                                device = output[0].device
+                            if isinstance(pred, (list, tuple)):
+                                device = pred[0].device
                             else:
-                                device = output.device
+                                device = pred.device
                         gt = self._allocate_tensor(gt, device=device)
-                    # for tsi in self.tensor_scalar_items:
-                    #     setattr(self, tsi, getattr(self, tsi + '_')[self.state]['iter'].process(store=True))
                     for metric in metrics:
-                        self.metrics[metric][self.state].send(key='gt', value=gt)
-                        self.metrics[metric][self.state].send(key='pred', value=output)
+                        if metric == 'loss' or metric == 'acc':
+                            send_ = ('gt', 'pred')
+                        else:
+                            send_ = send
+                        for var in send_:
+                            self.metrics[metric][self.state].send(key=var, value=locals()[var])
                         if self.metrics[metric][self.state].on_the_fly:
                             if self.metrics[metric][self.state].redirect is not None:
-                                results = self.metrics[metric][self.state].process('pred', 'gt', store=False)
+                                results = self.metrics[metric][self.state].process(*send_, store=False)
                                 for key in self.metrics[metric][self.state].redirect:
                                     name = self.metrics[metric][self.state].redirect[key]
                                     setattr(self, name, results[key])
                             else:
-                                self.metrics[metric][self.state].process('gt', 'pred', store=True)
+                                self.metrics[metric][self.state].process(send_, store=True)
 
                     # compute gradient and do SGD step
                     if torch.is_grad_enabled():
@@ -682,10 +684,18 @@ class pytorchfw(framework):
                             self.optimizer.step()
                     # CHECKPOINT
 
-                    self.tensorboard_writer(self.loss, output, gt, self.absolute_iter, visualization)
-
-                    if 'loss' in metrics:
-                        pbar.set_postfix(loss=self.loss.item())
+                    self.tensorboard_writer(self.loss, pred, gt, self.absolute_iter, vs)
+                    postfix = {}
+                    for metric in metrics:
+                        if self.metrics[metric][self.state].redirect is not None:
+                            for key in self.metrics[metric][self.state].redirect:
+                                name = self.metrics[metric][self.state].redirect[key]
+                                scalar = getattr(self, name)
+                                if torch.is_tensor(scalar):
+                                    scalar = scalar.item()
+                                postfix.update({name: scalar})
+                    pbar.set_postfix(postfix)
+                    # pbar.set_postfix(loss=self.loss.item())
 
                 except Exception as e:
                     try:
@@ -699,15 +709,19 @@ class pytorchfw(framework):
                     raise e
 
         for metric in metrics:
+            if metric == 'loss' or metric == 'acc':
+                send_ = ('gt', 'pred')
+            else:
+                send_ = send
             if not self.metrics[metric][self.state].on_the_fly:
                 if self.metrics[metric][self.state].redirect is not None:
-                    results = self.metrics[metric][self.state].process('gt', 'pred', store=False)
+                    results = self.metrics[metric][self.state].process(send_, store=False)
                     for key in self.metrics[metric][self.state].redirect:
                         name = self.metrics[metric][self.state].redirect[key]
                         setattr(self, name, results[key])
                         getattr(self, name + '_')[self.state].reset()
                 else:
-                    results = self.metrics[metric][self.state].process('gt', 'pred', store=True)
+                    results = self.metrics[metric][self.state].process(send_, store=True)
             else:
                 if self.metrics[metric][self.state].redirect is not None:
                     for key in self.metrics[metric][self.state].redirect:
@@ -717,6 +731,7 @@ class pytorchfw(framework):
         # Metrics
         self.__update_db__()
         checkpoint()
+
 
     def __atribute_assertion__(self):
         assert hasattr(self, 'assertion_variables')

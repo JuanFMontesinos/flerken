@@ -217,12 +217,12 @@ class ScalarListMeter(BaseDict):
         return value
 
     def is_best(self, criteria):
-        if not bool(self['epoch']):
+        if not bool(self['epoch'][:-1]):
             return True
         else:
-            optimal = criteria[0](self['epoch'])
+            optimal = criteria[0](self['epoch'][:-1])
             epoch = self['epoch'][-1]
-            return criteria[1](optimal, epoch)
+            return criteria[1]( epoch,optimal)
 
 
 class Meter(BaseDict):
