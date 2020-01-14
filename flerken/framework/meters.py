@@ -155,11 +155,6 @@ class TensorStorage(BaseDict):
 
         return results
 
-    def testear(self, *args, perez=7):
-        print(args)
-        print(perez)
-        print(locals())
-
     def _store_opt_list(self, key, value):
         out = self.get(key)
         if out is None:

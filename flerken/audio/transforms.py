@@ -19,15 +19,19 @@ class LogFrequencyScale(object):
     :param kwargs: Aditional arguments which will be parsed to pytorch's gridsample
     """
 
-    def __init__(self, warp: bool, ordering: str = 'BHWC', shape: tuple = (None, None), **kwargs):
+    def __init__(self, warp: bool, ordering: str = 'BHWC', shape: tuple = (None, None), adaptative=False, **kwargs):
         self.expected_dim = len(ordering)
         self.warp = warp
         self.ordering = ordering.lower()
         self.var = self.get_dims(self.ordering)
         self.instantiated = False
+        self.adaptative = adaptative
         self.exp_ordering = ''.join(sorted(self.ordering))  # Expected ordering
         self.kwargs = kwargs
         self.shape = shape
+
+    def needtoinstantiate(self):
+        return not self.instantiated | self.adaptative
 
     @staticmethod
     def get_dims(ordering):
@@ -73,7 +77,7 @@ class LogFrequencyScale(object):
         :type sp: torch.Tensor
         :return: Transformed spectrogram
         """
-        if not self.instantiated:
+        if self.needtoinstantiate():
             self.instantiate(sp)
         sp = torch.einsum(self.ordering + '->' + self.exp_ordering, sp)
         for dim in self.squeeze:

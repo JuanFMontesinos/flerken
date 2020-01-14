@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/flerken/models/UNet.py" line="102" />
+    <bookmark url="file://$PROJECT_DIR$/flerken/audio/__init__.py" line="20" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="c008b4ec-f275-498a-9c6f-d42e222cc6b8" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/flerken/datasets/audiovisual_dataset.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flerken/_version.py" beforeDir="false" afterPath="$PROJECT_DIR$/flerken/_version.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flerken/framework/decorators.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/flerken/framework/network_initialization.py" beforeDir="false" afterPath="$PROJECT_DIR$/flerken/framework/network_initialization.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flerken/framework/python_inheritance.py" beforeDir="false" afterPath="$PROJECT_DIR$/flerken/framework/python_inheritance.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flerken/audio/transforms.py" beforeDir="false" afterPath="$PROJECT_DIR$/flerken/audio/transforms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flerken/datasets/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/flerken/datasets/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flerken/framework/meters.py" beforeDir="false" afterPath="$PROJECT_DIR$/flerken/framework/meters.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flerken/framework/pytorchframework.py" beforeDir="false" afterPath="$PROJECT_DIR$/flerken/framework/pytorchframework.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flerken/models/R2Plus1D.py" beforeDir="false" afterPath="$PROJECT_DIR$/flerken/models/R2Plus1D.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flerken/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/flerken/models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flerken/framework/traceback_gradients.py" beforeDir="false" afterPath="$PROJECT_DIR$/flerken/framework/traceback_gradients.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/framework/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/framework/__init__.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -37,13 +42,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/flerken/framework/pytorchframework.py">
+        <entry file="file://$PROJECT_DIR$/flerken/_version.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1594">
-              <caret line="822" column="13" lean-forward="true" selection-start-line="822" selection-start-column="13" selection-end-line="822" selection-end-column="13" />
-              <folding>
-                <element signature="e#204#216#0" expanded="true" />
-              </folding>
+            <state>
+              <caret column="24" selection-start-column="24" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -59,42 +61,51 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>self.loss</find>
-      <find>init</find>
-      <find>init_work</find>
-      <find>_loadcheckpoint</find>
-      <find>Scheduler</find>
-      <find>ptutils</find>
-      <find>timers</find>
-      <find>batch</find>
-      <find>batch_data</find>
-      <find>Timers</find>
-      <find>SummaryWriter</find>
-      <find>scheduler</find>
-      <find>train_iter_log</find>
-      <find>ro</find>
-      <find>print_bool</find>
-      <find>vae</find>
-      <find>just_decoder</find>
-      <find>asser</find>
-      <find>setup</find>
-      <find>is_bes</find>
-      <find>workdir =</find>
-      <find>self.workdir =</find>
-      <find>true_labels == 0</find>
-      <find>acc</find>
-      <find>get_acc</find>
-      <find>pt</find>
-      <find>workname</find>
       <find>self.key</find>
-      <find>__setup_experiment__</find>
-      <find>__setloggers__</find>
+      <find>mode</find>
+      <find>model</find>
+      <find>torch.isnan</find>
+      <find>isnan</find>
+      <find>_assertF</find>
+      <find>assertnan</find>
+      <find>self.debug</find>
+      <find>check_fault</find>
+      <find>inference</find>
+      <find>self.film</find>
+      <find>os</find>
+      <find>TensorAverageMeter</find>
+      <find>MultiMeter</find>
+      <find>TensorHandler</find>
+      <find>set_processor</find>
+      <find>store</find>
+      <find>loss</find>
+      <find>metric</find>
+      <find>on_the_fly</find>
+      <find>process</find>
+      <find>TensorStorage</find>
+      <find>init_metrics</find>
+      <find>check</find>
+      <find>set_f</find>
+      <find>save</find>
+      <find>is_best</find>
+      <find>offset</find>
+      <find>reader</find>
+      <find>_calc_len</find>
     </findStrings>
     <replaceStrings>
       <replace>bool(int(</replace>
       <replace>classitems</replace>
       <replace>(true_labels == 1)</replace>
       <replace>(true_labels == 0)</replace>
+      <replace>self.CHECKPOINT_OPTS</replace>
+      <replace>self.TRAINING_OPTIONS</replace>
+      <replace>self.EXPERIMENT_OPTIONS</replace>
+      <replace>var</replace>
+      <replace>failUnlessRaises</replace>
+      <replace>ordering</replace>
+      <replace>f</replace>
+      <replace>_os</replace>
+      <replace>Meter</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -103,32 +114,10 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/flerken/framework/decorators.py" />
-        <option value="$PROJECT_DIR$/flerken/framework/tensorboard.py" />
-        <option value="$PROJECT_DIR$/flerken/framework/newtest.py" />
-        <option value="$PROJECT_DIR$/flerken/framework/__init__.py" />
-        <option value="$PROJECT_DIR$/flerken_nightly/framework/__init__.py" />
-        <option value="$PROJECT_DIR$/delete.py" />
-        <option value="$PROJECT_DIR$/flerken_nightly/delete.py" />
-        <option value="$PROJECT_DIR$/flerken_nightly/framework/pytorchframework.py" />
-        <option value="$PROJECT_DIR$/flerken_nightly/framework/utils.py" />
-        <option value="$PROJECT_DIR$/flerken_nightly/framework/classitems.py" />
-        <option value="$PROJECT_DIR$/flerken/dataloaders/__init__.py" />
-        <option value="$PROJECT_DIR$/flerken/dataloaders/transforms/transforms.py" />
-        <option value="$PROJECT_DIR$/flerken/utils/losses.py" />
-        <option value="$PROJECT_DIR$/flerken/models/ResNet3D.py" />
-        <option value="$PROJECT_DIR$/flerken/models/UNet.py" />
-        <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/flerken/models/VGG.py" />
-        <option value="$PROJECT_DIR$/_version.py" />
-        <option value="$PROJECT_DIR$/setup.py" />
-        <option value="$PROJECT_DIR$/flerken/utils/__init__.py" />
         <option value="$PROJECT_DIR$/flerken/framework/utils.py" />
         <option value="$PROJECT_DIR$/flerken/utils/plots.py" />
         <option value="$PROJECT_DIR$/flerken/test.py" />
-        <option value="$PROJECT_DIR$/test/framework/__init__.py" />
         <option value="$PROJECT_DIR$/test/utils/test_losses.py" />
-        <option value="$PROJECT_DIR$/test/framework/test_framework.py" />
         <option value="$PROJECT_DIR$/test/__init__.py" />
         <option value="$PROJECT_DIR$/test/test.py" />
         <option value="$PROJECT_DIR$/flerken/borrar.py" />
@@ -137,31 +126,53 @@
         <option value="$PROJECT_DIR$/test/video/__init__.py" />
         <option value="$PROJECT_DIR$/flerken/datasets/dataset_tools.py" />
         <option value="$PROJECT_DIR$/test/video/test_videoutils.py" />
-        <option value="$PROJECT_DIR$/.travis.yml" />
         <option value="$PROJECT_DIR$/flerken/__init__.py" />
-        <option value="$PROJECT_DIR$/flerken/video/__init__.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py" />
-        <option value="$PROJECT_DIR$/flerken/video/utils.py" />
         <option value="$PROJECT_DIR$/test/framework/test_python_inheritance.py" />
         <option value="$PROJECT_DIR$/flerken/framework/reproducibility.py" />
-        <option value="$PROJECT_DIR$/flerken/framework/classitems.py" />
         <option value="$PROJECT_DIR$/test/framework/test_classitems.py" />
-        <option value="$PROJECT_DIR$/flerken/framework/sqlite_tools.py" />
         <option value="$PROJECT_DIR$/test/framework/test_scheduler.py" />
-        <option value="$PROJECT_DIR$/flerken/_version.py" />
         <option value="$PROJECT_DIR$/flerken/models/R2Plus1D.py" />
         <option value="$PROJECT_DIR$/flerken/models/__init__.py" />
-        <option value="$PROJECT_DIR$/flerken/framework/python_inheritance.py" />
         <option value="$PROJECT_DIR$/flerken/framework/network_initialization.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_6.py" />
+        <option value="$PROJECT_DIR$/flerken/framework/dataloader.py" />
+        <option value="$PROJECT_DIR$/.travis.yml" />
+        <option value="$PROJECT_DIR$/flerken/framework/_options.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_8.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_12.py" />
+        <option value="$PROJECT_DIR$/flerken/framework/sqlite_tools.py" />
+        <option value="$PROJECT_DIR$/flerken/audio/__init__.py" />
+        <option value="$PROJECT_DIR$/flerken/audio/transforms.py" />
+        <option value="$PROJECT_DIR$/flerken/framework/debug.py" />
+        <option value="$PROJECT_DIR$/test/models/test_models.py" />
+        <option value="$PROJECT_DIR$/flerken/models/UNet.py" />
+        <option value="$PROJECT_DIR$/test/utils/test_init.py" />
+        <option value="$PROJECT_DIR$/flerken/framework/python_inheritance.py" />
+        <option value="$PROJECT_DIR$/flerken/framework/classitems.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_14.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_13.py" />
+        <option value="$PROJECT_DIR$/flerken/utils/__init__.py" />
+        <option value="$PROJECT_DIR$/flerken/video/__init__.py" />
+        <option value="$PROJECT_DIR$/flerken/framework/__init__.py" />
+        <option value="$PROJECT_DIR$/test/framework/test_framework.py" />
+        <option value="$PROJECT_DIR$/flerken/video/utils.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_15.py" />
+        <option value="$PROJECT_DIR$/test/framework/__init__.py" />
+        <option value="$PROJECT_DIR$/flerken/framework/meters.py" />
         <option value="$PROJECT_DIR$/flerken/framework/pytorchframework.py" />
+        <option value="$PROJECT_DIR$/flerken/datasets/__init__.py" />
+        <option value="$PROJECT_DIR$/flerken/framework/traceback_gradients.py" />
+        <option value="$PROJECT_DIR$/flerken/datasets/audiovisual_dataset.py" />
+        <option value="$PROJECT_DIR$/flerken/_version.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="232" />
-    <option name="y" value="27" />
-    <option name="width" value="1400" />
-    <option name="height" value="1000" />
+    <option name="x" value="67" />
+    <option name="y" value="25" />
+    <option name="width" value="1853" />
+    <option name="height" value="1055" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -169,7 +180,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -182,31 +192,11 @@
               <item name="flerken" type="462c0819:PsiDirectoryNode" />
               <item name="flerken" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="flerken" type="b2602c69:ProjectViewProjectNode" />
-              <item name="flerken" type="462c0819:PsiDirectoryNode" />
-              <item name="flerken" type="462c0819:PsiDirectoryNode" />
-              <item name="framework" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="flerken" type="b2602c69:ProjectViewProjectNode" />
-              <item name="flerken" type="462c0819:PsiDirectoryNode" />
-              <item name="flerken" type="462c0819:PsiDirectoryNode" />
-              <item name="video" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="flerken" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
-            </path>
-            <path>
-              <item name="flerken" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
-              <item name="Scratches" type="d62648e6:ScratchProjectViewPane$MyRootNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -216,10 +206,14 @@
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="restartRequiresConfirmation" value="false" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
@@ -231,13 +225,14 @@
     </option>
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/test/video" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/test" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/flerken" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/test/video" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -252,89 +247,117 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.Unittests for test_scheduler.TestScheduler">
-    <configuration name="Unittests for test_classitems.TestClassItems.test_binary_accuracy_binary_predictions_BCEwithlogits" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.test">
+    <configuration name="scratch_13" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="flerken" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/bin/python3.6" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch_13.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="scratch_15" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="flerken" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/bin/python3.6" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch_15.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="flerken" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests for framework.test_framework.TestFramework" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="flerken" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test/framework" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_classitems.TestClassItems.test_binary_accuracy_binary_predictions_BCEwithlogits&quot;" />
+      <option name="_new_target" value="&quot;framework.test_framework.TestFramework&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="Unittests for test_classitems.TestClassItems.test_binary_accuracy_probabilistic_predictions_BCE" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration name="Unittests for framework.test_framework.TestFramework.test_train_and_resume" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="flerken" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test/framework" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_classitems.TestClassItems.test_binary_accuracy_probabilistic_predictions_BCE&quot;" />
+      <option name="_new_target" value="&quot;framework.test_framework.TestFramework.test_train_and_resume&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="Unittests for test_classitems.TestClassItems.test_multiclass_accuracy_CELoss" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <module name="flerken" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test/framework" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_classitems.TestClassItems.test_multiclass_accuracy_CELoss&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Unittests for test_classitems.TestClassItems.test_multiclass_accuracy_NLLLoss" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <module name="flerken" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test/framework" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_classitems.TestClassItems.test_multiclass_accuracy_NLLLoss&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Unittests for test_scheduler.TestScheduler" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <module name="flerken" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test/framework" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_scheduler.TestScheduler&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
+    <list>
+      <item itemvalue="Python.scratch_13" />
+      <item itemvalue="Python.scratch_15" />
+      <item itemvalue="Python.test" />
+      <item itemvalue="Python tests.Unittests for framework.test_framework.TestFramework.test_train_and_resume" />
+      <item itemvalue="Python tests.Unittests for framework.test_framework.TestFramework" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.Unittests for test_scheduler.TestScheduler" />
-        <item itemvalue="Python tests.Unittests for test_classitems.TestClassItems.test_multiclass_accuracy_NLLLoss" />
-        <item itemvalue="Python tests.Unittests for test_classitems.TestClassItems.test_multiclass_accuracy_CELoss" />
-        <item itemvalue="Python tests.Unittests for test_classitems.TestClassItems.test_binary_accuracy_binary_predictions_BCEwithlogits" />
-        <item itemvalue="Python tests.Unittests for test_classitems.TestClassItems.test_binary_accuracy_probabilistic_predictions_BCE" />
+        <item itemvalue="Python.test" />
+        <item itemvalue="Python.scratch_15" />
+        <item itemvalue="Python tests.Unittests for framework.test_framework.TestFramework" />
+        <item itemvalue="Python tests.Unittests for framework.test_framework.TestFramework.test_train_and_resume" />
+        <item itemvalue="Python.scratch_13" />
       </list>
     </recent_temporary>
   </component>
@@ -393,43 +416,83 @@
       <workItem from="1562584835718" duration="1844000" />
       <workItem from="1562605760922" duration="601000" />
       <workItem from="1562731481460" duration="1227000" />
+      <workItem from="1562740033404" duration="3205000" />
+      <workItem from="1563183418720" duration="3651000" />
+      <workItem from="1563194945281" duration="2917000" />
+      <workItem from="1563263933415" duration="49000" />
+      <workItem from="1563288282375" duration="33000" />
+      <workItem from="1563288550716" duration="6000" />
+      <workItem from="1563443259825" duration="1980000" />
+      <workItem from="1563528229575" duration="18000" />
+      <workItem from="1563778488659" duration="7666000" />
+      <workItem from="1563877025989" duration="1435000" />
+      <workItem from="1563896933646" duration="5107000" />
+      <workItem from="1568383025213" duration="26000" />
+      <workItem from="1569241852767" duration="4178000" />
+      <workItem from="1569478197957" duration="18467000" />
+      <workItem from="1570159085905" duration="7935000" />
+      <workItem from="1570168092208" duration="386000" />
+      <workItem from="1570168539170" duration="621000" />
+      <workItem from="1570189634312" duration="4956000" />
+      <workItem from="1570431775723" duration="21441000" />
+      <workItem from="1570721777053" duration="639000" />
+      <workItem from="1570788281847" duration="1030000" />
+      <workItem from="1570795023397" duration="1220000" />
+      <workItem from="1571041854616" duration="18712000" />
+      <workItem from="1571236622761" duration="193000" />
+      <workItem from="1571313994237" duration="6336000" />
+      <workItem from="1571663990548" duration="26356000" />
+      <workItem from="1572272086774" duration="44311000" />
+      <workItem from="1572519682232" duration="615000" />
+      <workItem from="1572521373170" duration="1198000" />
+      <workItem from="1572525523780" duration="1516000" />
+      <workItem from="1572869150707" duration="5192000" />
+      <workItem from="1572944054343" duration="9528000" />
+      <workItem from="1573203415289" duration="599000" />
+      <workItem from="1573210457255" duration="2702000" />
+      <workItem from="1573549539860" duration="612000" />
+      <workItem from="1573556736457" duration="40513000" />
+      <workItem from="1575543286536" duration="2326000" />
+      <workItem from="1576144045893" duration="101000" />
+      <workItem from="1576569069243" duration="11000" />
+      <workItem from="1579007196142" duration="137000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_for_test_classitems_TestClassItems_test_multiclass_accuracy_NLLLoss - 2019.07.02 at 16h 02m 12s.xml">
-      <configuration name="Unittests for test_classitems.TestClassItems.test_multiclass_accuracy_NLLLoss" configurationId="tests" />
+    <history-entry file="Unittests_for_framework_test_framework_TestFramework_test_train_and_resume - 2019.10.30 at 20h 15m 29s.xml">
+      <configuration name="Unittests for framework.test_framework.TestFramework.test_train_and_resume" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_classitems_TestClassItems_test_multiclass_accuracy_NLLLoss - 2019.07.02 at 16h 02m 16s.xml">
-      <configuration name="Unittests for test_classitems.TestClassItems.test_multiclass_accuracy_NLLLoss" configurationId="tests" />
+    <history-entry file="Unittests_for_framework_test_framework_TestFramework_test_train_and_resume - 2019.10.30 at 20h 16m 47s.xml">
+      <configuration name="Unittests for framework.test_framework.TestFramework.test_train_and_resume" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_classitems_TestClassItems_test_multiclass_accuracy_NLLLoss - 2019.07.02 at 16h 02m 20s.xml">
-      <configuration name="Unittests for test_classitems.TestClassItems.test_multiclass_accuracy_NLLLoss" configurationId="tests" />
+    <history-entry file="Unittests_for_framework_test_framework_TestFramework_test_train_and_resume - 2019.10.30 at 20h 17m 24s.xml">
+      <configuration name="Unittests for framework.test_framework.TestFramework.test_train_and_resume" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_scheduler_TestScheduler - 2019.07.08 at 14h 09m 16s.xml">
-      <configuration name="Unittests for test_scheduler.TestScheduler" configurationId="tests" />
+    <history-entry file="Unittests_for_framework_test_framework_TestFramework_test_train_and_resume - 2019.10.30 at 20h 20m 49s.xml">
+      <configuration name="Unittests for framework.test_framework.TestFramework.test_train_and_resume" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_scheduler_TestScheduler - 2019.07.08 at 14h 10m 22s.xml">
-      <configuration name="Unittests for test_scheduler.TestScheduler" configurationId="tests" />
+    <history-entry file="Unittests_for_framework_test_framework_TestFramework_test_train_and_resume - 2019.10.30 at 20h 34m 34s.xml">
+      <configuration name="Unittests for framework.test_framework.TestFramework.test_train_and_resume" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_scheduler_TestScheduler - 2019.07.08 at 14h 11m 23s.xml">
-      <configuration name="Unittests for test_scheduler.TestScheduler" configurationId="tests" />
+    <history-entry file="Unittests_for_framework_test_framework_TestFramework_test_train_and_resume - 2019.11.05 at 09h 04m 06s.xml">
+      <configuration name="Unittests for framework.test_framework.TestFramework.test_train_and_resume" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_scheduler_TestScheduler - 2019.07.08 at 14h 15m 37s.xml">
-      <configuration name="Unittests for test_scheduler.TestScheduler" configurationId="tests" />
+    <history-entry file="Unittests_for_framework_test_framework_TestFramework_test_train_and_resume - 2019.11.05 at 09h 07m 15s.xml">
+      <configuration name="Unittests for framework.test_framework.TestFramework.test_train_and_resume" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_scheduler_TestScheduler - 2019.07.08 at 14h 15m 51s.xml">
-      <configuration name="Unittests for test_scheduler.TestScheduler" configurationId="tests" />
+    <history-entry file="Unittests_for_framework_test_framework_TestFramework_test_train_and_resume - 2019.11.05 at 09h 16m 01s.xml">
+      <configuration name="Unittests for framework.test_framework.TestFramework.test_train_and_resume" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_scheduler_TestScheduler - 2019.07.08 at 14h 16m 04s.xml">
-      <configuration name="Unittests for test_scheduler.TestScheduler" configurationId="tests" />
+    <history-entry file="Unittests_for_framework_test_framework_TestFramework_test_train_and_resume - 2019.11.05 at 09h 16m 32s.xml">
+      <configuration name="Unittests for framework.test_framework.TestFramework.test_train_and_resume" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_scheduler_TestScheduler - 2019.07.08 at 14h 16m 13s.xml">
-      <configuration name="Unittests for test_scheduler.TestScheduler" configurationId="tests" />
+    <history-entry file="Unittests_for_framework_test_framework_TestFramework - 2019.11.05 at 09h 21m 47s.xml">
+      <configuration name="Unittests for framework.test_framework.TestFramework" configurationId="tests" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="265927000" />
+    <option name="totallyTimeSpent" value="513851000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -444,7 +507,7 @@
     <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26895407" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26840067" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" weight="0.32982844" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -458,14 +521,37 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.31899264" />
-      <window_info anchor="bottom" id="Python Console" order="12" weight="0.50863934" />
+      <window_info anchor="bottom" id="Terminal" order="11" visible="true" weight="0.31857452" />
+      <window_info anchor="bottom" id="Python Console" order="12" weight="0.28833693" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="SciView" order="3" weight="0.32982844" />
+      <window_info anchor="right" id="SciView" order="3" weight="0.27006087" />
       <window_info anchor="right" id="Database" order="4" weight="0.32982844" />
     </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22945571" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" weight="0.32982844" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32937366" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32937366" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.41036716" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32937366" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Database Changes" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.31857452" />
+      <window_info anchor="bottom" id="Python Console" order="12" weight="0.28941685" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="3" weight="0.27006087" />
+      <window_info anchor="right" id="Database" order="4" weight="0.32982844" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -474,54 +560,144 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py</url>
-          <line>21</line>
-          <option name="timeStamp" value="3" />
+          <url>file://$APPLICATION_CONFIG_DIR$/scratches/scratch_8.py</url>
+          <line>33</line>
+          <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/flerken/framework/classitems.py</url>
-          <line>108</line>
-          <option name="timeStamp" value="5" />
+          <url>file://$APPLICATION_CONFIG_DIR$/scratches/scratch_8.py</url>
+          <line>61</line>
+          <option name="timeStamp" value="19" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/flerken/framework/classitems.py</url>
-          <line>277</line>
-          <option name="timeStamp" value="8" />
+          <url>file://$APPLICATION_CONFIG_DIR$/scratches/scratch_8.py</url>
+          <line>17</line>
+          <option name="timeStamp" value="20" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/flerken/framework/classitems.py</url>
-          <line>241</line>
-          <option name="timeStamp" value="9" />
+          <url>file://$PROJECT_DIR$/test/utils/test_init.py</url>
+          <line>28</line>
+          <option name="timeStamp" value="47" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/test/framework/test_classitems.py</url>
-          <line>90</line>
-          <option name="timeStamp" value="14" />
+          <url>file://$APPLICATION_CONFIG_DIR$/scratches/scratch_13.py</url>
+          <line>76</line>
+          <option name="timeStamp" value="48" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/test/framework/test_classitems.py</url>
-          <line>74</line>
-          <option name="timeStamp" value="15" />
+          <url>file://$APPLICATION_CONFIG_DIR$/scratches/scratch_13.py</url>
+          <line>10</line>
+          <option name="timeStamp" value="49" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$APPLICATION_CONFIG_DIR$/scratches/scratch_13.py</url>
+          <line>23</line>
+          <option name="timeStamp" value="50" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/flerken/framework/pytorchframework.py</url>
+          <line>552</line>
+          <option name="timeStamp" value="74" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/flerken/framework/pytorchframework.py</url>
+          <line>574</line>
+          <option name="timeStamp" value="75" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/flerken/framework/pytorchframework.py</url>
+          <line>571</line>
+          <option name="timeStamp" value="76" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test/framework/test_framework.py</url>
+          <line>53</line>
+          <option name="timeStamp" value="80" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test/framework/test_framework.py</url>
+          <line>54</line>
+          <option name="timeStamp" value="81" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test/framework/test_framework.py</url>
+          <line>46</line>
+          <option name="timeStamp" value="82" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$APPLICATION_CONFIG_DIR$/scratches/scratch_15.py</url>
+          <line>43</line>
+          <option name="timeStamp" value="88" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$APPLICATION_CONFIG_DIR$/scratches/scratch_15.py</url>
+          <line>65</line>
+          <option name="timeStamp" value="93" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$APPLICATION_CONFIG_DIR$/scratches/scratch_15.py</url>
+          <line>38</line>
+          <option name="timeStamp" value="98" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test/framework/test_framework.py</url>
+          <line>34</line>
+          <option name="timeStamp" value="101" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test/framework/__init__.py</url>
+          <line>60</line>
+          <option name="timeStamp" value="102" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test/framework/__init__.py</url>
+          <line>57</line>
+          <option name="timeStamp" value="103" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/flerken/framework/meters.py</url>
+          <line>117</line>
+          <option name="timeStamp" value="108" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/flerken$Unittests_for_test_classitems_TestClassItems_test_binary_accuracy_probabilistic_predictions_BCE.coverage" NAME="Unittests for test_classitems.TestClassItems.test_binary_accuracy_probabilistic_predictions_BCE Coverage Results" MODIFIED="1562074600573" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test/framework" />
-    <SUITE FILE_PATH="coverage/flerken$Unittests_for_test_python_inheritance_TestPythonInheritance.coverage" NAME="Unittests for test_python_inheritance.TestPythonInheritance Coverage Results" MODIFIED="1562044483305" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test/framework" />
     <SUITE FILE_PATH="coverage/flerken$borrar.coverage" NAME="borrar Coverage Results" MODIFIED="1559212729115" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/flerken$newtest.coverage" NAME="newtest Coverage Results" MODIFIED="1557404185018" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/flerken/framework" />
-    <SUITE FILE_PATH="coverage/flerken$Unittests_in_borrar_py.coverage" NAME="Unittests in borrar.py Coverage Results" MODIFIED="1559212439317" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/flerken" />
+    <SUITE FILE_PATH="coverage/flerken$Unittests_for_test_models_TestUNet_test_K_assertion.coverage" NAME="Unittests for test_models.TestUNet.test_K_assertion Coverage Results" MODIFIED="1570163343440" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test/models" />
     <SUITE FILE_PATH="coverage/flerken$Unittests_for_test_classitems_TestClassItems_test_multiclass_accuracy_CELoss.coverage" NAME="Unittests for test_classitems.TestClassItems.test_multiclass_accuracy_CELoss Coverage Results" MODIFIED="1562076021529" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test/framework" />
     <SUITE FILE_PATH="coverage/flerken$scratch_1.coverage" NAME="scratch_1 Coverage Results" MODIFIED="1560428950096" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
     <SUITE FILE_PATH="coverage/flerken$delete__1_.coverage" NAME="delete (1) Coverage Results" MODIFIED="1557845361206" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/flerken_nightly" />
-    <SUITE FILE_PATH="coverage/flerken$Unittests_for_test_scheduler_TestScheduler.coverage" NAME="Unittests for test_scheduler.TestScheduler Coverage Results" MODIFIED="1562588172153" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test/framework" />
+    <SUITE FILE_PATH="coverage/flerken$scratch_13.coverage" NAME="scratch_13 Coverage Results" MODIFIED="1571846017491" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
     <SUITE FILE_PATH="coverage/flerken$Unittests_for_test_classitems_TestClassItems.coverage" NAME="Unittests for test_classitems.TestClassItems Coverage Results" MODIFIED="1562074491708" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test/framework" />
-    <SUITE FILE_PATH="coverage/flerken$Unittests_for_test_classitems_TestClassItems_test_binary_accuracy_binary_predictions_BCEwithlogits.coverage" NAME="Unittests for test_classitems.TestClassItems.test_binary_accuracy_binary_predictions_BCEwithlogits Coverage Results" MODIFIED="1562075165823" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test/framework" />
     <SUITE FILE_PATH="coverage/flerken$Unittests_for_test_classitems_TestClassItems_test_binary_accuracy.coverage" NAME="Unittests for test_classitems.TestClassItems.test_binary_accuracy Coverage Results" MODIFIED="1562065732741" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test/framework" />
-    <SUITE FILE_PATH="coverage/flerken$Unittests_for_test_classitems_TestClassItems_test_binary_accuracy_binary_predictions_BCE.coverage" NAME="Unittests for test_classitems.TestClassItems.test_binary_accuracy_binary_predictions_BCE Coverage Results" MODIFIED="1562074568383" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test/framework" />
-    <SUITE FILE_PATH="coverage/flerken$delete.coverage" NAME="delete Coverage Results" MODIFIED="1557765495135" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/flerken$Unittests_for_test_models_TestUNet_test_conditioned_cunet_bnon.coverage" NAME="Unittests for test_models.TestUNet.test_conditioned_cunet_bnon Coverage Results" MODIFIED="1570168462865" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test/models" />
+    <SUITE FILE_PATH="coverage/flerken$Unittests_for_framework_test_framework_TestFramework_test_train_and_resume.coverage" NAME="Unittests for framework.test_framework.TestFramework.test_train_and_resume Coverage Results" MODIFIED="1572941787954" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
+    <SUITE FILE_PATH="coverage/flerken$test.coverage" NAME="test Coverage Results" MODIFIED="1574237664925" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/flerken$Unittests_for_test_classitems_TestClassItems_test_multiclass_accuracy_NLLLoss.coverage" NAME="Unittests for test_classitems.TestClassItems.test_multiclass_accuracy_NLLLoss Coverage Results" MODIFIED="1562076139228" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test/framework" />
+    <SUITE FILE_PATH="coverage/flerken$Unittests_for_test_init_TestClassDict.coverage" NAME="Unittests for test_init.TestClassDict Coverage Results" MODIFIED="1571752080639" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test/utils" />
+    <SUITE FILE_PATH="coverage/flerken$scratch_8.coverage" NAME="scratch_8 Coverage Results" MODIFIED="1569486501430" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
+    <SUITE FILE_PATH="coverage/flerken$scratch_14.coverage" NAME="scratch_14 Coverage Results" MODIFIED="1571139343318" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
+    <SUITE FILE_PATH="coverage/flerken$Unittests_for_test_models_TestUNet.coverage" NAME="Unittests for test_models.TestUNet Coverage Results" MODIFIED="1571321503028" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test/models" />
+    <SUITE FILE_PATH="coverage/flerken$Unittests_for_test_python_inheritance_TestPythonInheritance.coverage" NAME="Unittests for test_python_inheritance.TestPythonInheritance Coverage Results" MODIFIED="1562044483305" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test/framework" />
+    <SUITE FILE_PATH="coverage/flerken$Unittests_for_framework_test_framework_TestFramework_test_train_debugger_normal.coverage" NAME="Unittests for framework.test_framework.TestFramework.test_train_debugger_normal Coverage Results" MODIFIED="1571141231458" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
+    <SUITE FILE_PATH="coverage/flerken$UNet.coverage" NAME="UNet Coverage Results" MODIFIED="1570160722645" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/flerken/models" />
+    <SUITE FILE_PATH="coverage/flerken$Unittests_for_test_models_TestVGG.coverage" NAME="Unittests for test_models.TestVGG Coverage Results" MODIFIED="1570161440483" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test/models" />
+    <SUITE FILE_PATH="coverage/flerken$Unittests_in_borrar_py.coverage" NAME="Unittests in borrar.py Coverage Results" MODIFIED="1559212439317" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/flerken" />
+    <SUITE FILE_PATH="coverage/flerken$Unittests_for_framework_test_framework_TestFramework_test_set_model_training.coverage" NAME="Unittests for framework.test_framework.TestFramework.test_set_model_training Coverage Results" MODIFIED="1569491065448" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
+    <SUITE FILE_PATH="coverage/flerken$Unittests_for_test_scheduler_TestScheduler.coverage" NAME="Unittests for test_scheduler.TestScheduler Coverage Results" MODIFIED="1562588172153" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test/framework" />
+    <SUITE FILE_PATH="coverage/flerken$Unittests_for_test_models_TestUNet_test_conditioned_unet_bnmomentum.coverage" NAME="Unittests for test_models.TestUNet.test_conditioned_unet_bnmomentum Coverage Results" MODIFIED="1570433713702" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test/models" />
+    <SUITE FILE_PATH="coverage/flerken$Unittests_for_test_classitems_TestClassItems_test_binary_accuracy_binary_predictions_BCEwithlogits.coverage" NAME="Unittests for test_classitems.TestClassItems.test_binary_accuracy_binary_predictions_BCEwithlogits Coverage Results" MODIFIED="1562075165823" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test/framework" />
+    <SUITE FILE_PATH="coverage/flerken$scratch_6.coverage" NAME="scratch_6 Coverage Results" MODIFIED="1563195030293" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
+    <SUITE FILE_PATH="coverage/flerken$Unittests_for_framework_test_framework_TestFramework.coverage" NAME="Unittests for framework.test_framework.TestFramework Coverage Results" MODIFIED="1572942103566" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
+    <SUITE FILE_PATH="coverage/flerken$Unittests_for_test_classitems_TestClassItems_test_binary_accuracy_binary_predictions_BCE.coverage" NAME="Unittests for test_classitems.TestClassItems.test_binary_accuracy_binary_predictions_BCE Coverage Results" MODIFIED="1562074568383" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test/framework" />
+    <SUITE FILE_PATH="coverage/flerken$Unittests_for_test_models_TestUNet_test_activation.coverage" NAME="Unittests for test_models.TestUNet.test_activation Coverage Results" MODIFIED="1570161799671" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test/models" />
+    <SUITE FILE_PATH="coverage/flerken$Unittests_for_test_models_TestVGG_TestUNet.coverage" NAME="Unittests for test_models.TestVGG.TestUNet Coverage Results" MODIFIED="1570168330496" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test/models" />
+    <SUITE FILE_PATH="coverage/flerken$scratch_12.coverage" NAME="scratch_12 Coverage Results" MODIFIED="1570191957981" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
+    <SUITE FILE_PATH="coverage/flerken$delete.coverage" NAME="delete Coverage Results" MODIFIED="1557765495135" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/flerken$scratch_15.coverage" NAME="scratch_15 Coverage Results" MODIFIED="1573575008894" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateCodeFragment">
@@ -630,231 +806,200 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/flerken/framework/gridsearch.py" />
-    <entry file="file://$PROJECT_DIR$/flerken/framework/traceback_gradients.py">
+    <entry file="file:///usr/lib/python3.6/timeit.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="8" selection-start-line="8" selection-end-line="8" />
+        <state relative-caret-position="885">
+          <caret line="62" column="26" selection-start-line="62" selection-start-column="26" selection-end-line="62" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.local/lib/python3.6/site-packages/torch/__init__.pyi">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="630">
+          <caret line="66" column="6" selection-start-line="66" selection-start-column="6" selection-end-line="66" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/python_stubs/-1247971763/builtins.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="164">
+          <caret line="2927" column="8" selection-start-line="2927" selection-start-column="8" selection-end-line="2927" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.local/lib/python3.6/site-packages/numpy/core/multiarray.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="135" column="4" selection-start-line="135" selection-start-column="4" selection-end-line="135" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_13.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="29" column="55" selection-start-line="29" selection-start-column="55" selection-end-line="29" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_14.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="409">
+          <caret line="41" column="29" selection-start-line="41" selection-start-column="29" selection-end-line="42" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.6/posixpath.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="173">
+          <caret line="79" selection-start-line="79" selection-end-line="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.local/lib/python3.6/site-packages/torch/serialization.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="223" selection-start-line="223" selection-end-line="223" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/video/test_videoutils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
           <folding>
-            <element signature="e#216#228#0" expanded="true" />
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/flerken/test.py" />
+    <entry file="file://$PROJECT_DIR$/flerken/video/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="17" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/flerken/utils/plots.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="32" selection-start-line="12" selection-start-column="32" selection-end-line="12" selection-end-column="32" />
+        <state>
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/flerken/utils/losses.py">
+    <entry file="file://$USER_HOME$/.local/lib/python3.6/site-packages/torch/nn/modules/module.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-41">
-          <caret line="31" column="32" selection-start-line="31" selection-start-column="32" selection-end-line="31" selection-end-column="32" />
+        <state relative-caret-position="8745">
+          <caret line="590" selection-start-line="590" selection-end-line="590" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/utils/test_losses.py">
+    <entry file="file://$PROJECT_DIR$/flerken/framework/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="12" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="12" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="105">
+          <caret line="7" column="7" lean-forward="true" selection-start-line="7" selection-start-column="7" selection-end-line="7" selection-end-column="7" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-540">
-          <caret column="21" selection-start-column="21" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/typeshed/stdlib/3/unittest/__init__.pyi">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-157">
-          <caret line="292" column="8" selection-start-line="292" selection-start-column="8" selection-end-line="292" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/flerken/borrar.py" />
-    <entry file="file://$PROJECT_DIR$/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="18" selection-start-line="6" selection-start-column="18" selection-end-line="6" selection-end-column="18" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/requirements-dev.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/flerken/utils/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" column="59" selection-start-line="20" selection-start-column="59" selection-end-line="20" selection-end-column="59" />
-          <folding>
-            <element signature="e#47#67#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/flerken/datasets/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="17" lean-forward="true" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/flerken/datasets/hmdb51/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/video/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/video/test_videoutils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="42" selection-start-line="17" selection-start-column="42" selection-end-line="17" selection-end-column="42" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.travis.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/setup.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="15" column="31" selection-start-line="15" selection-start-column="31" selection-end-line="15" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#43#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/flerken/datasets/dataset_tools.py">
+    <entry file="file://$PROJECT_DIR$/flerken/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <caret column="9" selection-start-column="9" selection-end-column="9" />
+          <caret column="30" selection-start-column="30" selection-end-column="30" />
+          <folding>
+            <element signature="e#135#157#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../DuTran/main.py" />
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py">
+    <entry file="file://$PROJECT_DIR$/test/utils/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flerken/utils/losses.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="690">
-          <caret line="48" column="82" selection-start-line="48" selection-start-column="82" selection-end-line="48" selection-end-column="82" />
+        <state relative-caret-position="1275">
+          <caret line="85" column="33" selection-start-line="85" selection-start-column="29" selection-end-line="85" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flerken/video/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1275">
+          <caret line="93" selection-start-line="93" selection-end-line="93" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/.local/lib/python3.6/site-packages/sklearn/metrics/classification.py">
+    <entry file="file://$PROJECT_DIR$/.travis.yml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/python_stubs/-1247971763/numpy/core/_multiarray_umath.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-160">
-          <caret line="114" column="4" selection-start-line="114" selection-start-column="4" selection-end-line="114" selection-end-column="4" />
+        <state relative-caret-position="210">
+          <caret line="2585" column="4" selection-start-line="2585" selection-start-column="4" selection-end-line="2585" selection-end-column="4" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/framework/test_python_inheritance.py">
+    <entry file="file://$USER_HOME$/.local/lib/python3.6/site-packages/torchtree/trees/browser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="750">
-          <caret line="50" selection-start-line="50" selection-end-line="50" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="299">
+          <caret line="25" column="8" selection-start-line="25" selection-start-column="8" selection-end-line="25" selection-end-column="8" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/python_stubs/-1247971763/builtins.py">
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_15.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-16">
-          <caret line="4059" column="8" selection-start-line="4059" selection-start-column="8" selection-end-line="4059" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/framework/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="8" selection-start-line="7" selection-start-column="8" selection-end-line="7" selection-end-column="8" />
+        <state relative-caret-position="382">
+          <caret line="57" selection-start-line="57" selection-end-line="57" selection-end-column="76" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/flerken/framework/reproducibility.py">
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/typeshed/stdlib/3/typing.pyi">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="348" column="8" selection-start-line="348" selection-start-column="8" selection-end-line="348" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/python_stubs/-1247971763/cv2/cv2/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-375">
+          <caret line="7400" column="4" selection-start-line="7400" selection-start-column="4" selection-end-line="7400" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.6/bisect.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="23" column="4" selection-start-line="23" selection-start-column="4" selection-end-line="23" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.local/lib/python3.6/site-packages/torch/utils/data/sampler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="735">
+          <caret line="50" column="6" selection-start-line="50" selection-start-column="6" selection-end-line="50" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.local/lib/python3.6/site-packages/torch/utils/data/dataset.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
-          <caret line="6" column="35" selection-start-line="6" selection-start-column="35" selection-end-line="6" selection-end-column="35" />
+          <caret line="199" column="33" selection-start-line="199" selection-start-column="33" selection-end-line="199" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flerken/models/UNet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="254">
+          <caret line="110" column="29" selection-start-line="110" selection-start-column="29" selection-end-line="110" selection-end-column="29" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/framework/test_framework.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-675">
-          <caret line="9" column="32" lean-forward="true" selection-start-line="9" selection-start-column="32" selection-end-line="9" selection-end-column="32" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pycharm/_jb_unittest_runner.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="34" selection-start-line="34" selection-end-line="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/lib/python3.6/unittest/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="94" selection-start-line="94" selection-end-line="94" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pycharm/teamcity/unittestpy.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="679">
-          <caret line="307" selection-start-line="307" selection-end-line="307" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/lib/python3.6/unittest/runner.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="173">
-          <caret line="175" selection-start-line="175" selection-end-line="175" />
         </state>
       </provider>
     </entry>
@@ -865,132 +1010,78 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///usr/lib/python3.6/unittest/case.py">
+    <entry file="file:///usr/lib/python3.6/unittest/runner.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="652" selection-start-line="652" selection-end-line="652" />
+        <state relative-caret-position="173">
+          <caret line="175" selection-start-line="175" selection-end-line="175" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/models/test_models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="218">
+          <caret line="109" column="51" selection-start-line="109" selection-start-column="51" selection-end-line="109" selection-end-column="51" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flerken/framework/meters.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="846">
+          <caret line="147" selection-start-line="147" selection-end-line="147" />
+          <folding>
+            <element signature="e#0#77#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flerken/datasets/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="3" column="34" selection-start-line="3" selection-start-column="34" selection-end-line="3" selection-end-column="34" />
+          <folding>
+            <element signature="e#47#66#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flerken/framework/python_inheritance.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flerken/framework/utils.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flerken/framework/traceback_gradients.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2685">
+          <caret line="1" column="23" selection-start-line="1" selection-start-column="23" selection-end-line="1" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/flerken/framework/sqlite_tools.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="27" column="27" selection-start-line="27" selection-start-column="27" selection-end-line="27" selection-end-column="27" />
-        </state>
+        <state relative-caret-position="-270" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/framework/test_scheduler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="12" column="33" selection-start-line="12" selection-start-column="33" selection-end-line="12" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/flerken/_version.py">
+    <entry file="file://$PROJECT_DIR$/flerken/framework/reproducibility.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <caret column="24" selection-start-column="24" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/framework/test_classitems.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="4" selection-end-column="42" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/flerken/models/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" selection-start-line="5" selection-end-line="5" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_5.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="844">
-          <caret line="65" selection-start-line="65" selection-end-line="68" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/flerken/models/R2Plus1D.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/flerken/framework/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/flerken/framework/python_inheritance.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/flerken/framework/network_initialization.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-191">
-          <caret line="1" column="23" selection-start-line="1" selection-start-column="23" selection-end-line="1" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/flerken/video/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1228">
-          <caret line="100" column="81" selection-start-line="100" selection-start-column="81" selection-end-line="100" selection-end-column="81" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/flerken/video/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" selection-start-line="16" selection-end-line="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/flerken/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="19" lean-forward="true" selection-start-line="8" selection-start-column="19" selection-end-line="8" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/flerken/framework/decorators.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/flerken/framework/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/flerken/framework/classitems.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-241">
-          <caret line="385" column="8" selection-start-line="385" selection-start-column="8" selection-end-line="385" selection-end-column="8" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
@@ -999,11 +1090,110 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/flerken/framework/pytorchframework.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1594">
-          <caret line="822" column="13" lean-forward="true" selection-start-line="822" selection-start-column="13" selection-end-line="822" selection-end-column="13" />
+        <state relative-caret-position="1159">
+          <caret line="717" column="72" selection-start-line="717" selection-start-column="72" selection-end-line="717" selection-end-column="72" />
           <folding>
-            <element signature="e#204#216#0" expanded="true" />
+            <element signature="e#47#59#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flerken/utils/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="218">
+          <caret line="34" column="6" selection-start-line="34" selection-start-column="6" selection-end-line="34" selection-end-column="6" />
+          <folding>
+            <element signature="e#47#91#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/utils/test_init.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="29" selection-start-line="29" selection-end-line="29" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flerken/datasets/dataset_tools.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flerken/framework/classitems.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-972">
+          <caret line="358" column="13" selection-start-line="358" selection-start-column="13" selection-end-line="358" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flerken/framework/dataloader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/framework/test_framework.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="37" column="58" selection-start-line="37" selection-start-column="58" selection-end-line="37" selection-end-column="58" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.6/unittest/case.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8880">
+          <caret line="605" selection-start-line="605" selection-end-line="605" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/framework/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="795">
+          <caret line="57" selection-start-line="57" selection-end-line="57" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flerken/framework/debug.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flerken/datasets/audiovisual_dataset.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="844">
+          <caret line="326" selection-start-line="326" selection-end-line="326" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flerken/_version.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="24" selection-start-column="24" selection-end-column="24" />
         </state>
       </provider>
     </entry>

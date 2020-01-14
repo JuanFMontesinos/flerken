@@ -532,7 +532,7 @@ class pytorchfw(framework):
         print('Detecting scalars...')
         for key in checkpoint['tsi']:
             setattr(self, key + '_', checkpoint['tsi'][key])
-            print('>'+ key + ' loaded!')
+            print('>' + key + ' loaded!')
         self.key.update(checkpoint['key'])
         self.absolute_iter = checkpoint['iter']
         self.scheduler.load_state_dict(checkpoint['scheduler'])
@@ -630,7 +630,7 @@ class pytorchfw(framework):
         return output
 
     def run_epoch(self, dataloader, metrics=[], checkpoint=lambda: None, allocate_input=True,
-                  allocate_gt=True, send=('gt', 'pred')):
+                  allocate_gt=True, send=('pred', 'gt')):
         j = -1
         iterations = len(dataloader)
         if torch.is_grad_enabled() and 'loss' not in metrics:
@@ -658,7 +658,7 @@ class pytorchfw(framework):
                         gt = self._allocate_tensor(gt, device=device)
                     for metric in metrics:
                         if metric == 'loss' or metric == 'acc':
-                            send_ = ('gt', 'pred')
+                            send_ = ('pred', 'gt')
                         else:
                             send_ = send
                         for var in send_:
@@ -681,7 +681,7 @@ class pytorchfw(framework):
                             self.writer.add_figure('Gradients',
                                                    self.tracker(self.model.named_parameters()),
                                                    self.absolute_iter)
-                            self.optimizer.step()
+                        self.optimizer.step()
                     # CHECKPOINT
 
                     self.tensorboard_writer(self.loss, pred, gt, self.absolute_iter, vs)
@@ -715,7 +715,7 @@ class pytorchfw(framework):
                 send_ = send
             if not self.metrics[metric][self.state].on_the_fly:
                 if self.metrics[metric][self.state].redirect is not None:
-                    results = self.metrics[metric][self.state].process(send_, store=False)
+                    results = self.metrics[metric][self.state].process(*send_, store=False)
                     for key in self.metrics[metric][self.state].redirect:
                         name = self.metrics[metric][self.state].redirect[key]
                         setattr(self, name, results[key])
@@ -731,7 +731,6 @@ class pytorchfw(framework):
         # Metrics
         self.__update_db__()
         checkpoint()
-
 
     def __atribute_assertion__(self):
         assert hasattr(self, 'assertion_variables')

@@ -43,10 +43,10 @@ class toy_fw(pytorchfw):
         # Def criterion self.criterion
         self.criterion = torch.nn.BCELoss().to(self.main_device)
         self.init_acc(['perro', 'gato', 'casa', 'miau', 'guau'], False)
+
     def set_config(self):
         self.batch_size = 2
         self.dataparallel = False
-
 
     @config
     @set_training
@@ -55,7 +55,10 @@ class toy_fw(pytorchfw):
         self.train_loader = self.val_loader = torch.utils.data.DataLoader(datab, batch_size=self.batch_size)
         for self.epoch in range(self.start_epoch, self.EPOCHS):
             with train(self):
-                self.run_epoch(self.train_loader,metrics=['acc'])
+                self.run_epoch(self.train_loader, metrics=['acc'])
             with val(self):
                 with torch.no_grad():
-                    self.run_epoch(self.train_loader,metrics=['acc'], checkpoint=self.checkpoint(metric='acc', criteria=[max, lambda epoch, optimal: optimal > epoch]))
+                    self.run_epoch(self.train_loader, metrics=['acc'], checkpoint=self.checkpoint(metric='acc',
+                                                                                                  criteria=[max, lambda
+                                                                                                      epoch,
+                                                                                                      optimal: optimal > epoch]))

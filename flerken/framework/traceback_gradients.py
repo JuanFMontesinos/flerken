@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-__author__ = "Juan Montesinos"
-__copyright__ = "Copyright 2019"
-__maintainer__ = "Juan Montesinos"
-__email__ = "juanfelipe.montesinos@upf.edu"
-__status__ = "Prototype"
 
 import torch
 import numpy as np
