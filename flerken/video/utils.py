@@ -58,18 +58,18 @@ def get_duration_fps(filename, display):
 
 
 def reencode_25_interpolate(video_path: str, dst_path: str, *args, **kwargs):
-    input_options = ['-y']
-    output_options = ['-r', '25']
-    return apply_single(video_path, dst_path, input_options, output_options)
+    kwargs['input_options']=['-y']
+    kwargs['output_options']=['-r', '25']
+    return apply_single(video_path, dst_path, *args, **kwargs)
 
 
 def reencode_30_interpolate(video_path: str, dst_path: str, *args, **kwargs):
     input_options = ['-y']
     output_options = ['-r', '30']
-    return apply_single(video_path, dst_path, input_options, output_options)
+    return apply_single(video_path, dst_path, input_options, output_options, *args, **kwargs)
 
 
-def apply_single(video_path: str, dst_path: str, input_options: list, output_options: list):
+def apply_single(video_path: str, dst_path: str, input_options: list, output_options: list, ext: None):
     """
     Runs ffmpeg for the following format for a single input/output:
         ffmpeg [input options] -i input [output options] output
@@ -83,6 +83,8 @@ def apply_single(video_path: str, dst_path: str, input_options: list, output_opt
     """
     assert os.path.isfile(video_path)
     assert os.path.isdir(os.path.dirname(dst_path))
+    if ext is not None:
+        dst_path = os.path.splitext(dst_path)[0] + ext
     result = subprocess.Popen(["ffmpeg", *input_options, '-i', video_path, *output_options, dst_path],
                               stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     stdout = result.stdout.read()
@@ -93,7 +95,8 @@ def apply_single(video_path: str, dst_path: str, input_options: list, output_opt
         print(stderr.decode("utf-8"))
 
 
-def apply_tree(root, dst, input_options=list(), output_options=list(), multiprocessing=0, fn=apply_single, ignore=[]):
+def apply_tree(root, dst, input_options=list(), output_options=list(), multiprocessing=0, fn=apply_single, ignore=[],
+               ext=None):
     """
     Applies ffmpeg processing for a given directory tree for whatever which fits this format:
         ffmpeg [input options] -i input [output options] output
@@ -119,14 +122,15 @@ def apply_tree(root, dst, input_options=list(), output_options=list(), multiproc
     if multiprocessing > 0:
         pool = mp.Pool(multiprocessing)
         results = [pool.apply(fn,
-                              args=(i_path, o_path, input_options, output_options))
+                              args=(i_path, o_path),
+                              kwds={input_options: input_options, output_options: output_options, ext: ext})
                    for i_path, o_path in zip(tree.paths(root), tree.paths(dst)) if
                    os.path.splitext(i_path)[1][1:] in formats]
         pool.close()
     else:
         for i_path, o_path in zip(tree.paths(root), tree.paths(dst)):
             if os.path.splitext(i_path)[1][1:] in formats:
-                fn(i_path, o_path, input_options, output_options)
+                fn(i_path, o_path, input_options=input_options, output_options=output_options, ext=ext)
 
 
 def quirurgical_extractor(video_path, dst_frames, dst_audio, t, n_frames, T, size=None, sample_rate=None):

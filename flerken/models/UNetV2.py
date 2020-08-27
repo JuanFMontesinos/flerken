@@ -1,9 +1,19 @@
 import torch
 import torch.nn as nn
 from numbers import Number
-from warnings import warn
 
-from .film import FiLM
+
+# from .film import FiLM as FiLM_parent
+class FiLM_parent(nn.Module):
+    def __init__(self, in_channels, out_channels):
+        super().__init__()
+        self.bias = nn.Linear(in_channels, out_channels)
+        self.scale = nn.Linear(in_channels, out_channels)
+
+    def forward(self, x, c):
+        scale, bias = self.scale(c), self.bias(c)
+        return scale, bias
+
 
 __all__ = ['UNet']
 
@@ -37,10 +47,32 @@ def center_crop(img, output_size):
     return crop(img, i, j, th, tw)
 
 
+def conv_bn_lr_do(dim_in, dim_out, kernel_size, stride, padding, bias, use_conv, use_bn, relu, dropout, **kwargs):
+    layers = []
+    if use_conv:
+        layers.append(nn.Conv2d(dim_in, dim_out, kernel_size=kernel_size, stride=stride, padding=padding,
+                                bias=bias))
+    if use_bn:
+        layers.append(nn.BatchNorm2d(dim_out, **kwargs))
+    if isnumber(relu):
+        if relu >= 0:
+            layers.append(nn.LeakyReLU(relu, inplace=True))
+    if dropout:
+        layers.append(nn.Dropout2d(dropout))
+    return nn.Sequential(*layers)
+
+
+class FiLM(FiLM_parent):
+    def forward(self, x, c):
+        scale = self.scale(c).unsqueeze(2).unsqueeze(2)
+        bias = self.bias(c).unsqueeze(2).unsqueeze(2)
+        return x * scale + bias
+
+
 class ConvolutionalBlock(nn.Module):
     def __init__(self, dim_in, dim_out, film, kernel_conv=3, kernel_MP=2, stride_conv=1, stride_MP=2, padding=1,
-                 bias=True, dropout=False,
-                 useBN=False, bn_momentum=0.1, **kwargs):
+                 bias=True, dropout=False, useBN=False, bn_momentum=0.1,
+                 mode='upconv', architecture='original', **kwargs):
         super(ConvolutionalBlock, self).__init__()
         """Defines a (down)convolutional  block
         Args:
@@ -60,73 +92,52 @@ class ConvolutionalBlock(nn.Module):
                 to_down: Max Pooling output to be used as input for next block
         """
         assert isinstance(dropout, Number)
-        self.film = film
+        assert mode in ['upconv', 'upsample']
+        assert architecture in ['original', 'sop']
+        if useBN:
+            bias = False
+        self.film = isnumber(film)
         self.useBN = useBN
-        self.dropout = dropout
-        if self.useBN:
-            self.Conv1 = nn.Conv2d(dim_in, dim_out, kernel_size=kernel_conv, stride=stride_conv, padding=padding,
-                                   bias=bias)
-            self.BN1 = nn.BatchNorm2d(dim_out, momentum=bn_momentum)
-            self.ReLu1 = nn.LeakyReLU(0.1)
-            self.Conv2 = nn.Conv2d(dim_out, dim_out, kernel_size=kernel_conv, stride=stride_conv, padding=padding,
-                                   bias=bias)
-            self.BN2 = nn.BatchNorm2d(dim_out, momentum=bn_momentum)
-            self.ReLu2 = nn.LeakyReLU(0.1)
-        else:
-            self.Conv1 = nn.Conv2d(dim_in, dim_out, kernel_size=kernel_conv, stride=stride_conv, padding=padding,
-                                   bias=bias)
-            self.ReLu1 = nn.ReLU(0)
-            self.Conv2 = nn.Conv2d(dim_out, dim_out, kernel_size=kernel_conv, stride=stride_conv, padding=padding,
-                                   bias=bias)
-            self.ReLu2 = nn.ReLU(0)
-        if self.dropout:
-            self.DO1 = nn.Dropout2d(self.dropout)
-            self.DO2 = nn.Dropout2d(self.dropout)
+        # HARCODING DROPOUT IN ENCODER AS FALSE
+        self.dropout = 0
+        self.opt_layer = None
+
+        if isnumber(film):
+            self.film_layer = FiLM(film, dim_out)
+
+        # Layer 1
+        self.layer = conv_bn_lr_do(dim_in, dim_out, kernel_conv, stride_conv, padding,
+                                   bias, True, self.useBN, relu=-1, dropout=False, momentum=bn_momentum)
+        self.ReLu = nn.LeakyReLU(0.1, inplace=True)
         self.MaxPooling = nn.MaxPool2d(kernel_size=kernel_MP, stride=stride_MP, padding=0, dilation=1,
                                        return_indices=False, ceil_mode=False)
-
-        if isnumber(self.film):
-            self.scale = nn.Linear(self.film, dim_out)
-            self.bias = nn.Linear(self.film, dim_out)
+        if architecture == 'original':
+            # Layer 2
+            self.opt_layer = conv_bn_lr_do(dim_out, dim_out, kernel_conv, stride_conv, padding,
+                                           bias, True, self.useBN, relu=0.1, dropout=False, momentum=bn_momentum)
 
     def forward(self, *args):
-        if isnumber(self.film):
+        if self.film:
             x, c = args
         else:
             x = args[0]
 
-        if self.useBN:
-            x = self.Conv1(x)
-            x = self.BN1(x)
-            x = self.ReLu1(x)
-            if self.dropout:
-                x = self.DO1(x)
-            x = self.Conv2(x)
-            x = self.BN2(x)
-            if isnumber(self.film):
-                x = self.scale(c).unsqueeze(2).unsqueeze(2) * x + self.bias(c).unsqueeze(2).unsqueeze(2)
-            to_cat = self.ReLu2(x)
-            if self.dropout:
-                to_cat = self.DO2(to_cat)
-            to_down = self.MaxPooling(to_cat)
-        else:
-            x = self.Conv1(x)
-            x = self.ReLu1(x)
-            if self.dropout:
-                x = self.DO1(x)
-            x = self.Conv2(x)
-            to_cat = self.ReLu2(x)
-            if self.dropout:
-                to_cat = self.DO2(to_cat)
-            to_down = self.MaxPooling(to_cat)
+        x = self.layer(x)
+        if self.film:
+            x = self.film_layer(x, c)
+        x = self.ReLu(x)
+        if self.opt_layer is not None:
+            x = self.opt_layer(x)
+        to_cat = x
+        to_down = self.MaxPooling(to_cat)
 
         return to_cat, to_down
 
 
 class AtrousBlock(nn.Module):
     def __init__(self, dim_in, dim_out, film, kernel_conv=3, kernel_UP=2, stride_conv=1, stride_UP=2, padding=1,
-                 bias=True,
-                 useBN=False, finalblock=False, printing=False, bn_momentum=0.1, dropout=False, **kwargs):
+                 bias=True, useBN=False, finalblock=False, verbose=False, bn_momentum=0.1, dropout=False,
+                 mode='upconv', architecture='original', **kwargs):
         """Defines a upconvolutional  block
         Args:
             dim_in: int dimension of feature maps of block input.
@@ -139,6 +150,7 @@ class AtrousBlock(nn.Module):
             bias: bool Set bias or not
             useBN: Use batch normalization
             finalblock: bool Set true if it's the last upconv block not to do upconvolution.
+            mode: 'upconv' to use Atrous Convolutions or 'upsample' to use linear interp
         Forward:
             Input:
                 x: previous block input.
@@ -147,79 +159,61 @@ class AtrousBlock(nn.Module):
                 x: block output
         """
         super(AtrousBlock, self).__init__()
-        self.useBN = useBN
+        self.opt_layer = None
         self.finalblock = finalblock
-        self.printing = printing
-        self.dropout = dropout
-        self.film = film
+        self.verbose = verbose
+        self.film = isnumber(film)
+        if useBN:
+            bias = False
         assert isinstance(dropout, Number)
-        if self.useBN:
-
-            self.Conv1 = nn.Conv2d(2 * dim_in, dim_in, kernel_size=kernel_conv, stride=stride_conv, padding=padding,
-                                   bias=bias)
-            self.BN1 = nn.BatchNorm2d(dim_in, momentum=bn_momentum)
-            self.ReLu1 = nn.LeakyReLU(0.1)
-            self.Conv2 = nn.Conv2d(dim_in, dim_in, kernel_size=kernel_conv, stride=stride_conv, padding=padding,
-                                   bias=bias)
-            self.BN2 = nn.BatchNorm2d(dim_in, momentum=bn_momentum)
-            self.ReLu2 = nn.LeakyReLU(0.1)
+        assert mode in ['upconv', 'upsample']
+        assert architecture in ['original', 'sop']
+        if self.finalblock:  # Prevents dropout in the last block as it would set to zero outgoing values
+            dropout = False
+        if architecture == 'sop' and mode == 'upsample' and not finalblock:
+            dim_inner = dim_out
         else:
+            dim_inner = dim_in
 
-            self.Conv1 = nn.Conv2d(2 * dim_in, dim_in, kernel_size=kernel_conv, stride=stride_conv, padding=padding,
-                                   bias=bias)
-            self.ReLu1 = nn.ReLU(0)
-            self.Conv2 = nn.Conv2d(dim_in, dim_in, kernel_size=kernel_conv, stride=stride_conv, padding=padding,
-                                   bias=bias)
-            self.ReLu2 = nn.ReLU(0)
-        if self.dropout:
-            self.DO1 = nn.Dropout2d(self.dropout)
-            self.DO2 = nn.Dropout2d(self.dropout)
+        self.layer = conv_bn_lr_do(2 * dim_in, dim_inner, kernel_conv, stride_conv, padding,
+                                   bias, True, useBN, relu=-1, dropout=dropout, momentum=bn_momentum)
+
+        if architecture == 'original':
+            # Layer 2
+            diml2 = dim_in * ((mode == 'upconv' or finalblock)) + dim_out * (mode == 'upsample') * (not finalblock)
+            self.opt_layer = conv_bn_lr_do(dim_inner, diml2, kernel_conv, stride_conv, padding,
+                                           bias, True, useBN, relu=0, dropout=dropout, momentum=bn_momentum)
+
+        self.ReLu = nn.ReLU(inplace=True)
         if not finalblock:
-            self.AtrousConv = nn.ConvTranspose2d(dim_in, dim_out, kernel_size=kernel_UP, stride=stride_UP, padding=0,
-                                                 dilation=1)
-        if isnumber(self.film):
-            self.scale = nn.Linear(self.film, dim_in)
-            self.bias = nn.Linear(self.film, dim_in)
+            if mode == 'upconv':
+                self.AtrousConv = nn.ConvTranspose2d(dim_inner, dim_out, kernel_size=kernel_UP, stride=stride_UP,
+                                                     padding=0, dilation=1)
+            elif mode == 'upsample':
+                self.AtrousConv = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
+        if self.film:
+            self.film_layer = FiLM(film, dim_inner)
 
     def forward(self, *args):
-        if isnumber(self.film):
+        if self.film:
             x, to_cat, c = args
         else:
             x, to_cat = args
 
-        if self.printing:
+        if self.verbose:
             print('Incoming variable from previous Upconv Block: {}'.format(x.size()))
 
-        if self.useBN:
-            to_cat = center_crop(to_cat, x.size()[2:4])
-            x = torch.cat((x, to_cat), dim=1)
-            x = self.Conv1(x)
-            x = self.BN1(x)
-            if self.dropout and not self.finalblock:
-                x = self.DO1(x)
-            x = self.ReLu1(x)
-            x = self.Conv2(x)
-            x = self.BN2(x)
-            if isnumber(self.film):
-                x = self.scale(c).unsqueeze(2).unsqueeze(2) * x + self.bias(c).unsqueeze(2).unsqueeze(2)
-            x = self.ReLu2(x)
-            if self.dropout and not self.finalblock:
-                x = self.DO2(x)
-            if not self.finalblock:
-                x = self.AtrousConv(x)
-        else:
-            to_cat = center_crop(to_cat, x.size()[2:4])
-            x = torch.cat((x, to_cat), dim=1)
-            x = self.Conv1(x)
-            x = self.ReLu1(x)
-            if self.dropout:
-                x = self.DO1(x)
-            x = self.Conv2(x)
-            x = self.ReLu2(x)
-            if self.dropout:
-                x = self.DO2(x)
-            if not self.finalblock:
-                x = self.AtrousConv(x)
+        to_cat = center_crop(to_cat, x.size()[2:4])
+        x = torch.cat((x, to_cat), dim=1)
+        x = self.layer(x)
+        if self.film:
+            x = self.film_layer(x, c)
+        x = self.ReLu(x)
+        if self.opt_layer is not None:
+            x = self.opt_layer(x)
+
+        if not self.finalblock:
+            x = self.AtrousConv(x)
         return x
 
 
@@ -243,52 +237,57 @@ class TransitionBlock(nn.Module):
     """
 
     def __init__(self, dim_in, dim_out, film, kernel_conv=3, kernel_UP=2, stride_conv=1, stride_UP=2, padding=1,
-                 bias=True,
-                 useBN=False, bn_momentum=0.1, **kwargs):
+                 bias=True, useBN=False, verbose=False, bn_momentum=0.1, mode='upconv', architecture='original',
+                 **kwargs):
         super(TransitionBlock, self).__init__()
-        self.film = film
+        # LAYERS AREN'T DEFINED IN ORDER
         self.useBN = useBN
-        if self.useBN:
-            self.Conv1 = nn.Conv2d(int(dim_in / 2), dim_in, kernel_size=kernel_conv, stride=stride_conv,
-                                   padding=padding, bias=bias)
-            self.BN1 = nn.BatchNorm2d(dim_in, momentum=bn_momentum)
-            self.ReLu1 = nn.LeakyReLU(0.1)
-            self.Conv2 = nn.Conv2d(dim_in, dim_in, kernel_size=kernel_conv, stride=stride_conv, padding=padding,
-                                   bias=bias)
-            self.BN2 = nn.BatchNorm2d(dim_in, momentum=bn_momentum)
-            self.ReLu2 = nn.LeakyReLU(0.1)
-        else:
-            self.Conv1 = nn.Conv2d(int(dim_in / 2), dim_in, kernel_size=kernel_conv, stride=stride_conv,
-                                   padding=padding, bias=bias)
-            self.ReLu1 = nn.ReLU(0)
-            self.Conv2 = nn.Conv2d(dim_in, dim_in, kernel_size=kernel_conv, stride=stride_conv, padding=padding,
-                                   bias=bias)
-            self.ReLu2 = nn.ReLU(0)
-        self.AtrousConv = nn.ConvTranspose2d(dim_in, dim_out, kernel_size=kernel_UP, stride=stride_UP, padding=0,
-                                             dilation=1)
-        if isnumber(self.film):
-            self.film = FiLM(self.film, dim_in)
+        self.mode = mode
+        self.verbose = verbose
+        self.opt_layer = None
+        self.film = isnumber(film)
+        if useBN:
+            bias = False
+        assert mode in ['upconv', 'upsample']
+        assert architecture in ['original', 'sop']
+        dropout = 0
+        if architecture == 'original' or mode == 'upconv':
+            dim_inner = dim_in
+        elif architecture == 'sop' and mode == 'upsample':
+            dim_inner = dim_out
+
+        self.layer = conv_bn_lr_do(dim_in // 2, dim_inner, kernel_conv, stride_conv, padding,
+                                   bias, True, useBN, relu=-1, dropout=dropout, momentum=bn_momentum)
+
+        if architecture == 'original':
+            # Layer 2
+            diml2 = dim_in * (mode == 'upconv') + dim_out * (mode == 'upsample')
+            self.opt_layer = conv_bn_lr_do(dim_inner, diml2, kernel_conv, stride_conv, padding,
+                                           bias, True, useBN, relu=0, dropout=dropout, momentum=bn_momentum)
+
+        self.ReLu = nn.ReLU(inplace=True)
+
+        if mode == 'upconv':
+            self.AtrousConv = nn.ConvTranspose2d(dim_inner, dim_out, kernel_size=kernel_UP, stride=stride_UP,
+                                                 padding=0, dilation=1)
+        elif mode == 'upsample':
+            self.AtrousConv = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
+        if self.film:
+            self.film_layer = FiLM(film, dim_inner)
 
     def forward(self, *args):
-        if isnumber(self.film):
+        if self.film:
             x, c = args
         else:
             x = args[0]
-        if self.useBN:
-            x = self.Conv1(x)
-            x = self.BN1(x)
-            x = self.ReLu1(x)
-            x = self.Conv2(x)
-            x = self.BN2(x)
-            if isnumber(self.film):
-                scale, bias = self.film(c)
-                x = scale.unsqueeze(2).unsqueeze(2) * x + bias.unsqueeze(2).unsqueeze(2)
-            x = self.ReLu2(x)
-        else:
-            x = self.Conv1(x)
-            x = self.ReLu1(x)
-            x = self.Conv2(x)
-            x = self.ReLu2(x)
+        x = self.layer(x)
+        if self.verbose:
+            print('Latent space shape:%s' % str(x.shape))
+        if self.film:
+            x = self.film_layer(x, c)
+        x = self.ReLu(x)  # This is the latent space
+        if self.opt_layer is not None:
+            x = self.opt_layer(x)
         to_up = self.AtrousConv(x)
 
         return to_up
@@ -313,8 +312,6 @@ class UNet(nn.Module):
         
                           
     """
-
-    # TODO Use bilinear interpolation in addition to upconvolutions
 
     def __init__(self, dimensions_vector, K, film, verbose=False, useBN=False, input_channels=1,
                  activation=None, **kwargs):
@@ -386,6 +383,10 @@ class UNet(nn.Module):
 
     def add_encoder(self, input_channels, film, **kwargs):
         encoder = []
+        if kwargs.get('architecture') == 'sop':
+            kwargs['bias'] = False
+            kwargs['kernel_conv'] = 5
+            kwargs['padding'] = 2
         for i in range(len(self.dim) - 1):  # There are len(self.dim)-1 downconv blocks
             if self.printing:
                 print('Building Downconvolutional Block {} ...OK'.format(i))
@@ -398,6 +399,8 @@ class UNet(nn.Module):
         return encoder
 
     def add_decoder(self, film_d, film_l, **kwargs):
+        if kwargs.get('architecture') == 'sop':
+            kwargs['bias'] = False
         decoder = []
         for i in self.vec[::-1]:  # [::-1] inverts the order to set top layer as layer 0 and to order
             # layers from the bottom to above according to  flow of information.
@@ -405,7 +408,8 @@ class UNet(nn.Module):
                 print('Building Upconvolutional Block {}...OK'.format(i))
             if i == max(self.vec):  # Special condition for lowest block
                 decoder.append(
-                    TransitionBlock(self.dim[i], self.dim[i - 1], film_l, useBN=self.useBN, **kwargs))
+                    TransitionBlock(self.dim[i], self.dim[i - 1], film_l, verbose=self.printing, useBN=self.useBN,
+                                    **kwargs))
             elif i == 0:  # Special case for last (top) upconv block
                 decoder.append(
                     AtrousBlock(self.dim[i], self.dim[i - 1], film_d, finalblock=True, useBN=self.useBN, **kwargs))
@@ -451,3 +455,5 @@ class UNet(nn.Module):
             print('UNet Output size {}'.format(x.size()))
 
         return x
+
+

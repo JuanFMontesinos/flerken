@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 import sqlite3
 
-
 def connect(path, verbose=False):
     conn = sqlite3.connect(path)
     cursor = conn.cursor()
@@ -131,3 +130,4 @@ def test():
     print(db.exists('nagasaki'))
     db.update(tester3)
     print('test sucessful')
+

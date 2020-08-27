@@ -21,7 +21,7 @@ class AudioReader(object):
     def _init_formats(self):
         self.formats = BaseDict()
         for format in self.allowed_formats:
-            getattr(self, '_' + format)
+            getattr(self, '_' + format)()
 
     def _scipy(self):
         from scipy.io.wavfile import read
@@ -64,8 +64,18 @@ class AudioReader(object):
 
     def __call__(self, path, offset=0, length=None):
         ext = os.path.splitext(path)[1][1:]
-        f = self.formats.get(ext, self.formats['default'])()
-        return f(path, offset=offset, length=length)
+
+        f = self.formats.get(ext, self.formats['default'])
+        if ext == '' and os.path.isdir(path):
+            files = [os.path.join(path, x) for x in os.listdir(path)]
+            if len(files) == 1:
+                return f(files[0], offset=offset, length=length)
+            elif len(files) == 0:
+                raise FileExistsError('Audio resource of format directory is empty: %s' % path)
+            else:
+                return [f(x, offset=offset, length=length) for x in files]
+        else:
+            return f(path, offset=offset, length=length)
 
 
 class ImageReader(object):
@@ -128,11 +138,14 @@ class HasableTree(Directory_Tree):
 
 
 class FileManager(object):
-    def __init__(self, root, in_memory=False, as_generator=True, exclude=[]):
+    def __init__(self, root, in_memory=False, as_generator=True, exclude=[],yield_mode='yield_module'):
+
+        self.yield_mode = yield_mode
         if not os.path.exists(root):
             raise Exception('Directory %s does not exist' % root)
         self.root = root
-        self.in_memory = in_memory
+        self.in_memory = in_memory #TODO This won't probably work as generator due to the ordering of scandir
+        #which reads files in a not sorted way. Difficult to fix
 
         self.tree = Directory_Tree(path=root, ignore=exclude, scan_params=self.in_memory)
         self.is_info = 'info' in self._available_resources
@@ -198,6 +211,7 @@ class FileManager(object):
         return self.N
 
     def _calc_len(self):
+        # TODO this should be adapted for yield_file?
         class_size = {}
         idx_prev = 0
         if self.is_info:
@@ -213,18 +227,22 @@ class FileManager(object):
                 idx_prev += n
         return class_size, idx_prev
 
-    def yield_name(self, obj, resource, root):
+    def yield_module(self, obj, resource, root):
         for name, module in obj(resource).named_modules(prefix=os.path.join(root, resource)):
             if module.level() == 3:
                 if not self.in_memory:
                     yield (name, module)
                 else:
                     yield name
+    def yield_file(self, obj, resource, root):
+        for path in sorted(list(obj(resource).paths(root=os.path.join(root, resource)))):
+            yield path
 
     def __iter__(self):
-
-        return zip_longest(*[self.yield_name(self.tree, resource, self.root) for resource in self.resources])
-
+        if self.yield_mode == 'yield_module':
+            return zip_longest(*[self.yield_module(self.tree, resource, self.root) for resource in self.resources])
+        elif self.yield_mode == 'yield_file':
+            return zip_longest(*[self.yield_file(self.tree, resource, self.root) for resource in self.resources])
     def __getitem__(self, idx):
         if self.as_generator:
             for i, sample in enumerate(iter(self)):
@@ -235,8 +253,8 @@ class FileManager(object):
 
 
 class AVDataset(Dataset):
-    def __init__(self, root, in_memory=False, as_generator=True, exclude=[], debug=False, **kwargs):
-        self.filemanager = FileManager(root, in_memory=in_memory, as_generator=as_generator, exclude=exclude)
+    def __init__(self, root, in_memory=False, as_generator=True, exclude=[], debug=False,yield_mode='yield_module', **kwargs):
+        self.filemanager = FileManager(root, in_memory=in_memory, as_generator=as_generator, exclude=exclude,yield_mode=yield_mode)
         self.processor = get_transforms()
         self.reader = Reader(self.filemanager.resources, debug=debug, **kwargs)
         self.debug = debug
@@ -272,7 +290,7 @@ class AVDataset(Dataset):
                         key = path.split('/')[-1]
                     print('\t Resource: %s, Path: %s' % (resource, path))
                 print('\t Kwargs: %s ' % kw)
-                print('\t Info: %s ' % self.filemanager.info[key])
+                print('\t Info: %s ' % self.filemanager.info[os.path.splitext(key)[0]])
             files = self.reader(self.filemanager[idx], elements, **kw)
             trace = {'indices': [idx], 'kwargs': [kw]}
             obj = self.index_kw_sampler(N - 1, classes)
@@ -289,9 +307,9 @@ class AVDataset(Dataset):
                 for path, resource in zip(self.filemanager[idx], self.filemanager.resources):
                     if path is not None:
                         key = path.split('/')[-1]
-                    print('\t Resource: %s, Path: %s' % (resource,path))
+                    print('\t Resource: %s, Path: %s' % (resource, path))
                 print('\t Kwargs: %s ' % kw)
-                print('\t Info: %s ' % self.filemanager.info[key])
+                print('\t Info: %s ' % self.filemanager.info[os.path.splitext(key)[0]])
             if trazability:
                 trace['indices'].append(idx)
                 trace['kwargs'].append(kw)
@@ -309,7 +327,6 @@ class Reader(object):
         self.resources = {x: i for i, x in enumerate(resources)}
         self.debug = debug
         self.init_reader()
-
 
     def init_reader(self, **kwargs):
         self.functional = {}

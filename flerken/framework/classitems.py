@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 from itertools import cycle
 
-from ..dataloaders.transforms import Compose
+from ..transforms import Compose
 
 
 class AverageMeter(object):

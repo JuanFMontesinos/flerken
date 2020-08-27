@@ -278,9 +278,11 @@ def get_loss_meter(loss):
     handlers = {}
     handlers['gt'] = lambda x: x
     handlers['pred'] = lambda x: x
+    handlers['vs'] = lambda x: x # Revisar
     handlers['iter'] = loss
     opt = {'gt': {'type': 'input', 'store': 'list'},
            'pred': {'type': 'input', 'store': 'list'},
+           'vs': {'type': 'input', 'store': 'list'},
            'iter': {'type': 'output', 'store': 'list'}
            }
     return get_nested_meter(

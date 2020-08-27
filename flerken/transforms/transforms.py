@@ -4,6 +4,7 @@ import math
 import sys
 import random
 from PIL import Image
+from typing import Union, Tuple
 
 try:
     import accimage
@@ -17,6 +18,8 @@ import warnings
 
 import torchvision.transforms.functional as F
 
+from . import _BaseTransformation as BaseTransformation, Compose
+
 if sys.version_info < (3, 3):
     Sequence = collections.Sequence
     Iterable = collections.Iterable
@@ -24,7 +27,7 @@ else:
     Sequence = collections.abc.Sequence
     Iterable = collections.abc.Iterable
 
-__all__ = ["Compose", "ToTensor", "ToPILImage", "Normalize", "Resize", "Scale", "CenterCrop", "Pad",
+__all__ = ["ToTensor", "ToPILImage", "Normalize", "Resize", "TensorResize", "Scale", "CenterCrop", "Pad",
            "Lambda", "RandomApply", "RandomChoice", "RandomOrder", "RandomCrop", "RandomHorizontalFlip",
            "RandomVerticalFlip", "RandomResizedCrop", "RandomSizedCrop", "FiveCrop", "TenCrop", "LinearTransformation",
            "ColorJitter", "RandomRotation", "RandomAffine", "Grayscale", "RandomGrayscale"]
@@ -37,60 +40,6 @@ _pil_interpolation_to_str = {
     Image.HAMMING: 'PIL.Image.HAMMING',
     Image.BOX: 'PIL.Image.BOX',
 }
-
-
-class BaseTransformation(object):
-    def get_params(self):
-        pass
-
-    def reset_params(self):
-        pass
-
-
-class Compose(object):
-    """Composes several transforms together.
-
-    Args:
-        transforms (list of ``Transform`` objects): list of transforms to compose.
-
-    Example:
-        >>> transforms.Compose([
-        >>>     transforms.CenterCrop(10),
-        >>>     transforms.ToTensor(),
-        >>> ])
-    """
-
-    def __init__(self, transforms, dim=None):
-        self.transforms = transforms
-        self.dim = dim
-
-    def __call__(self, inpt):
-        if isinstance(inpt, (list, tuple)):
-            return self.apply_sequence(inpt)
-        else:
-            return self.apply_img(inpt)
-
-    def apply_img(self, img):
-        for t in self.transforms:
-            img = t(img)
-        return img
-
-    def apply_sequence(self, seq):
-        output = list(map(self.apply_img, seq))
-        if self.dim is not None:
-            assert isinstance(self.dim, int)
-            output = torch.stack(output, dim=self.dim)
-        for t in self.transforms:
-            t.reset_params()
-        return output
-
-    def __repr__(self):
-        format_string = self.__class__.__name__ + '('
-        for t in self.transforms:
-            format_string += '\n'
-            format_string += '    {0}'.format(t)
-        format_string += '\n)'
-        return format_string
 
 
 class ToTensor(BaseTransformation):
@@ -222,6 +171,61 @@ class Resize(BaseTransformation):
     def __repr__(self):
         interpolate_str = _pil_interpolation_to_str[self.interpolation]
         return self.__class__.__name__ + '(size={0}, interpolation={1})'.format(self.size, interpolate_str)
+
+
+def resize(input: torch.Tensor, size: Union[int, Tuple[int, int]],
+           interpolation: str = 'bilinear', align_corners: bool = False) -> torch.Tensor:
+    r"""Resize the input torch.Tensor to the given size.
+
+    See :class:`~kornia.Resize` for details.
+    """
+    if not torch.is_tensor(input):
+        raise TypeError("Input tensor type is not a torch.Tensor. Got {}"
+                        .format(type(input)))
+
+    new_size: Tuple[int, int]
+
+    if isinstance(size, int):
+        w, h = input.shape[-2:]
+        if (w <= h and w == size) or (h <= w and h == size):
+            return input
+        if w < h:
+            ow = size
+            oh = int(size * h / w)
+        else:
+            oh = size
+            ow = int(size * w / h)
+        new_size = (ow, oh)
+    else:
+        new_size = size
+    return torch.nn.functional.interpolate(input, size=new_size, mode=interpolation, align_corners=align_corners)
+
+
+class TensorResize(BaseTransformation):
+    # From KORNIA Library
+    r"""Resize the input torch.Tensor to the given size.
+
+    Args:
+        size (int, tuple(int, int)): Desired output size. If size is a sequence like (h, w),
+        output size will be matched to this. If size is an int, smaller edge of the image will
+        be matched to this number. i.e, if height > width, then image will be rescaled
+        to (size * height / width, size)
+        interpolation (str):  algorithm used for upsampling: 'nearest' | 'linear' | 'bilinear' |
+        'bicubic' | 'trilinear' | 'area'. Default: 'bilinear'.
+        align_corners(bool): interpolation flag. Default: False. See
+        https://pytorch.org/docs/stable/nn.functional.html#torch.nn.functional.interpolate for detail
+    Returns:
+        torch.Tensor: The resized tensor.
+    """
+
+    def __init__(self, size: Union[int, Tuple[int, int]], interpolation: str = 'bilinear',
+                 align_corners: bool = False) -> None:
+        self.size: Union[int, Tuple[int, int]] = size
+        self.interpolation: str = interpolation
+        self.align_corners: bool = align_corners
+
+    def __call__(self, input: torch.Tensor) -> torch.Tensor:  # type: ignore
+        return resize(input, self.size, self.interpolation, align_corners=self.align_corners)
 
 
 class Scale(Resize):

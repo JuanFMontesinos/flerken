@@ -1,9 +1,12 @@
 import numpy as np
+
 import torch
-from torch.nn.functional import grid_sample
+from torch import cat, atan2
+
+__all__ = ['LogFrequencyScale', 'STFT', 'rec2polar']
 
 
-class LogFrequencyScale(object):
+class LogFrequencyScale(torch.nn.Module):
     """
     Rescale linear spectrogram into log-frequency spectrogram. Namely, maps linear values into a log scale
      without modifiying them
@@ -20,6 +23,7 @@ class LogFrequencyScale(object):
     """
 
     def __init__(self, warp: bool, ordering: str = 'BHWC', shape: tuple = (None, None), adaptative=False, **kwargs):
+        super().__init__()
         self.expected_dim = len(ordering)
         self.warp = warp
         self.ordering = ordering.lower()
@@ -31,7 +35,7 @@ class LogFrequencyScale(object):
         self.shape = shape
 
     def needtoinstantiate(self):
-        return not self.instantiated | self.adaptative
+        return (not self.instantiated) | self.adaptative
 
     @staticmethod
     def get_dims(ordering):
@@ -48,7 +52,8 @@ class LogFrequencyScale(object):
         H = dims[self.var['h']] if self.shape[0] is None else self.shape[0]
         W = dims[self.var['w']] if self.shape[1] is None else self.shape[1]
         B = dims[self.var['b']] if self.var['b'] != -1 else 1
-        self.grid = self.get_grid(B, H, W)
+        # self.grid = self.get_grid(B, H, W).to(sp.device)
+        self.register_buffer('grid', self.get_grid(B, H, W).to(sp.device))
         self.squeeze = []
         if self.var['b'] == -1:
             self.squeeze.append(0)
@@ -71,7 +76,7 @@ class LogFrequencyScale(object):
         grid = grid.astype(np.float32)
         return torch.from_numpy(grid)
 
-    def __call__(self, sp):
+    def forward(self, sp):
         """
         :param sp: Spectrogram decribed at :class:`.LogFrequencyScale`
         :type sp: torch.Tensor
@@ -82,7 +87,7 @@ class LogFrequencyScale(object):
         sp = torch.einsum(self.ordering + '->' + self.exp_ordering, sp)
         for dim in self.squeeze:
             sp.unsqueeze_(dim)
-        sp = grid_sample(sp, self.grid, **self.kwargs)
+        sp = torch.nn.functional.grid_sample(sp, self.grid, **self.kwargs)
         for dim in self.squeeze[::-1]:
             sp.squeeze_(dim)
         sp = torch.einsum(self.exp_ordering + '->' + self.ordering, sp)
@@ -201,3 +206,14 @@ class STFT(object):
             return stft / self.norm_coef
         else:
             return stft
+
+
+def rec2polar(tensor, dim=None):
+    if dim == None:
+        dim = tensor.dim() - 1
+    assert tensor.size(dim) == 2  # Re and Imag
+    mag = tensor.norm(dim=dim).unsqueeze(dim)
+    re, imag = tensor.chunk(2, dim)
+    phase = atan2(imag, re)
+
+    return cat([mag, phase], dim=dim)
