@@ -222,7 +222,10 @@ class FileManager(object):
 
         else:
             for name, module in self.tree(self.resources[0]).named_children():
-                n = len(tuple(module.named_children()))
+                if self.yield_mode == 'yield_module':
+                    n = len(tuple(module.named_children()))
+                else:
+                    n = len(tuple(module.named_parameters()))
                 class_size[name] = (idx_prev, idx_prev + n)
                 idx_prev += n
         return class_size, idx_prev
@@ -323,10 +326,10 @@ class AVDataset(Dataset):
 
 
 class Reader(object):
-    def __init__(self, resources, debug):
+    def __init__(self, resources, debug,**kwargs):
         self.resources = {x: i for i, x in enumerate(resources)}
         self.debug = debug
-        self.init_reader()
+        self.init_reader(**kwargs)
 
     def init_reader(self, **kwargs):
         self.functional = {}
